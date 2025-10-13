@@ -1,0 +1,194 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F6F2">
+
+    <!-- Góc phải: Hỗ trợ -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="108dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <ImageView
+                android:layout_width="54dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_support"
+                android:tint="#6B5B4B"
+                tools:ignore="UseAppTint" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/quicksand_regular"
+                android:text="Hỗ Trợ"
+                android:textColor="#6B5B4B"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Logo sách -->
+    <ImageView
+        android:layout_width="126dp"
+        android:layout_height="117dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="7dp"
+        android:src="@drawable/logo_book" />
+
+    <!-- HAVANABOOK text -->
+    <TextView
+        android:text="HAVANABOOK"
+        android:textSize="28sp"
+        android:textColor="#6B5B4B"
+        android:fontFamily="@font/quicksand_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="18dp"/>
+
+    <!-- Input SĐT -->
+    <EditText
+        android:id="@+id/edtPhone"
+        android:hint="Số điện thoại"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/input_bg"
+        android:fontFamily="@font/quicksand_regular"
+        android:textColor="#222"
+        android:textSize="16sp"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="12dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:inputType="phone"
+        android:visibility="visible"/>
+
+    <!-- Input Email -->
+    <EditText
+        android:id="@+id/edtEmail"
+        android:hint="Email"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/input_bg"
+        android:fontFamily="@font/quicksand_regular"
+        android:textColor="#222"
+        android:textSize="16sp"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="12dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:inputType="textEmailAddress"
+        android:visibility="gone"/>
+
+    <!-- Input Password -->
+    <EditText
+        android:id="@+id/edtPassword"
+        android:hint="Mật Khẩu"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/input_bg"
+        android:fontFamily="@font/quicksand_regular"
+        android:textColor="#222"
+        android:textSize="16sp"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:inputType="textPassword"/>
+
+    <!-- Dòng hỏi + Quên mật khẩu -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp">
+
+        <TextView
+            android:id="@+id/tvLoginTypeNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng nhập bằng Email?"
+            android:textColor="#6B5B4B"
+            android:textSize="14sp"
+            android:fontFamily="@font/quicksand_regular"
+            android:layout_gravity="start"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/btnForgot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quên Mật Khẩu?"
+            android:textColor="#6B5B4B"
+            android:textSize="14sp"
+            android:fontFamily="@font/quicksand_regular"
+            android:layout_gravity="end"/>
+    </LinearLayout>
+
+    <!-- Nút đăng nhập -->
+    <Button
+        android:id="@+id/btnLogin"
+        android:text="Đăng Nhập"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/btn_login_bg"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:fontFamily="@font/quicksand_regular"
+        android:textSize="17sp"
+        android:layout_marginBottom="22dp"/>
+
+    <!-- Thông báo lỗi/thành công -->
+    <TextView
+        android:id="@+id/tvMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#F00"
+        android:fontFamily="@font/quicksand_regular"
+        android:paddingTop="8dp"/>
+
+    <!-- Đăng ký -->
+    <TextView
+        android:id="@+id/tvNoAccount"
+        android:text="Bạn Không Có Tài Khoản?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#222"
+        android:textSize="15sp"
+        android:fontFamily="@font/quicksand_regular"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/btnGoToRegister"
+        android:text="Đăng Kí"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#6B5B4B"
+        android:textSize="15sp"
+        android:fontFamily="@font/quicksand_regular"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="4dp"/>
+</LinearLayout>
