@@ -1,0 +1,524 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th10 13, 2025 lúc 06:37 PM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.0.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Cơ sở dữ liệu: `dacsn`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `access_levels`
+--
+
+CREATE TABLE `access_levels` (
+  `id_level` int(11) NOT NULL,
+  `name_level` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `access_levels`
+--
+
+INSERT INTO `access_levels` (`id_level`, `name_level`) VALUES
+(1, 'admin'),
+(2, 'customer'),
+(3, 'out customer');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `carts`
+--
+
+CREATE TABLE `carts` (
+  `id_cart` int(11) NOT NULL,
+  `id_login` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `cart_details`
+--
+
+CREATE TABLE `cart_details` (
+  `id_cartdetail` int(11) NOT NULL,
+  `id_cart` int(11) NOT NULL,
+  `id_product` int(11) NOT NULL,
+  `quantitycart_detail` int(11) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `categories`
+--
+
+CREATE TABLE `categories` (
+  `id_category` int(11) NOT NULL,
+  `name_category` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `categories`
+--
+
+INSERT INTO `categories` (`id_category`, `name_category`) VALUES
+(1, 'Tình cảm'),
+(2, 'Kinh dị'),
+(3, 'Khoa học'),
+(4, 'Văn học'),
+(5, 'Thiếu nhi'),
+(6, 'Tâm lý - Kỹ năng sống'),
+(7, 'Kinh tế'),
+(8, 'Lịch sử'),
+(9, 'Tôn giáo - Tâm linh'),
+(10, 'Du ký - Du lịch'),
+(11, 'Trinh thám'),
+(12, 'Học đường'),
+(13, 'Viễn tưởng'),
+(14, 'Phiêu lưu'),
+(15, 'Ngôn tình'),
+(16, 'Hài hước'),
+(17, 'Chính trị - Xã hội'),
+(18, 'Giáo dục'),
+(19, 'Sức khỏe - Y học'),
+(20, 'Ẩm thực'),
+(21, 'Nghệ thuật - Âm nhạc'),
+(22, 'Công nghệ - Lập trình'),
+(23, 'Pháp luật'),
+(24, 'Khoa học viễn tưởng'),
+(25, 'Võ hiệp'),
+(26, 'Thơ ca'),
+(27, 'Hồi ký - Tự truyện'),
+(28, 'Tiểu thuyết nước ngoài'),
+(29, 'Tiểu thuyết Việt Nam'),
+(30, 'Phim ảnh - Kịch bản'),
+(31, 'Truyện ngắn'),
+(32, 'Sách tham khảo'),
+(33, 'Sách học ngoại ngữ'),
+(34, 'Sách luyện thi'),
+(35, 'Sách tôn giáo'),
+(36, 'Phát triển bản thân'),
+(37, 'Tài chính - Đầu tư'),
+(38, 'Quản trị - Lãnh đạo'),
+(39, 'Marketing - Bán hàng'),
+(40, 'Khởi nghiệp'),
+(41, 'Tạp chí - Ấn phẩm định kỳ');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `contacts`
+--
+
+CREATE TABLE `contacts` (
+  `id_contact` int(11) NOT NULL,
+  `name_contact` varchar(100) DEFAULT NULL,
+  `phone_contact` varchar(20) DEFAULT NULL,
+  `text_contact` varchar(500) DEFAULT NULL,
+  `date_contact` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `feedbacks`
+--
+
+CREATE TABLE `feedbacks` (
+  `id_feedback` int(11) NOT NULL,
+  `id_product` int(11) NOT NULL,
+  `id_login` int(11) NOT NULL,
+  `rating` int(11) DEFAULT 0,
+  `comment` varchar(1000) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `admin_reply` varchar(1000) DEFAULT NULL,
+  `reply_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `informations`
+--
+
+CREATE TABLE `informations` (
+  `id_information` int(11) NOT NULL,
+  `name_information` varchar(255) DEFAULT NULL,
+  `phone_information` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `date_of_birth` datetime DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `id_login` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `informations`
+--
+
+INSERT INTO `informations` (`id_information`, `name_information`, `phone_information`, `email`, `date_of_birth`, `avatar`, `id_login`) VALUES
+(1, NULL, '0981742439', 'vytieu97@gmail.com', NULL, NULL, 1),
+(2, NULL, '02331540123', '2331540123@gmail.com', NULL, NULL, 2),
+(3, NULL, '02331540160', '2331540160@gmail.com', NULL, NULL, 3),
+(4, NULL, '02331540220', '2331540220@gmail.com', NULL, NULL, 4),
+(5, NULL, '02331540062', '2331540062@gmail.com', NULL, NULL, 5),
+(6, NULL, '0123456789', NULL, NULL, NULL, 6),
+(7, NULL, NULL, '233test@gmail.com', NULL, NULL, 7),
+(8, NULL, '0131020251', NULL, NULL, NULL, 8);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `login`
+--
+
+CREATE TABLE `login` (
+  `id_login` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `pass` varchar(255) NOT NULL,
+  `date_register` datetime DEFAULT NULL,
+  `id_information` int(11) DEFAULT NULL,
+  `id_level` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `login`
+--
+
+INSERT INTO `login` (`id_login`, `username`, `pass`, `date_register`, `id_information`, `id_level`) VALUES
+(1, 'vyadmin', '$2b$10$.AXRd7q.hoZjz4ls6W9stOBO94rCTuRkz6iBE9zue.x4kdWMwqtXC', '2025-10-11 06:50:05', 1, 1),
+(2, 'nghiaadmin', '$2b$10$yGBkkB1KV9sVojMKR8Awz.LXvn1mXzZBSOadEyXnKwKQfSYQRPGam', '2025-10-11 06:55:36', 2, 1),
+(3, 'vanadmin', '$2b$10$L6S00kLBi5X5QPanvuu6rOPOhB2Q2EriVEQSyOW9DrKfWgntUaOES', '2025-10-11 07:00:43', 3, 1),
+(4, 'tAnhadmin', '$2b$10$USCU9UfbmAvFW.qQDWS17O3L3C1ylpZJjMYzlsmo394A4mkaKU0ye', '2025-10-11 07:02:45', 4, 1),
+(5, 'nhiadmin', '$2b$10$pvqu6mRyd38vrAYYKLY54u2ficsc51vZmPOBxw7Or4vPxE7haCSqy', '2025-10-11 07:04:04', 5, 1),
+(6, 'vytest', '$2b$10$YiPn4IOQlSVcH8./OoRYc.JIwNKOd7HM2SJEq4eYpWMRS3s6yET1.', '2025-10-11 07:26:20', 6, 2),
+(7, 'andrtest', '$2b$10$Q7CNbeI7IrdA79JCiR0Dv.cEjj.lmBXf.tazYoDUtllFXBJIrtM0u', '2025-10-11 11:01:35', 7, 2),
+(8, '1310test', '$2b$10$u/R4z2OlURmg4xr00AbIGODZ2u/vwbCLJDE/XjR66msDFY0SSZQCa', '2025-10-13 10:18:53', NULL, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `messages`
+--
+
+CREATE TABLE `messages` (
+  `id_message` int(11) NOT NULL,
+  `id_sender` int(11) NOT NULL,
+  `id_receiver` int(11) NOT NULL,
+  `content` varchar(2000) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `orders`
+--
+
+CREATE TABLE `orders` (
+  `id_order` int(11) NOT NULL,
+  `id_login` int(11) NOT NULL,
+  `receiver_name` varchar(100) DEFAULT NULL,
+  `receiver_phone` varchar(20) DEFAULT NULL,
+  `receiver_address` varchar(200) DEFAULT NULL,
+  `total` float DEFAULT 0,
+  `date_order` datetime DEFAULT NULL,
+  `payment_status` varchar(50) DEFAULT NULL,
+  `payment_method` varchar(100) DEFAULT NULL,
+  `order_status` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `order_details`
+--
+
+CREATE TABLE `order_details` (
+  `id_detail` int(11) NOT NULL,
+  `id_order` int(11) NOT NULL,
+  `id_product` int(11) NOT NULL,
+  `quantity_detail` int(11) DEFAULT 1,
+  `price_detail` float DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `products`
+--
+
+CREATE TABLE `products` (
+  `id_product` int(11) NOT NULL,
+  `name_product` varchar(200) NOT NULL,
+  `price` float DEFAULT 0,
+  `image_product` varchar(200) DEFAULT NULL,
+  `quantity` int(11) DEFAULT 0,
+  `dimension` varchar(100) DEFAULT NULL,
+  `manufacturer` varchar(100) DEFAULT NULL,
+  `page` int(11) DEFAULT NULL,
+  `author` varchar(100) DEFAULT NULL,
+  `publisher` varchar(200) DEFAULT NULL,
+  `publisher_year` int(11) DEFAULT NULL,
+  `text_product` varchar(255) DEFAULT NULL,
+  `size` varchar(100) DEFAULT NULL,
+  `id_category` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Chỉ mục cho các bảng đã đổ
+--
+
+--
+-- Chỉ mục cho bảng `access_levels`
+--
+ALTER TABLE `access_levels`
+  ADD PRIMARY KEY (`id_level`);
+
+--
+-- Chỉ mục cho bảng `carts`
+--
+ALTER TABLE `carts`
+  ADD PRIMARY KEY (`id_cart`),
+  ADD KEY `idx_cart_id_login` (`id_login`);
+
+--
+-- Chỉ mục cho bảng `cart_details`
+--
+ALTER TABLE `cart_details`
+  ADD PRIMARY KEY (`id_cartdetail`),
+  ADD KEY `id_cart` (`id_cart`),
+  ADD KEY `id_product` (`id_product`);
+
+--
+-- Chỉ mục cho bảng `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id_category`);
+
+--
+-- Chỉ mục cho bảng `contacts`
+--
+ALTER TABLE `contacts`
+  ADD PRIMARY KEY (`id_contact`);
+
+--
+-- Chỉ mục cho bảng `feedbacks`
+--
+ALTER TABLE `feedbacks`
+  ADD PRIMARY KEY (`id_feedback`),
+  ADD KEY `id_product` (`id_product`),
+  ADD KEY `id_login` (`id_login`);
+
+--
+-- Chỉ mục cho bảng `informations`
+--
+ALTER TABLE `informations`
+  ADD PRIMARY KEY (`id_information`),
+  ADD UNIQUE KEY `id_login` (`id_login`),
+  ADD UNIQUE KEY `phone_information` (`phone_information`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Chỉ mục cho bảng `login`
+--
+ALTER TABLE `login`
+  ADD PRIMARY KEY (`id_login`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `id_level` (`id_level`),
+  ADD KEY `fk_login_information` (`id_information`),
+  ADD KEY `idx_login_username` (`username`);
+
+--
+-- Chỉ mục cho bảng `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id_message`),
+  ADD KEY `id_sender` (`id_sender`),
+  ADD KEY `id_receiver` (`id_receiver`);
+
+--
+-- Chỉ mục cho bảng `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id_order`),
+  ADD KEY `idx_orders_id_login` (`id_login`);
+
+--
+-- Chỉ mục cho bảng `order_details`
+--
+ALTER TABLE `order_details`
+  ADD PRIMARY KEY (`id_detail`),
+  ADD KEY `id_order` (`id_order`),
+  ADD KEY `id_product` (`id_product`);
+
+--
+-- Chỉ mục cho bảng `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id_product`),
+  ADD KEY `id_category` (`id_category`),
+  ADD KEY `idx_products_name` (`name_product`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `access_levels`
+--
+ALTER TABLE `access_levels`
+  MODIFY `id_level` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `carts`
+--
+ALTER TABLE `carts`
+  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `cart_details`
+--
+ALTER TABLE `cart_details`
+  MODIFY `id_cartdetail` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id_category` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT cho bảng `contacts`
+--
+ALTER TABLE `contacts`
+  MODIFY `id_contact` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `feedbacks`
+--
+ALTER TABLE `feedbacks`
+  MODIFY `id_feedback` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `informations`
+--
+ALTER TABLE `informations`
+  MODIFY `id_information` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT cho bảng `login`
+--
+ALTER TABLE `login`
+  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT cho bảng `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `order_details`
+--
+ALTER TABLE `order_details`
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `products`
+--
+ALTER TABLE `products`
+  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `carts`
+--
+ALTER TABLE `carts`
+  ADD CONSTRAINT `carts_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `cart_details`
+--
+ALTER TABLE `cart_details`
+  ADD CONSTRAINT `cart_details_ibfk_3` FOREIGN KEY (`id_cart`) REFERENCES `carts` (`id_cart`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cart_details_ibfk_4` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `feedbacks`
+--
+ALTER TABLE `feedbacks`
+  ADD CONSTRAINT `feedbacks_ibfk_3` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `feedbacks_ibfk_4` FOREIGN KEY (`id_login`) REFERENCES `login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `informations`
+--
+ALTER TABLE `informations`
+  ADD CONSTRAINT `informations_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `login`
+--
+ALTER TABLE `login`
+  ADD CONSTRAINT `login_ibfk_2` FOREIGN KEY (`id_information`) REFERENCES `informations` (`id_information`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `login_ibfk_3` FOREIGN KEY (`id_level`) REFERENCES `access_levels` (`id_level`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`id_sender`) REFERENCES `login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`id_receiver`) REFERENCES `login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `order_details`
+--
+ALTER TABLE `order_details`
+  ADD CONSTRAINT `order_details_ibfk_3` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id_order`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `order_details_ibfk_4` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`id_category`) REFERENCES `categories` (`id_category`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
