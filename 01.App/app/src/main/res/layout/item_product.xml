@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="160dp"
+    android:layout_height="300dp"
+    android:layout_margin="8dp"
+    android:padding="8dp"
+    android:gravity="center"
+    android:background="#F3F2EC"
+    android:clickable="true"
+    android:focusable="true"
+    android:animateLayoutChanges="true"
+    android:foreground="?attr/selectableItemBackgroundBorderless">
+
+    <!-- Ảnh sản phẩm -->
+    <ImageView
+        android:id="@+id/imgProduct"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/bg_image_frame"
+        android:clipToOutline="true"
+        android:elevation="3dp" />
+
+    <!-- Tên sách -->
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tên sách"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="#222222"
+        android:layout_marginTop="6dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:gravity="center" />
+
+    <!-- Tác giả -->
+    <TextView
+        android:id="@+id/txtAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tác giả"
+        android:textSize="13sp"
+        android:textColor="#555555"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:gravity="center" />
+
+    <!-- Giá -->
+    <TextView
+        android:id="@+id/txtPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="35.000đ"
+        android:textSize="14sp"
+        android:textColor="#B57A3A"
+        android:layout_marginTop="4dp"
+        android:gravity="center" />
+
+</LinearLayout>

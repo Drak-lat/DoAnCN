@@ -1,38 +1,29 @@
-.App {
-  text-align: center;
+/* === Reset cơ bản === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html,
+body,
+#root,
+.app-container {
+  width: 100%;
+  min-height: 100%;
+  background-color: #f3f2ec;
+  font-family: 'Montserrat', Arial, sans-serif;
+  line-height: 1.4;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Xóa mọi khoảng trắng vô lý giữa các block */
+body>*:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Cho main có khoảng cách nhỏ so với header nếu cần */
+main {
+  width: 100%;
+  display: block;
 }

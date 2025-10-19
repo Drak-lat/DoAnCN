@@ -1,3 +1,6 @@
+/* index.css */
+
+/* Reset và font mặc định */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -7,7 +10,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Cho code hiển thị đúng font */
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Layout tổng thể: giúp footer dính đáy */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Đẩy phần nội dung chính xuống dưới banner + header */
+main,
+.main-content,
+.page-content {
+  margin-top: 0;
+  flex: 1;
 }

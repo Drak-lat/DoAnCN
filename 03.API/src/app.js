@@ -3,14 +3,17 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors());
-app.use(express.urlencoded({ extended: true })); // Thêm dòng này
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Khai báo các route ở đây:
+// Import routes
 const customerRoutes = require('./routes/customer.routes');
-app.use('/api/customer', customerRoutes);
-
 const authRoutes = require('./routes/auth.routes');
+const productRoutes = require('./routes/product.routes'); // thêm sau
+
+// Dùng routes
+app.use('/api/customer', customerRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes); // thêm sau
 
 module.exports = app;
