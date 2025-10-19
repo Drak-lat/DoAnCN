@@ -278,7 +278,7 @@ CREATE TABLE `products` (
   `author` varchar(100) DEFAULT NULL,
   `publisher` varchar(200) DEFAULT NULL,
   `publisher_year` int(11) DEFAULT NULL,
-  `text_product` varchar(255) DEFAULT NULL,
+  `text_product`TEXT DEFAULT NULL,
   `size` varchar(100) DEFAULT NULL,
   `id_category` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
