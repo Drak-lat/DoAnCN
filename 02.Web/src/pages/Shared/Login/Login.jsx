@@ -1,7 +1,9 @@
+// ...existing code...
 import React, { useState } from 'react';
 import './Login.css';
 import { login as loginService } from '../../../services/authService';
 import { useNavigate, Link } from 'react-router-dom';
+import { getUserFromToken } from '../../../utils/auth';
 
 function Login() {
   const [loginType, setLoginType] = useState('phone');
@@ -32,9 +34,24 @@ function Login() {
         password: form.password,
       });
       if (response.data.success) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        navigate(response.data.redirect || '/');
+        const token = response.data.token;
+        // save token and user (user may be returned by server)
+        localStorage.setItem('token', token);
+        const serverUser = response.data.user || null;
+        const payload = getUserFromToken(token);
+        // prefer serverUser but fallback to payload
+        const userToStore = serverUser || payload || {};
+        localStorage.setItem('user', JSON.stringify(userToStore));
+
+        // navigate: prefer server redirect, otherwise use payload role
+        const serverRedirect = response.data.redirect;
+        if (serverRedirect) {
+          navigate(serverRedirect, { replace: true });
+        } else {
+          const level = payload?.id_level ?? payload?.level ?? null;
+          if (level === 1) navigate('/admin', { replace: true });
+          else navigate('/customer', { replace: true });
+        }
       } else {
         setError(response.data.msg || 'Đăng nhập thất bại!');
       }

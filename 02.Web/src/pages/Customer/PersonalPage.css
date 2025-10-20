@@ -1,0 +1,167 @@
+.personal-page {
+  display: flex;
+  background-color: #f3f2ec;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+  color: #2a2a2a;
+  margin-top: 80px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #fdfdfd;
+  border-right: 1px solid #ddd;
+  padding: 30px 20px;
+}
+
+.sidebar .profile-icon {
+  font-size: 80px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.sidebar h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 12px 10px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+.sidebar li.active,
+.sidebar li:hover {
+  background-color: #f3f2ec;
+  font-weight: 600;
+}
+
+/* Content area */
+.content {
+  flex: 1;
+  padding: 50px;
+}
+
+.info-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+}
+
+.info-form label {
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+.info-form input {
+  margin-top: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+}
+
+/* Buttons */
+.btn-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-save {
+  background-color: #d9a6a2;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background: transparent;
+  border: 1px solid #555;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-save:hover {
+  background-color: #c68983;
+}
+
+.password-tab {
+    display: flex;
+    flex-direction: column;
+    /* Kế thừa padding chung từ .content nếu cần, hoặc tùy chỉnh */
+    /* width: 100%; */
+    max-width: 400px; /* Giới hạn chiều rộng để layout trông gọn gàng như ảnh */
+    /* Căn chỉnh nội dung sang trái để khớp với layout ảnh */
+    align-items: flex-start;
+}
+
+/* Style cho các ô input mật khẩu và mã xác nhận */
+.password-tab input[type="password"],
+.password-tab input[type="text"] {
+    /* Tận dụng lại các style chung từ .info-form input nếu có, sau đó override */
+    width: 100%; /* Chiều rộng 100% của max-width: 400px bên trên */
+    padding: 12px 15px;
+    margin-bottom: 15px; /* Khoảng cách giữa các ô input */
+    border: 1px solid #dcdcdc; /* Viền nhẹ */
+    border-radius: 6px;
+    background-color: #ffffff; /* Nền trắng như trong ảnh */
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng chiều rộng */
+    font-size: 15px;
+    /* Tăng cường khoảng cách để input trông dài và mỏng hơn */
+    height: auto; 
+}
+
+/* Bổ sung: Style cho nhóm nút SIM/Zalo */
+.password-tab .code-send-method-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px; /* Khoảng cách sau input cuối */
+    margin-bottom: 30px; /* Khoảng cách trước nút "Lưu" */
+}
+
+/* Style cho nút SIM và Zalo */
+.password-tab .code-send-method-group button {
+    padding: 8px 25px;
+    border: 1px solid #c8c8c8; /* Viền nhạt */
+    border-radius: 5px;
+    background-color: #fff;
+    color: #4a4a4a;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    min-width: 80px; /* Chiều rộng tối thiểu cho nút */
+}
+
+.password-tab .code-send-method-group button:hover {
+    background-color: #f3f2ec; /* Màu nền nhẹ khi hover, khớp với background của .personal-page */
+}
+
+/* Style cho nút Lưu (.btn-save) trong .password-tab để căn chỉnh vị trí */
+.password-tab .btn-save {
+    /* Đã có style chung từ .btn-save, chỉ cần override những gì cần thiết */
+    /* Màu nền: #d9a6a2 */
+    /* Màu chữ: white */
+    /* border: none */
+    /* padding: 8px 20px */
+    /* border-radius: 5px */
+    
+    /* Đảm bảo nút nằm ở lề trái, khớp với ảnh */
+    align-self: flex-start; 
+    margin-top: 10px; /* Khoảng cách từ các nút SIM/Zalo */
+    width: 100px; /* Chiều rộng cố định cho nút Lưu */
+    font-size: 16px;
+}

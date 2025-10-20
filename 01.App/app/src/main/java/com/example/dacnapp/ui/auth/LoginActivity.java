@@ -1,5 +1,6 @@
 package com.example.dacnapp.ui.auth;
 
+import android.util.Log;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.dacnapp.R;
 import com.example.dacnapp.data.model.LoginResponse;
+import com.example.dacnapp.utils.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edtPhone, edtEmail, edtPassword;
@@ -18,10 +20,15 @@ public class LoginActivity extends AppCompatActivity {
     // trạng thái loginType: true = phone, false = email
     private boolean isPhoneLogin = true;
 
+    private SessionManager session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // init session manager
+        session = new SessionManager(this);
 
         edtPhone = findViewById(R.id.edtPhone);
         edtEmail = findViewById(R.id.edtEmail);
@@ -73,15 +80,36 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
+            btnLogin.setEnabled(false);
+            tvMsg.setText("");
             viewModel.login(identifier, password);
         });
 
         viewModel.getLoginResult().observe(this, response -> {
+            btnLogin.setEnabled(true);
+            Log.d("AUTH_DEBUG", "login response: " + String.valueOf(response));
             if (response != null && response.success) {
+                // lưu token nếu có
+                String token = null;
+                try {
+                    token = response.token;
+                } catch (Exception ignored) {}
+
+                if (token == null || token.isEmpty()) {
+                    // fallback: try other places (if your model differs)
+                    // (extend here if server returns different field)
+                }
+
+                if (token != null && !token.isEmpty()) {
+                    session.saveToken(token);
+                    Log.d("AUTH_DEBUG", "saved token from login: " + token);
+                    Log.d("AUTH_DEBUG", "read back token (SessionManager): " + session.getToken());
+                } else {
+                    Log.w("AUTH_DEBUG", "No token found in login response");
+                }
+
                 if (response.user != null && response.user.id_level == 2) {
                     tvMsg.setText("Đăng nhập thành công!");
-                    getSharedPreferences("auth", MODE_PRIVATE)
-                            .edit().putString("token", response.token).apply();
                     startActivity(new Intent(this, com.example.dacnapp.MainActivity.class));
                     finish();
                 } else {

@@ -10,6 +10,9 @@ app.use(express.json());
 const customerRoutes = require('./routes/customer.routes');
 app.use('/api/customer', customerRoutes);
 
+const changePasswordRouter = require('./routes/changepassword.routes');
+app.use('/api/user', changePasswordRouter);
+
 const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
 

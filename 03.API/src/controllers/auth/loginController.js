@@ -1,4 +1,7 @@
+// ...existing code...
 const authService = require('../../services/auth.service');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'change_this_secret';
 
 exports.login = async (req, res) => {
   try {
@@ -7,9 +10,27 @@ exports.login = async (req, res) => {
       return res.status(400).json({ success: false, msg: 'Thiếu thông tin đăng nhập' });
     }
 
-    const { token, user } = await authService.authenticate(identifier, password);
+    // authService.authenticate should return { user, token? }
+    const result = await authService.authenticate(identifier, password);
+    const user = result.user || null;
+    let token = result.token || null;
 
-    const redirect = user.id_level === 1 ? '/admin' : (user.id_level === 2 ? '/' : null);
+    if (!user) {
+      return res.status(401).json({ success: false, msg: 'Đăng nhập thất bại' });
+    }
+
+    // If authService didn't create token, create one here (ensures id_level included)
+    if (!token) {
+      const payload = {
+        id_login: user.id_login,
+        username: user.username,
+        id_level: user.id_level
+      };
+      token = jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+    }
+
+    // redirect: admin -> /admin, customer -> /customer
+    const redirect = user.id_level === 1 ? '/admin' : (user.id_level === 2 ? '/customer' : '/');
 
     return res.json({
       success: true,
