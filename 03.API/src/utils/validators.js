@@ -1,20 +1,24 @@
+// Simple validators used by controllers. Keep minimal and dependency-free.
+
 function isValidPassword(pw) {
-  if (!pw) return false;
-  if (pw.length < 10) return false; // SỬA: < thay vì <=
-  const hasLetter = /[A-Za-z]/.test(pw);
-  const hasNumber = /[0-9]/.test(pw);
-  return hasLetter && hasNumber;
+  if (typeof pw !== 'string') return false;
+  if (pw.length < 10) return false;
+  if (!/[0-9]/.test(pw)) return false;
+  if (!/[A-Za-z]/.test(pw)) return false;
+  return true;
 }
 
 function isGmail(email) {
-  if (!email) return false;
-  return /^[^\s@]+@gmail\.com$/i.test(email);
+  if (typeof email !== 'string') return false;
+  // simple check: ends with @gmail.com (case-insensitive)
+  return /@gmail\.com$/i.test(email.trim());
 }
 
-// Số điện thoại phải đủ 10 số và bắt đầu bằng số 0
 function isPhone10(phone) {
-  if (!phone) return false;
-  return /^0\d{9}$/.test(phone); // Bắt đầu bằng 0 và theo sau là 9 chữ số
+  if (typeof phone !== 'string') return false;
+  const digits = phone.replace(/\D/g, '');
+  // accept 10-digit numbers (local format) or 11 with leading country 0
+  return digits.length === 10 || digits.length === 11;
 }
 
 module.exports = { isValidPassword, isGmail, isPhone10 };

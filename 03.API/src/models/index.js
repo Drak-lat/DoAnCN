@@ -10,6 +10,7 @@ const Feedback = require('./Feedback');
 const Message = require('./Message');
 const Order = require('./Order');
 const OrderDetail = require('./OrderDetail');
+// ForgotPassword model removed; OTP fields are stored on Login model now
 
 // AccessLevel - Login
 AccessLevel.hasMany(Login, { foreignKey: 'id_level' });
@@ -75,5 +76,5 @@ module.exports = {
   Feedback,
   Message,
   Order,
-  OrderDetail
+  OrderDetail,
 };

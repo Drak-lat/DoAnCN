@@ -8,12 +8,12 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.dacnapp.R;
-import com.example.dacnapp.data.model.LoginResponse;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edtPhone, edtEmail, edtPassword;
     private Button btnLogin;
     private TextView tvMsg, btnGoToRegister, tvLoginTypeNote;
+    private TextView btnForgot; // Thêm biến cho Quên mật khẩu
     private LoginViewModel viewModel;
     // trạng thái loginType: true = phone, false = email
     private boolean isPhoneLogin = true;
@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         tvMsg = findViewById(R.id.tvMsg);
         btnGoToRegister = findViewById(R.id.btnGoToRegister);
         tvLoginTypeNote = findViewById(R.id.tvLoginTypeNote);
+        btnForgot = findViewById(R.id.btnForgot); // Bind Quên mật khẩu
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
@@ -97,5 +98,8 @@ public class LoginActivity extends AppCompatActivity {
         btnGoToRegister.setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
         });
+
+        // Mở màn hình Quên mật khẩu
+        btnForgot.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class)));
     }
 }

@@ -1,5 +1,9 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config();
+const path = require('path');
+
+// Ensure dotenv is loaded from the API project root (parent of src)
+// API .env lives at the project root (two levels above this file: src/config -> src -> 03.API)
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
