@@ -8,6 +8,7 @@ import Login from './pages/Shared/Login/Login';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
 import AdminPage from './pages/Admin/AdminPage';
+import AdminInfo from './pages/Admin/AdminInfo'; // thêm import
 
 function App() {
   return (
@@ -32,6 +33,16 @@ function App() {
           element={
             <RoleProtectedRoute requiredLevel={1}>
               <AdminPage />
+            </RoleProtectedRoute>
+          }
+        />
+
+        {/* route riêng cho trang AdminInfo */}
+        <Route
+          path="/admin/info"
+          element={
+            <RoleProtectedRoute requiredLevel={1}>
+              <AdminInfo />
             </RoleProtectedRoute>
           }
         />

@@ -4,25 +4,55 @@ const { Op } = require('sequelize');
 const { Login, Information } = require('../models');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change_this_secret';
+const TOKEN_EXPIRES = process.env.JWT_EXPIRES || '2h';
+
+async function findLoginByIdentifier(identifier) {
+  // tìm theo username trước
+  let login = await Login.findOne({ where: { username: identifier } });
+  if (login) return login;
+
+  // nếu không tìm thấy, tìm trong Information theo phone hoặc email, rồi lấy login bằng id_login
+  const info = await Information.findOne({
+    where: {
+      [Op.or]: [
+        { phone_information: identifier },
+        { email: identifier }
+      ]
+    }
+  });
+  if (info) {
+    login = await Login.findOne({ where: { id_login: info.id_login } });
+  }
+  return login;
+}
+
+function generateToken(payload, expiresIn = TOKEN_EXPIRES) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn });
+}
+
+function verifyToken(token) {
+  try {
+    return jwt.verify(token, JWT_SECRET);
+  } catch (err) {
+    return null;
+  }
+}
+
+async function getUserWithInfo(id_login) {
+  const login = await Login.findOne({
+    where: { id_login },
+    attributes: ['id_login', 'username', 'id_level', 'date_register', 'id_information']
+  });
+  const info = await Information.findOne({
+    where: { id_login },
+    attributes: ['id_information', 'name_information', 'phone_information', 'email', 'date_of_birth', 'avatar']
+  });
+  return { login, info };
+}
 
 async function authenticate(identifier, password) {
-  // Tìm theo username
-  let login = await Login.findOne({ where: { username: identifier } });
-
-  // Nếu không tìm thấy, tìm theo phone/email trong Information
-  if (!login) {
-    const info = await Information.findOne({
-      where: {
-        [Op.or]: [
-          { phone_information: identifier },
-          { email: identifier }
-        ]
-      }
-    });
-    if (info) {
-      login = await Login.findOne({ where: { id_login: info.id_login } });
-    }
-  }
+  // Tìm login theo identifier (username | phone | email)
+  const login = await findLoginByIdentifier(identifier);
 
   if (!login) {
     const err = new Error('Tên đăng nhập / số điện thoại / email không tồn tại');
@@ -50,9 +80,15 @@ async function authenticate(identifier, password) {
     id_level: login.id_level
   };
 
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '2h' });
+  const token = generateToken(payload);
 
   return { token, user: payload };
 }
 
-module.exports = { authenticate };
+module.exports = {
+  authenticate,
+  findLoginByIdentifier,
+  generateToken,
+  verifyToken,
+  getUserWithInfo
+};

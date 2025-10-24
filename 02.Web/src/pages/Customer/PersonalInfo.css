@@ -1,0 +1,36 @@
+/* append / overwrite the following to ensure sidebar stays visible and PersonalInfo styles */
+.sidebar {
+  /* make sidebar sticky so it remains visible while switching tabs */
+  position: sticky;
+  top: 24px;
+  align-self: flex-start;
+}
+
+/* form specific tweaks for PersonalInfo */
+.personal-info-form .form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
+  align-items: center;
+}
+.personal-info-form label {
+  min-width: 140px;
+  color: #374151;
+  font-weight: 700;
+}
+.personal-info-form input[type="text"],
+.personal-info-form input[type="email"] {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #fbfbfb;
+}
+
+/* ensure action area matches screenshot layout */
+.personal-info-form .action-row {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start; /* left aligned like screenshot */
+  margin-top: 18px;
+}

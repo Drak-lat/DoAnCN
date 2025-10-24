@@ -16,4 +16,7 @@ app.use('/api/user', changePasswordRouter);
 const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
 
+const adminRoutes = require('./routes/admin.routes');
+app.use('/api/admin', adminRoutes);
+
 module.exports = app;

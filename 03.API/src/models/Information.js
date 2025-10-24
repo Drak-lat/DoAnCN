@@ -16,7 +16,7 @@ const Information = sequelize.define('Information', {
     type: DataTypes.STRING,
     unique: true
   },
-  date_of_birth: DataTypes.DATE,
+  date_of_birth: DataTypes.DATEONLY,
   avatar: DataTypes.STRING,
   id_login: {
     type: DataTypes.INTEGER,
