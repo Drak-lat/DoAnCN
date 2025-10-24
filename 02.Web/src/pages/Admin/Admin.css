@@ -1,0 +1,53 @@
+/* src/pages/Admin/Admin.css */
+
+/* --- Layout Chung --- */
+.admin-container {
+  display: flex;
+  min-block-size: 100vh;
+  background-color: #f8f9fa; /* Màu nền cho vùng nội dung */
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* --- Vùng Nội dung chính (Bên phải) --- */
+.admin-main {
+  flex: 1; /* Chiếm toàn bộ không gian còn lại */
+  padding: 32px;
+  /* Quan trọng: Đẩy nội dung sang phải 1 khoảng = chiều rộng sidebar */
+  margin-inline-start: 280px; 
+  min-block-size: 100vh;
+}
+
+/* --- Các thành phần chung BÊN TRONG admin-main --- */
+/* (Các trang con như AddEditBook.jsx sẽ dùng các class này) */
+
+/* Tiêu đề cho các trang con (AddEditBook, ManageBooks...) */
+.admin-main h2 {
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* Khung trắng chứa nội dung (form, bảng...) */
+.content-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-height: calc(100vh - 150px); /* Tự điều chỉnh chiều cao */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+}
+
+/* --- Responsive (Cho màn hình nhỏ) --- */
+@media (max-width: 1024px) {
+  /* Ẩn sidebar - Bạn có thể thay đổi cách ẩn (dùng transform) nếu muốn */
+  .admin-sidebar {
+    display: none;
+  }
+  
+  /* Nội dung chính chiếm toàn bộ màn hình */
+  .admin-main {
+    margin-inline-start: 0;
+    padding: 20px;
+  }
+}

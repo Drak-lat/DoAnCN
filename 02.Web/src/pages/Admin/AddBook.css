@@ -1,0 +1,142 @@
+.addbook-container {
+  background-color: #f9f8f6;
+  font-family: "Times New Roman", serif;
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* Header */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #dad9d6;
+  padding: 10px 40px;
+  border-bottom: 1px solid #cfcfcf;
+}
+
+.admin-header .brand h2 {
+  font-weight: bold;
+  font-size: 20px;
+  margin: 0;
+}
+
+.admin-header .brand span {
+  font-weight: normal;
+}
+
+.admin-header .brand p {
+  font-size: 12px;
+  margin: 0;
+}
+
+.admin-header h3 {
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.admin-header .user-icon {
+  font-size: 22px;
+}
+
+/* Form */
+.addbook-form {
+  max-width: 900px;
+  margin: 30px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* Ảnh preview */
+.current-image img,
+.preview-img {
+  inline-size: 200px;
+  block-size: 200px;
+  object-fit: contain;
+  margin-block-end: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.image-info {
+  font-size: 12px;
+  color: #666;
+  margin-block-start: 5px;
+}
+
+/* Nút hành động */
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-save,
+.btn-reset {
+  padding: 8px 24px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-save {
+  background-color: #4a4a4a;
+  color: white;
+}
+
+.btn-save:hover {
+  background-color: #333;
+}
+
+.btn-reset {
+  background-color: #8b0000;
+  color: white;
+}
+
+.btn-reset:hover {
+  background-color: #6b0000;
+}
+
+.btn-save:disabled,
+.btn-reset:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
