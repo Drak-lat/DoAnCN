@@ -9,13 +9,21 @@ exports.login = async (req, res) => {
 
     const { token, user } = await authService.authenticate(identifier, password);
 
-    const redirect = user.id_level === 1 ? '/admin' : (user.id_level === 2 ? '/' : null);
+    // Xử lý redirect theo level
+    let redirectTo = '/';
+    if (user.id_level === 1) {
+      redirectTo = '/dashboard'; // ✅ Admin → /dashboard
+    } else if (user.id_level === 2) {
+      redirectTo = '/'; // ✅ Customer → trang chủ
+    }
+
+    console.log('User level:', user.id_level, 'Redirect to:', redirectTo); // DEBUG
 
     return res.json({
       success: true,
       token,
       user,
-      redirect
+      redirectTo
     });
   } catch (err) {
     console.error('Login error:', err);

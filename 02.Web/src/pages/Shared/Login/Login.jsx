@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Login.css';
 import { login as loginService } from '../../../services/authService';
 import { useNavigate, Link } from 'react-router-dom';
+import Header from '../../../components/Header/Header'; // ✅ Thêm import Header
 
 function Login() {
   const [loginType, setLoginType] = useState('phone');
@@ -31,14 +32,22 @@ function Login() {
         identifier,
         password: form.password,
       });
+      
+      console.log('Login response:', response.data); // DEBUG
+      
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        navigate(response.data.redirect || '/');
+        
+        // Kiểm tra redirectTo
+        const redirectTo = response.data.redirectTo || '/';
+        console.log('Redirecting to:', redirectTo); // DEBUG
+        navigate(redirectTo);
       } else {
         setError(response.data.msg || 'Đăng nhập thất bại!');
       }
     } catch (err) {
+      console.error('Login error:', err); // DEBUG
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
       } else {
@@ -49,77 +58,80 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>ĐĂNG NHẬP</h2>
-        <div className="login-type-tab">
-          <div
-            className={loginType === 'phone' ? 'tab active' : 'tab'}
-            onClick={() => setLoginType('phone')}
-          >
-            SĐT
-          </div>
-          <div
-            className={loginType === 'email' ? 'tab active' : 'tab'}
-            onClick={() => setLoginType('email')}
-          >
-            Email
-          </div>
-        </div>
-        {error && <p className="error-message">{error}</p>}
-        <form className="login-form" onSubmit={handleSubmit}>
-          <div className="inputs-row">
-            {loginType === 'phone' ? (
-              <div className="input-group">
-                <input
-                  type="text"
-                  name="phone"
-                  value={form.phone}
-                  onChange={handleChange}
-                  placeholder="Số điện thoại"
-                  required
-                />
-              </div>
-            ) : (
-              <div className="input-group">
-                <input
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  placeholder="Email"
-                  required
-                />
-              </div>
-            )}
-            <div className="input-group">
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                placeholder="Mật khẩu"
-                required
-              />
+    <>
+      <Header /> {/* ✅ Thêm Header */}
+      <div className="login-container" style={{marginTop: '70px'}}> {/* ✅ Thêm marginTop */}
+        <div className="login-box">
+          <h2>ĐĂNG NHẬP</h2>
+          <div className="login-type-tab">
+            <div
+              className={loginType === 'phone' ? 'tab active' : 'tab'}
+              onClick={() => setLoginType('phone')}
+            >
+              SĐT
+            </div>
+            <div
+              className={loginType === 'email' ? 'tab active' : 'tab'}
+              onClick={() => setLoginType('email')}
+            >
+              Email
             </div>
           </div>
-          <div className="forgot-password">
-            <a href="/forgot-password">Quên mật khẩu?</a>
+          {error && <p className="error-message">{error}</p>}
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="inputs-row">
+              {loginType === 'phone' ? (
+                <div className="input-group">
+                  <input
+                    type="text"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="Số điện thoại/Username"
+                    required
+                  />
+                </div>
+              ) : (
+                <div className="input-group">
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="Email/Username"
+                    required
+                  />
+                </div>
+              )}
+              <div className="input-group">
+                <input
+                  type="password"
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder="Mật khẩu"
+                  required
+                />
+              </div>
+            </div>
+            <div className="forgot-password">
+              <a href="/forgot-password">Quên mật khẩu?</a>
+            </div>
+            <button className="login-btn" type="submit" disabled={loading}>
+              {loading ? 'Đang đăng nhập...' : 'ĐĂNG NHẬP'}
+            </button>
+          </form>
+          <div className="or-wrap">
+            <div className="or-line"></div>
+            <div className="or-text">----------------------HOẶC----------------------</div>
+            <div className="or-line"></div>
           </div>
-          <button className="login-btn" type="submit" disabled={loading}>
-            {loading ? 'Đang đăng nhập...' : 'ĐĂNG NHẬP'}
-          </button>
-        </form>
-        <div className="or-wrap">
-          <div className="or-line"></div>
-          <div className="or-text">----------------------HOẶC----------------------</div>
-          <div className="or-line"></div>
-        </div>
-        <div className="register-link">
-          Chưa có tài khoản? <Link to="/register">Đăng ký</Link>
+          <div className="register-link">
+            Chưa có tài khoản? <Link to="/register">Đăng ký</Link>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

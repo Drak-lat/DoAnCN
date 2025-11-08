@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Register.css';
 import api from '../../../services/api';
 import { useNavigate } from 'react-router-dom';
+import Header from '../../../components/Header/Header'; // ✅ Thêm import Header
 
 function Register() {
   const [registerType, setRegisterType] = useState('phone');
@@ -24,31 +25,55 @@ function Register() {
     e.preventDefault();
     setError('');
 
+    // Kiểm tra mật khẩu khớp
     if (formData.password !== formData.confirmPassword) {
       setError('Mật khẩu không khớp!');
       return;
     }
 
-    try {
-      const data =
-        registerType === 'phone'
-          ? { phone: formData.phone, username: formData.username, password: formData.password }
-          : { email: formData.email, username: formData.username, password: formData.password };
+    // Kiểm tra độ dài mật khẩu
+    if (formData.password.length < 6) {
+      setError('Mật khẩu phải có ít nhất 6 ký tự!');
+      return;
+    }
 
-      const response = await api.post('/customer/register', data);
-      // Đăng ký thành công, chuyển về trang đăng nhập
-      navigate('/login');
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.msg) {
-        setError(error.response.data.msg);
+    try {
+      // Chuẩn bị dữ liệu gửi lên server
+      const registerData = {
+        username: formData.username,
+        password: formData.password,
+      };
+
+      // Thêm phone hoặc email tùy theo registerType
+      if (registerType === 'phone') {
+        registerData.phone = formData.phone;
       } else {
-        setError('Đăng ký thất bại. Vui lòng thử lại!');
+        registerData.email = formData.email;
+      }
+
+      const response = await api.post('/customer/register', registerData);
+      
+      // ✅ Sử dụng response để xử lý kết quả
+      if (response.data.success) {
+        alert('Đăng ký thành công! Vui lòng đăng nhập.');
+        navigate('/login');
+      } else {
+        setError(response.data.msg || 'Đăng ký thất bại!');
+      }
+    } catch (error) {
+      console.error('Register error:', error);
+      if (error.response && error.response.data) {
+        setError(error.response.data.msg || 'Có lỗi xảy ra khi đăng ký!');
+      } else {
+        setError('Không thể kết nối đến server!');
       }
     }
   };
 
   return (
-      <div className="register-container">
+    <>
+      <Header /> {/* ✅ Thêm Header */}
+      <div className="register-container" style={{ marginTop: '70px' }}> {/* ✅ Thêm marginTop */}
         <div className="register-box">
           <h2>ĐĂNG KÍ</h2>
           <div className="register-type-tab">
@@ -158,8 +183,9 @@ function Register() {
           <div className="login-link">
             Bạn đã có tài khoản? <a href="/login">Đăng nhập.</a>
           </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

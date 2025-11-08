@@ -6,8 +6,14 @@ const { Login, Information } = require('../models');
 const JWT_SECRET = process.env.JWT_SECRET || 'change_this_secret';
 
 async function authenticate(identifier, password) {
-  // Tìm theo username
-  let login = await Login.findOne({ where: { username: identifier } });
+  // Tìm theo username - SỬA: bỏ alias 'information'
+  let login = await Login.findOne({ 
+    where: { username: identifier },
+    include: [{
+      model: Information
+      // Bỏ as: 'information' vì không có alias
+    }]
+  });
 
   // Nếu không tìm thấy, tìm theo phone/email trong Information
   if (!login) {
@@ -20,7 +26,13 @@ async function authenticate(identifier, password) {
       }
     });
     if (info) {
-      login = await Login.findOne({ where: { id_login: info.id_login } });
+      login = await Login.findOne({ 
+        where: { id_login: info.id_login },
+        include: [{
+          model: Information
+          // Bỏ as: 'information'
+        }]
+      });
     }
   }
 
@@ -37,9 +49,10 @@ async function authenticate(identifier, password) {
     throw err;
   }
 
+  // KIỂM TRA LEVEL 3 - tài khoản bị xóa
   const level = login.id_level;
   if (level === 3) {
-    const err = new Error('Tài khoản không có quyền truy cập');
+    const err = new Error('Tài khoản đã bị xóa hoặc không có quyền truy cập');
     err.status = 403;
     throw err;
   }
@@ -52,7 +65,15 @@ async function authenticate(identifier, password) {
 
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '2h' });
 
-  return { token, user: payload };
+  const user = {
+    id_login: login.id_login,
+    username: login.username,
+    id_level: login.id_level,
+    date_register: login.date_register,
+    information: login.Information
+  };
+
+  return { token, user };
 }
 
 module.exports = { authenticate };
