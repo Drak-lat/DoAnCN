@@ -2,11 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faShoppingCart, faSearch, faGift, faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faUser, 
+  faShoppingCart, 
+  faSearch, 
+  faGift, 
+  faCaretDown,
+  faEnvelope 
+} from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
   const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isLoggedIn = !!token;
 
   return (
@@ -29,18 +35,23 @@ function Header() {
           </form>
         </div>
 
-        {/* Cart + User */}
+        {/* Messages + Cart + User */}
         <div className="header-actions">
-          <FontAwesomeIcon icon={faShoppingCart} className="action-icon" />
+          {/* Nút tin nhắn - hiện bất cứ lúc nào */}
+          <Link to="/messages" style={{ color: 'inherit', textDecoration: 'none' }}>
+            <FontAwesomeIcon icon={faEnvelope} className="action-icon" title="Tin nhắn" />
+          </Link>
+          
+          <FontAwesomeIcon icon={faShoppingCart} className="action-icon" title="Giỏ hàng" />
           
           {/* Xử lý icon User theo trạng thái đăng nhập */}
           {isLoggedIn ? (
             <Link to="/customer/profile" style={{ color: 'inherit', textDecoration: 'none' }}>
-              <FontAwesomeIcon icon={faUser} className="action-icon" />
+              <FontAwesomeIcon icon={faUser} className="action-icon" title="Tài khoản" />
             </Link>
           ) : (
             <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
-              <FontAwesomeIcon icon={faUser} className="action-icon" />
+              <FontAwesomeIcon icon={faUser} className="action-icon" title="Đăng nhập" />
             </Link>
           )}
         </div>

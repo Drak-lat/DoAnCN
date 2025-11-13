@@ -3,11 +3,11 @@
   padding: 0;
   font-family: 'Montserrat', Arial, sans-serif;
   box-shadow: 0 2px 16px 0 rgba(0,0,0,0.03);
-  position: fixed;      /* Đổi từ relative sang fixed */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 100;         /* Đảm bảo nổi trên các phần khác */
+  z-index: 100;
 }
 
 .header-container {
@@ -93,8 +93,30 @@
   font-size: 22px;
   color: #111;
   cursor: pointer;
+  transition: color 0.3s ease;
+  position: relative;
 }
 
 .action-icon:hover {
   color: #ff8800;
+}
+
+/* Style đặc biệt cho nút tin nhắn */
+.header-actions a .action-icon {
+  color: #111;
+}
+
+.header-actions a:hover .action-icon {
+  color: #ff8800;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-actions {
+    gap: 15px;
+  }
+  
+  .action-icon {
+    font-size: 20px;
+  }
 }

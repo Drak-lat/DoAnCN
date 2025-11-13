@@ -10,14 +10,21 @@ const Feedback = require('./Feedback');
 const Message = require('./Message');
 const Order = require('./Order');
 const OrderDetail = require('./OrderDetail');
+const sequelize = require('../config/database');
 
 // AccessLevel - Login
 AccessLevel.hasMany(Login, { foreignKey: 'id_level' });
 Login.belongsTo(AccessLevel, { foreignKey: 'id_level' });
 
 // Login - Information (1-1)
-Login.hasOne(Information, { foreignKey: 'id_login' });
-Information.belongsTo(Login, { foreignKey: 'id_login' });
+Login.hasOne(Information, { 
+  foreignKey: 'id_login',
+  sourceKey: 'id_login'
+});
+Information.belongsTo(Login, { 
+  foreignKey: 'id_login',
+  targetKey: 'id_login'
+});
 
 // Login - Cart (1-n)
 Login.hasMany(Cart, { foreignKey: 'id_login' });
@@ -61,7 +68,17 @@ OrderDetail.belongsTo(Order, { foreignKey: 'id_order' });
 Product.hasMany(OrderDetail, { foreignKey: 'id_product' });
 OrderDetail.belongsTo(Product, { foreignKey: 'id_product' });
 
+// Đảm bảo có association giữa Product và OrderDetail
+Product.hasMany(OrderDetail, { foreignKey: 'id_product' });
+OrderDetail.belongsTo(Product, { foreignKey: 'id_product' });
 
+// Log để kiểm tra
+console.log('📦 Models loaded:', {
+  Product: !!Product,
+  Contact: !!Contact,
+  Login: !!Login,
+  Information: !!Information
+});
 
 module.exports = {
   AccessLevel,
@@ -75,5 +92,6 @@ module.exports = {
   Feedback,
   Message,
   Order,
-  OrderDetail
+  OrderDetail,
+  sequelize
 };

@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const Information = sequelize.define('Information', {
-  id_information: { // Đúng tên cột khóa chính trong bảng
+  id_information: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
@@ -20,7 +20,11 @@ const Information = sequelize.define('Information', {
   avatar: DataTypes.STRING,
   id_login: {
     type: DataTypes.INTEGER,
-    unique: true
+    allowNull: true, // CHO PHÉP NULL
+    references: {
+      model: 'login',
+      key: 'id_login'
+    }
   }
 }, {
   tableName: 'informations',

@@ -20,7 +20,7 @@ function AdminSidebar() {
     { path: '/admin/products', icon: faBoxes, label: 'Quản lý sản phẩm' },
     { path: '/admin/orders', icon: faShoppingBag, label: 'Quản lý đơn hàng' },
     { path: '/admin/feedback', icon: faCommentDots, label: 'Quản lý phản hồi' },
-    { path: '/admin/contact', icon: faEnvelope, label: 'Quản lý liên hệ' }
+    { path: '/admin/contacts', icon: faEnvelope, label: 'Quản lý liên hệ' } // ✅ SỬA: contact → contacts
   ];
 
   return (

@@ -1,12 +1,28 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
 const app = express();
 
-app.use(cors());
-app.use(express.urlencoded({ extended: true })); // Thêm dòng này
+// ✅ SỬA: CORS config đơn giản hơn
+app.use(cors({
+  origin: '*', // Cho phép tất cả origins (chỉ để test)
+  credentials: true
+}));
+
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Khai báo các route ở đây:
+// Tạo thư mục uploads nếu chưa tồn tại
+const uploadDir = path.join(__dirname, '..', 'uploads', 'products');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Static files
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+
+// Routes
 const customerRoutes = require('./routes/customer.routes');
 app.use('/api/customer', customerRoutes);
 

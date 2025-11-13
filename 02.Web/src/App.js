@@ -1,115 +1,159 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 import Register from './pages/Shared/Register/Register';
 import Login from './pages/Shared/Login/Login';
 import Dashboard from './pages/Admin/Dashboard/Dashboard';
-
-// Admin Profile Pages
+import AdminProducts from './pages/Admin/Products/AdminProducts';
+import AddProduct from './pages/Admin/Products/AddProduct';
+import EditProduct from './pages/Admin/Products/EditProduct';
 import AdminProfile from './pages/Admin/Profile/AdminProfile';
 import AdminChangePassword from './pages/Admin/Profile/AdminChangePassword';
-
-// Customer Profile Pages  
 import CustomerProfile from './pages/Customer/Profile/CustomerProfile';
 import CustomerChangePassword from './pages/Customer/Profile/CustomerChangePassword';
-
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import AdminUsers from './pages/Admin/Users/AdminUsers';
+import AdminOrders from './pages/Admin/Orders/AdminOrders';
+import AdminContacts from './pages/Admin/Contacts/AdminContacts';
+import Contact from './pages/Shared/Contact/Contact';
+import Home from './pages/Shared/Home/Home';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Shared routes */}
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        
-        {/* Admin routes - yêu cầu level = 1 */}
-        <Route path="/dashboard" element={
-          <ProtectedRoute requiredLevel={1}>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/admin/profile" element={
-          <ProtectedRoute requiredLevel={1}>
-            <AdminProfile />
-          </ProtectedRoute>
-        } />
+    <Router>
+      <div className="App">
+        <Routes>
+          {/* ✅ Sử dụng Home component */}
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          
+          {/* Shared routes */}
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/contact" element={<Contact />} />
+          
+          {/* Admin routes */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute requiredLevel={1}>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin/profile" element={
+            <ProtectedRoute requiredLevel={1}>
+              <AdminProfile />
+            </ProtectedRoute>
+          } />
 
-        <Route path="/admin/change-password" element={
-          <ProtectedRoute requiredLevel={1}>
-            <AdminChangePassword />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/admin/users" element={
-          <ProtectedRoute requiredLevel={1}>
-            <div>Quản lý người dùng</div>
-          </ProtectedRoute>
-        } />
-        
-        {/* ... các route admin khác ... */}
+          <Route path="/admin/change-password" element={
+            <ProtectedRoute requiredLevel={1}>
+              <AdminChangePassword />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin/products" element={
+            <ProtectedRoute requiredLevel={1}>
+              <AdminProducts />
+            </ProtectedRoute>
+          } />
 
-        {/* Customer routes - yêu cầu level = 2 */}
-        <Route path="/customer/profile" element={
-          <ProtectedRoute requiredLevel={2}>
-            <CustomerProfile />
-          </ProtectedRoute>
-        } />
+          <Route path="/admin/products/add" element={
+            <ProtectedRoute requiredLevel={1}>
+              <AddProduct />
+            </ProtectedRoute>
+          } />
 
-        <Route path="/customer/change-password" element={
-          <ProtectedRoute requiredLevel={2}>
-            <CustomerChangePassword />
-          </ProtectedRoute>
-        } />
+          <Route path="/admin/products/edit/:id" element={
+            <ProtectedRoute requiredLevel={1}>
+              <EditProduct />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin/users" element={
+            <ProtectedRoute requiredLevel={1}>
+              <AdminUsers />
+            </ProtectedRoute>
+          } />
 
-        <Route path="/customer/orders" element={
-          <ProtectedRoute requiredLevel={2}>
+          <Route path="/admin/orders" element={
+            <ProtectedRoute requiredLevel={1}>
+              <AdminOrders />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/admin/contacts" element={
+            <ProtectedRoute requiredLevel={1}>
+              <AdminContacts />
+            </ProtectedRoute>
+          } />
+          
+          {/* Customer routes */}
+          <Route path="/customer/profile" element={
+            <ProtectedRoute requiredLevel={2}>
+              <CustomerProfile />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/customer/change-password" element={
+            <ProtectedRoute requiredLevel={2}>
+              <CustomerChangePassword />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/customer/orders" element={
+            <ProtectedRoute requiredLevel={2}>
+              <>
+                <Header />
+                <div style={{marginTop: '100px', padding: '20px'}}>
+                  <h2>Đơn hàng của tôi</h2>
+                  <p>Trang đơn hàng sẽ được phát triển sau</p>
+                </div>
+                <Footer />
+              </>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/customer/reviews" element={
+            <ProtectedRoute requiredLevel={2}>
+              <>
+                <Header />
+                <div style={{marginTop: '100px', padding: '20px'}}>
+                  <h2>Nhận xét của tôi</h2>
+                  <p>Trang nhận xét sẽ được phát triển sau</p>
+                </div>
+                <Footer />
+              </>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/messages" element={
+            <ProtectedRoute requiredLevel={2}>
+              <>
+                <Header />
+                <div style={{marginTop: '100px', padding: '20px', minHeight: '60vh'}}>
+                  <h2>Tin nhắn</h2>
+                  <p>Trang tin nhắn sẽ được phát triển sau</p>
+                </div>
+                <Footer />
+              </>
+            </ProtectedRoute>
+          } />
+          
+          {/* Catch all routes */}
+          <Route path="*" element={
             <>
               <Header />
               <div style={{marginTop: '100px', padding: '20px'}}>
-                <h2>Đơn hàng của tôi</h2>
-                <p>Trang đơn hàng sẽ được phát triển sau</p>
+                <h2>Trang không tìm thấy</h2>
+                <p>Đường dẫn này không tồn tại</p>
               </div>
+              <Footer />
             </>
-          </ProtectedRoute>
-        } />
-
-        <Route path="/customer/reviews" element={
-          <ProtectedRoute requiredLevel={2}>
-            <>
-              <Header />
-              <div style={{marginTop: '100px', padding: '20px'}}>
-                <h2>Nhận xét của tôi</h2>
-                <p>Trang nhận xét sẽ được phát triển sau</p>
-              </div>
-            </>
-          </ProtectedRoute>
-        } />
-        
-        {/* Trang chủ với Header */}
-        <Route path="/" element={
-          <>
-            <Header />
-            <div style={{marginTop: '100px', padding: '20px'}}>
-              <h2>Trang chủ - Chào mừng!</h2>
-              <p>Bạn đang ở trang chủ</p>
-            </div>
-          </>
-        } />
-        
-        {/* Catch all routes */}
-        <Route path="*" element={
-          <>
-            <Header />
-            <div style={{marginTop: '100px', padding: '20px'}}>
-              <h2>Trang không tìm thấy</h2>
-              <p>Đường dẫn này không tồn tại</p>
-            </div>
-          </>
-        } />
-      </Routes>
-    </BrowserRouter>
+          } />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

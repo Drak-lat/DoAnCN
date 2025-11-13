@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 08, 2025 lúc 03:48 PM
+-- Thời gian đã tạo: Th10 12, 2025 lúc 04:44 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -184,7 +184,8 @@ INSERT INTO `informations` (`id_information`, `name_information`, `phone_informa
 (7, NULL, NULL, '233test@gmail.com', NULL, NULL, 7),
 (8, NULL, '0131020251', NULL, NULL, NULL, 8),
 (9, 'Nguyễn Thị Thảo Vy', '0111202515', '', '2005-07-11 00:00:00', NULL, 9),
-(10, NULL, '0110720051', NULL, NULL, NULL, 10);
+(10, NULL, '0110720051', NULL, NULL, NULL, 10),
+(11, 'Nguyễn Thị Thảo Vy', '0981772458', 'boiin@gmail.com', '2005-07-11 00:00:00', NULL, 11);
 
 -- --------------------------------------------------------
 
@@ -211,11 +212,12 @@ INSERT INTO `login` (`id_login`, `username`, `pass`, `date_register`, `id_inform
 (3, 'vanadmin', '$2b$10$L6S00kLBi5X5QPanvuu6rOPOhB2Q2EriVEQSyOW9DrKfWgntUaOES', '2025-10-11 07:00:43', 3, 1),
 (4, 'tAnhadmin', '$2b$10$USCU9UfbmAvFW.qQDWS17O3L3C1ylpZJjMYzlsmo394A4mkaKU0ye', '2025-10-11 07:02:45', 4, 1),
 (5, 'nhiadmin', '$2b$10$pvqu6mRyd38vrAYYKLY54u2ficsc51vZmPOBxw7Or4vPxE7haCSqy', '2025-10-11 07:04:04', 5, 1),
-(6, 'vytest', '$2b$10$YiPn4IOQlSVcH8./OoRYc.JIwNKOd7HM2SJEq4eYpWMRS3s6yET1.', '2025-10-11 07:26:20', 6, 2),
+(6, 'vytest', '$2b$10$YiPn4IOQlSVcH8./OoRYc.JIwNKOd7HM2SJEq4eYpWMRS3s6yET1.', '2025-10-11 07:26:20', 6, 3),
 (7, 'andrtest', '$2b$10$Q7CNbeI7IrdA79JCiR0Dv.cEjj.lmBXf.tazYoDUtllFXBJIrtM0u', '2025-10-11 11:01:35', 7, 2),
 (8, '1310test', '$2b$10$u/R4z2OlURmg4xr00AbIGODZ2u/vwbCLJDE/XjR66msDFY0SSZQCa', '2025-10-13 10:18:53', NULL, 2),
 (9, '0111Thaovy', '$2b$10$LRYASKWlJ8Cft7f.1dl0cu/66t1yHikkatmCyY4G2gkqo5Nfavc.m', '2025-11-01 06:59:16', NULL, 2),
-(10, 'nttvy1107', '$2b$10$VVu2efRn83RTezO3tTrndunxos1A7r9HIzMiX1eTjcjEiq.lCf7VC', '2025-11-03 08:11:03', NULL, 2);
+(10, 'nttvy1107', '$2b$10$VVu2efRn83RTezO3tTrndunxos1A7r9HIzMiX1eTjcjEiq.lCf7VC', '2025-11-03 08:11:03', NULL, 2),
+(11, 'Boiin', '$2b$10$a6MvxPcBkMXyh0BbzkFfy.9.kuVmxJ.Nb0a1dYMBCSmn/3t15EBoy', '2025-11-08 16:53:32', NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -249,6 +251,17 @@ CREATE TABLE `orders` (
   `payment_method` varchar(100) DEFAULT NULL,
   `order_status` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `orders`
+--
+
+INSERT INTO `orders` (`id_order`, `id_login`, `receiver_name`, `receiver_phone`, `receiver_address`, `total`, `date_order`, `payment_status`, `payment_method`, `order_status`) VALUES
+(1, 6, 'Nguyễn Văn Test', '0123456789', '123 Đường ABC, Quận 1, TP.HCM', 180000, '2024-11-10 10:30:00', 'Chưa thanh toán', 'COD', 'Đã giao'),
+(2, 7, 'Trần Thị B', '0987654321', '456 Đường XYZ, Quận 2, TP.HCM', 250000, '2024-11-09 14:15:00', 'Đã thanh toán', 'Chuyển khoản', 'Đã giao'),
+(3, 8, 'Lê Văn C', '0369852147', '789 Đường DEF, Quận 3, TP.HCM', 320000, '2024-11-08 09:45:00', 'Đã thanh toán', 'Ví điện tử', 'Đang giao'),
+(4, 9, 'Nguyễn Thị Vy', '0111202515', '456 Nguyễn Văn Cừ, Quận 5, TP.HCM', 150000, '2024-11-07 16:20:00', 'Chưa thanh toán', 'COD', 'Chờ xác nhận'),
+(5, 10, 'Người dùng test', '0110720051', '789 Lê Lợi, Quận 1, TP.HCM', 95000, '2024-11-06 11:45:00', 'Đã thanh toán', 'Chuyển khoản', 'Đã xác nhận');
 
 -- --------------------------------------------------------
 
@@ -292,15 +305,12 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id_product`, `name_product`, `price`, `image_product`, `quantity`, `dimension`, `manufacturer`, `page`, `author`, `publisher`, `publisher_year`, `text_product`, `size`, `id_category`) VALUES
-(1, 'Sách Toán lớp 12', 90000, 'toan12.jpg', 100, '17x24cm', 'NXB Giáo dục', 350, 'Nguyễn Văn A', 'NXB Giáo dục', 2025, 'Sách học toán lớp 12', 'Lớn', 32),
-(2, 'Người Trong Gương', 78000, 'love1.jpg', 50, '13x20 cm', 'NXB Trẻ', 320, 'Nguyễn Ngọc Tư', 'NXB Trẻ', 2022, 'Một câu chuyện tình buồn giữa thực và ảo, khắc họa những tổn thương của tâm hồn con người. Tác phẩm khiến người đọc suy ngẫm về bản ngã và những lựa chọn trong tình yêu. Ngòi bút tinh tế của Nguyễn Ngọc Tư chạm đến tận cùng cảm xúc. Đây là một tác phẩm giàu chất triết lý và đậm chất nhân văn. Đọc xong, người đọc sẽ thấy lòng mình lắng lại với nhiều suy ngẫm.', 'Vừa', 1),
-(3, 'Em Là Nhà', 85000, 'love2.jpg', 60, '14x20 cm', 'NXB Kim Đồng', 280, 'Phan Ý Yên', 'NXB Kim Đồng', 2021, 'Tập truyện ngắn lãng mạn về những người trẻ đang đi tìm bến đỗ của trái tim. Mỗi câu chuyện là một lát cắt nhẹ nhàng của cuộc sống, nơi tình yêu trở thành điểm tựa để trưởng thành. Giọng văn của Phan Ý Yên vừa sâu lắng vừa đầy cảm xúc. Cuốn sách mang đến sự đồng cảm và niềm tin vào tình yêu chân thành. Một lựa chọn tuyệt vời cho những ai yêu thích văn phong nữ tính và tinh tế.', 'Vừa', 1),
-(4, 'Nếu Biết Trăm Năm Là Hữu Hạn', 95000, 'love3.jpg', 70, '14x21 cm', 'NXB Văn Học', 250, 'Phạm Lữ Ân', 'NXB Văn Học', 2020, 'Một trong những tác phẩm tình cảm nổi tiếng của văn học Việt đương đại. Cuốn sách nhắc nhở chúng ta trân trọng từng khoảnh khắc trong đời sống ngắn ngủi này. Những dòng viết giản dị nhưng chứa đựng sức mạnh lay động lòng người. Từng câu chữ là lời nhắn nhủ về giá trị của hiện tại. Cuốn sách trở thành người bạn đồng hành cho những ai đang tìm kiếm ý nghĩa cuộc sống.', 'Vừa', 1),
-(5, 'Tôi Thấy Hoa Vàng Trên Cỏ Xanh', 105000, 'love4.jpg', 80, '15x21 cm', 'NXB Trẻ', 370, 'Nguyễn Nhật Ánh', 'NXB Trẻ', 2018, 'Câu chuyện tuổi thơ đầy tình yêu và mộng mơ giữa đồng quê Việt Nam. Những trang sách gợi lại ký ức trong trẻo và niềm tin vào điều thiện lành. Đây là một trong những tác phẩm được yêu thích nhất của Nguyễn Nhật Ánh. Cốt truyện giàu cảm xúc, gần gũi với mọi lứa tuổi. Cuốn sách đã được chuyển thể thành phim và nhận được nhiều giải thưởng lớn.', 'Lớn', 1),
-(6, 'Cà Phê Cùng Tony', 120000, 'love5.jpg', 40, '14x21 cm', 'NXB Trẻ', 300, 'Tony Buổi Sáng', 'NXB Trẻ', 2017, 'Một tập truyện ngắn về cuộc sống và tình yêu đầy cảm hứng. Cuốn sách khơi gợi tinh thần tự lập và khát vọng vươn lên của người trẻ. Những câu chuyện gần gũi nhưng ẩn chứa nhiều bài học sâu sắc. Đây là cuốn sách truyền cảm hứng mạnh mẽ cho giới trẻ Việt Nam. Đọc “Cà Phê Cùng Tony” giúp bạn nhìn cuộc sống tích cực và có động lực hơn mỗi ngày.', 'Vừa', 1),
-(7, 'Anh Sẽ Đợi Em Trong Hồi Ức', 89000, 'love6.jpg', 55, '13x20 cm', 'NXB Văn Học', 310, 'Tân Di Ổ', 'NXB Văn Học', 2019, 'Một tiểu thuyết tình cảm Trung Quốc nổi tiếng về sự chờ đợi và mất mát. Câu chuyện chạm đến trái tim người đọc bằng nỗi đau lặng lẽ của ký ức. Văn phong mềm mại, sâu sắc mang đậm dấu ấn của Tân Di Ổ. Đây là cuốn sách được nhiều độc giả trẻ yêu thích. Mỗi trang viết đều gợi nên sự tiếc nuối và khát vọng yêu thương.', 'Vừa', 1),
-(8, 'Mắt Biếc', 97000, 'love7.jpg', 90, '13x19 cm', 'NXB Trẻ', 250, 'Nguyễn Nhật Ánh', 'NXB Trẻ', 2016, 'Chuyện tình đơn phương đầy nước mắt giữa Ngạn và Hà Lan. Một tác phẩm đượm buồn nhưng đẹp đẽ về tuổi trẻ và sự hy sinh trong tình yêu. Mỗi trang sách như gói trọn một thời thơ ngây đã mất. Đây là tác phẩm tiêu biểu của Nguyễn Nhật Ánh, được đông đảo độc giả yêu mến. “Mắt Biếc” là biểu tượng cho sự trong sáng và niềm tin không vụ lợi.', 'Vừa', 1),
-(9, 'Bên Nhau Trọn Đời', 115000, 'love8.jpg', 70, '15x21 cm', 'NXB Văn Học', 350, 'Cố Mạn', 'NXB Văn Học', 2018, 'Tiểu thuyết tình cảm lãng mạn đã được chuyển thể thành phim nổi tiếng. Tình yêu của Hà Dĩ Thâm và Triệu Mặc Sênh là biểu tượng của sự kiên định và bao dung. Câu chuyện khiến người đọc tin vào sức mạnh của duyên phận. Tác phẩm được yêu thích suốt nhiều năm nhờ cảm xúc chân thật. Một câu chuyện không chỉ về tình yêu mà còn về lòng vị tha và hi vọng.', 'Lớn', 1),
+(4, 'Nếu Biết Trăm Năm Là Hữu Hạn', 95000, '1762914636214-370679537.png', 70, '14x21 cm', 'NXB Văn Học', 250, 'Phạm Lữ Ân', 'NXB Văn Học', 2020, 'Một trong những tác phẩm tình cảm nổi tiếng của văn học Việt đương đại. Cuốn sách nhắc nhở chúng ta trân trọng từng khoảnh khắc trong đời sống ngắn ngủi này. Những dòng viết giản dị nhưng chứa đựng sức mạnh lay động lòng người. Từng câu chữ là lời nhắn nhủ về giá trị của hiện tại. Cuốn sách trở thành người bạn đồng hành cho những ai đang tìm kiếm ý nghĩa cuộc sống.', 'Vừa', 1),
+(5, 'Tôi Thấy Hoa Vàng Trên Cỏ Xanh', 105000, '1762914675880-979730555.png', 80, '15x21 cm', 'NXB Trẻ', 370, 'Nguyễn Nhật Ánh', 'NXB Trẻ', 2018, 'Câu chuyện tuổi thơ đầy tình yêu và mộng mơ giữa đồng quê Việt Nam. Những trang sách gợi lại ký ức trong trẻo và niềm tin vào điều thiện lành. Đây là một trong những tác phẩm được yêu thích nhất của Nguyễn Nhật Ánh. Cốt truyện giàu cảm xúc, gần gũi với mọi lứa tuổi. Cuốn sách đã được chuyển thể thành phim và nhận được nhiều giải thưởng lớn.', 'Lớn', 1),
+(6, 'Cà Phê Cùng Tony', 120000, '1762914713500-132267895.png', 40, '14x21 cm', 'NXB Trẻ', 300, 'Tony Buổi Sáng', 'NXB Trẻ', 2017, 'Một tập truyện ngắn về cuộc sống và tình yêu đầy cảm hứng. Cuốn sách khơi gợi tinh thần tự lập và khát vọng vươn lên của người trẻ. Những câu chuyện gần gũi nhưng ẩn chứa nhiều bài học sâu sắc. Đây là cuốn sách truyền cảm hứng mạnh mẽ cho giới trẻ Việt Nam. Đọc “Cà Phê Cùng Tony” giúp bạn nhìn cuộc sống tích cực và có động lực hơn mỗi ngày.', 'Vừa', 1),
+(7, 'Anh Sẽ Đợi Em Trong Hồi Ức', 89000, '1762914751326-829570062.png', 55, '13x20 cm', 'NXB Văn Học', 310, 'Tân Di Ổ', 'NXB Văn Học', 2019, 'Một tiểu thuyết tình cảm Trung Quốc nổi tiếng về sự chờ đợi và mất mát. Câu chuyện chạm đến trái tim người đọc bằng nỗi đau lặng lẽ của ký ức. Văn phong mềm mại, sâu sắc mang đậm dấu ấn của Tân Di Ổ. Đây là cuốn sách được nhiều độc giả trẻ yêu thích. Mỗi trang viết đều gợi nên sự tiếc nuối và khát vọng yêu thương.', 'Vừa', 1),
+(8, 'Mắt Biếc', 97000, '1762914787060-929893387.png', 90, '13x19 cm', 'NXB Trẻ', 250, 'Nguyễn Nhật Ánh', 'NXB Trẻ', 2016, 'Chuyện tình đơn phương đầy nước mắt giữa Ngạn và Hà Lan. Một tác phẩm đượm buồn nhưng đẹp đẽ về tuổi trẻ và sự hy sinh trong tình yêu. Mỗi trang sách như gói trọn một thời thơ ngây đã mất. Đây là tác phẩm tiêu biểu của Nguyễn Nhật Ánh, được đông đảo độc giả yêu mến. “Mắt Biếc” là biểu tượng cho sự trong sáng và niềm tin không vụ lợi.', 'Vừa', 1),
+(9, 'Bên Nhau Trọn Đời', 115000, '1762914823120-39005304.png', 70, '15x21 cm', 'NXB Văn Học', 350, 'Cố Mạn', 'NXB Văn Học', 2018, 'Tiểu thuyết tình cảm lãng mạn đã được chuyển thể thành phim nổi tiếng. Tình yêu của Hà Dĩ Thâm và Triệu Mặc Sênh là biểu tượng của sự kiên định và bao dung. Câu chuyện khiến người đọc tin vào sức mạnh của duyên phận. Tác phẩm được yêu thích suốt nhiều năm nhờ cảm xúc chân thật. Một câu chuyện không chỉ về tình yêu mà còn về lòng vị tha và hi vọng.', 'Lớn', 1),
 (10, 'Tháng Ngày Tăm Tối', 88000, 'love9.jpg', 40, '13x19 cm', 'NXB Hội Nhà Văn', 260, 'Hoàng Anh Tú', 'NXB Hội Nhà Văn', 2023, 'Tập truyện ngắn khai thác nỗi cô đơn và những tình cảm dang dở của người trẻ. Giọng văn chân thực, đôi khi gai góc nhưng vẫn chan chứa sự cảm thông. Cuốn sách là tiếng nói nội tâm của một thế hệ đang lạc lối. Mỗi câu chuyện là một mảnh ghép tâm hồn giữa yêu thương và tổn thương. Đây là tác phẩm khiến người đọc nhìn lại chính mình trong dòng đời hối hả.', 'Vừa', 1),
 (11, 'Yêu Người Có Ước Mơ', 92000, 'love10.jpg', 65, '14x20 cm', 'NXB Trẻ', 270, 'Hoàng An', 'NXB Trẻ', 2021, 'Một cuốn sách nhẹ nhàng, truyền cảm hứng yêu thương và sống tích cực. Những câu chuyện trong sách khuyến khích con người theo đuổi đam mê và không ngừng hy vọng. Đọc xong, ta cảm nhận được sự ấm áp và tin tưởng vào tương lai. Cuốn sách mang năng lượng tích cực, giúp người đọc yêu đời hơn. Đây là món quà ý nghĩa dành tặng cho những tâm hồn mộng mơ.', 'Vừa', 1),
 (12, 'Ngôi Nhà Ma Ám', 98000, 'horror1.jpg', 60, '14x21 cm', 'NXB Văn Học', 310, 'Stephen King', 'NXB Văn Học', 2019, 'Một ngôi nhà chứa đựng những bí ẩn kinh hoàng mà không ai dám ở lại. Những tiếng bước chân trong đêm và bóng người thấp thoáng trên tường khiến mọi vị khách đều phải bỏ chạy. Câu chuyện mở ra một chuỗi sự kiện ám ảnh không lối thoát.', 'Vừa', 2),
@@ -430,11 +440,11 @@ INSERT INTO `products` (`id_product`, `name_product`, `price`, `image_product`, 
 (136, 'Cuộc phiêu lưu của Tom Sawyer', 85000, 'tom-sawyer.jpg', 45, '13x20cm', 'NXB Kim Đồng', 300, 'Mark Twain', 'NXB Kim Đồng', 2018, 'Cậu bé Tom Sawyer tinh nghịch và những chuyến phiêu lưu tuổi thơ. Tác phẩm khắc họa sống động cuộc sống miền sông Mississippi đầy mộng mơ và tự do. Một câu chuyện khiến người đọc nhớ về tuổi thơ hồn nhiên, trong sáng.', 'Bìa mềm', 14),
 (137, 'Vòng quanh thế giới trong 80 ngày', 87000, '80ngay.jpg', 60, '14x20cm', 'NXB Văn Học', 290, 'Jules Verne', 'NXB Văn Học', 2020, 'Hành trình chinh phục thế giới đầy bất ngờ của Phileas Fogg. Cuốn sách mang tinh thần khám phá, thách thức giới hạn và đề cao trí tuệ con người. Một trong những tác phẩm phiêu lưu kinh điển của Jules Verne được yêu thích toàn cầu.', 'Bìa mềm', 14),
 (138, 'Hành trình đến trung tâm Trái Đất', 89000, 'trai-dat.jpg', 55, '14x20cm', 'NXB Kim Đồng', 310, 'Jules Verne', 'NXB Kim Đồng', 2021, 'Một chuyến thám hiểm kỳ thú dưới lòng đất. Tác phẩm đưa người đọc vào thế giới bí ẩn của thiên nhiên, khoa học và lòng dũng cảm. Mỗi trang sách là một hành trình kỳ diệu đầy trí tưởng tượng.', 'Bìa mềm', 14),
-(139, 'Những cuộc phiêu lưu của Sherlock Holmes', 95000, 'holmes.jpg', 65, '14x20cm', 'NXB Văn Học', 400, 'Arthur Conan Doyle', 'NXB Văn Học', 2020, 'Tập hợp những vụ án nổi tiếng của thám tử Sherlock Holmes. Sự sắc bén, logic và tinh tế trong từng suy luận khiến độc giả mê mẩn. Bộ truyện là biểu tượng bất hủ của thể loại trinh thám kinh điển.', 'Bìa mềm', 14);
-INSERT INTO `products` (`id_product`, `name_product`, `price`, `image_product`, `quantity`, `dimension`, `manufacturer`, `page`, `author`, `publisher`, `publisher_year`, `text_product`, `size`, `id_category`) VALUES
+(139, 'Những cuộc phiêu lưu của Sherlock Holmes', 95000, 'holmes.jpg', 65, '14x20cm', 'NXB Văn Học', 400, 'Arthur Conan Doyle', 'NXB Văn Học', 2020, 'Tập hợp những vụ án nổi tiếng của thám tử Sherlock Holmes. Sự sắc bén, logic và tinh tế trong từng suy luận khiến độc giả mê mẩn. Bộ truyện là biểu tượng bất hủ của thể loại trinh thám kinh điển.', 'Bìa mềm', 14),
 (140, 'Peter Pan', 76000, 'peterpan.jpg', 70, '13x20cm', 'NXB Kim Đồng', 250, 'J.M. Barrie', 'NXB Kim Đồng', 2019, 'Cậu bé không bao giờ lớn và xứ sở Neverland kỳ diệu. Một câu chuyện về tuổi thơ, sự tự do và niềm tin vào phép màu. Tác phẩm giúp người lớn tìm lại ký ức tuổi thơ đã mất.', 'Bìa mềm', 14),
 (141, 'Cuộc phiêu lưu của Gulliver', 88000, 'gulliver.jpg', 45, '13x20cm', 'NXB Văn Học', 270, 'Jonathan Swift', 'NXB Văn Học', 2021, 'Chuyến hành trình khám phá các vùng đất kỳ lạ của Gulliver. Tác phẩm châm biếm sâu sắc nhưng đầy trí tưởng tượng về xã hội loài người. Một kiệt tác vừa phiêu lưu, vừa triết lý, khiến người đọc suy ngẫm mãi.', 'Bìa mềm', 14),
-(142, 'Bên nhau trọn đời', 98000, 'ben-nhau-tron-doi.jpg', 80, '13x20cm', 'NXB Trẻ', 320, 'Cố Mạn', 'NXB Văn Học', 2020, 'Một chuyện tình sâu sắc, nhiều cảm xúc và đầy day dứt. Câu chuyện khắc họa niềm tin và định mệnh giữa hai con người yêu nhau tha thiết. Tác phẩm khiến người đọc suy ngẫm về sự kiên định và chờ đợi trong tình yêu.', 'Bìa mềm', 15),
+(142, 'Bên nhau trọn đời', 98000, 'ben-nhau-tron-doi.jpg', 80, '13x20cm', 'NXB Trẻ', 320, 'Cố Mạn', 'NXB Văn Học', 2020, 'Một chuyện tình sâu sắc, nhiều cảm xúc và đầy day dứt. Câu chuyện khắc họa niềm tin và định mệnh giữa hai con người yêu nhau tha thiết. Tác phẩm khiến người đọc suy ngẫm về sự kiên định và chờ đợi trong tình yêu.', 'Bìa mềm', 15);
+INSERT INTO `products` (`id_product`, `name_product`, `price`, `image_product`, `quantity`, `dimension`, `manufacturer`, `page`, `author`, `publisher`, `publisher_year`, `text_product`, `size`, `id_category`) VALUES
 (143, 'Yêu em từ cái nhìn đầu tiên', 95000, 'yeu-em.jpg', 100, '13x20cm', 'NXB Trẻ', 340, 'Cố Mạn', 'NXB Trẻ', 2019, 'Tình yêu ngọt ngào giữa hai game thủ. Câu chuyện đan xen giữa thế giới ảo và đời thực, vừa hài hước vừa lãng mạn. Đây là tác phẩm tiêu biểu cho phong cách viết nhẹ nhàng, tinh tế của Cố Mạn.', 'Bìa mềm', 15),
 (144, 'Mãi mãi là bao xa', 99000, 'mai-mai.jpg', 60, '13x20cm', 'NXB Văn Học', 370, 'Diệp Lạc Vô Tâm', 'NXB Văn Học', 2020, 'Một mối tình vượt thời gian và khoảng cách. Tác phẩm khiến người đọc xúc động bởi sự chờ đợi và hi sinh thầm lặng. Tình yêu trong truyện được miêu tả chân thực, sâu sắc và rất đỗi con người.', 'Bìa cứng', 15),
 (145, 'Ngủ cùng sói', 115000, 'ngu-cung-soi.jpg', 70, '14x21cm', 'NXB Văn Học', 420, 'Diệp Lạc Vô Tâm', 'NXB Văn Học', 2021, 'Một câu chuyện tình dữ dội, mạnh mẽ và chân thành. Tác phẩm khai thác mối quan hệ giữa lý trí và bản năng, giữa yêu thương và tổn thương. Đọc truyện là trải nghiệm đầy cảm xúc và ám ảnh.', 'Bìa cứng', 15),
@@ -579,11 +589,11 @@ INSERT INTO `products` (`id_product`, `name_product`, `price`, `image_product`, 
 (284, 'Cánh đồng bất tận', 89000, 'tieuthuyetvn3.jpg', 45, '14x21 cm', 'NXB Trẻ', 260, 'Nguyễn Ngọc Tư', 'Trẻ', 2022, 'Câu chuyện về cuộc sống khắc nghiệt và tình cảm con người vùng sông nước Nam Bộ. Nguyễn Ngọc Tư viết bằng giọng văn dung dị nhưng thấm thía. Tác phẩm khiến người đọc suy ngẫm về sự cô đơn và lòng vị tha.', 'Bìa mềm', 29),
 (285, 'Mắt biếc', 99000, 'tieuthuyetvn4.jpg', 35, '14x21 cm', 'NXB Trẻ', 340, 'Nguyễn Nhật Ánh', 'Trẻ', 2021, 'Một chuyện tình ngọt ngào nhưng dang dở giữa Ngạn và Hà Lan. Câu chuyện đan xen nỗi nhớ, tình yêu và ký ức tuổi thơ trong trẻo. Mắt biếc được xem là một trong những tác phẩm cảm động nhất của Nguyễn Nhật Ánh.', 'Bìa mềm', 29),
 (286, 'Đất rừng phương Nam', 115000, 'tieuthuyetvn5.jpg', 25, '15x23 cm', 'NXB Kim Đồng', 410, 'Đoàn Giỏi', 'Kim Đồng', 2020, 'Hành trình phiêu lưu của An giữa vùng đất miền Tây hoang sơ. Cuốn sách là bản hùng ca về thiên nhiên, con người Nam Bộ trong kháng chiến. Những trang viết đầy cảm xúc và đậm chất dân gian Việt.', 'Bìa cứng', 29),
-(287, 'Bến không chồng', 105000, 'tieuthuyetvn6.jpg', 28, '15x23 cm', 'NXB Phụ Nữ', 370, 'Dương Hướng', 'Phụ Nữ', 2021, 'Tiểu thuyết về số phận những người phụ nữ nơi miền quê trong chiến tranh. Câu chuyện chứa đựng nỗi buồn, lòng nhân hậu và nghị lực sống. Dương Hướng đã khắc họa chân thực cuộc đời đầy biến động của người dân nông thôn.', 'Bìa mềm', 29);
-INSERT INTO `products` (`id_product`, `name_product`, `price`, `image_product`, `quantity`, `dimension`, `manufacturer`, `page`, `author`, `publisher`, `publisher_year`, `text_product`, `size`, `id_category`) VALUES
+(287, 'Bến không chồng', 105000, 'tieuthuyetvn6.jpg', 28, '15x23 cm', 'NXB Phụ Nữ', 370, 'Dương Hướng', 'Phụ Nữ', 2021, 'Tiểu thuyết về số phận những người phụ nữ nơi miền quê trong chiến tranh. Câu chuyện chứa đựng nỗi buồn, lòng nhân hậu và nghị lực sống. Dương Hướng đã khắc họa chân thực cuộc đời đầy biến động của người dân nông thôn.', 'Bìa mềm', 29),
 (288, 'Số đỏ', 87000, 'tieuthuyetvn7.jpg', 50, '14x21 cm', 'NXB Văn học', 300, 'Vũ Trọng Phụng', 'Văn học', 2023, 'Tác phẩm châm biếm xã hội Việt Nam đầu thế kỷ XX đầy sâu cay. Nhân vật Xuân Tóc Đỏ trở thành biểu tượng cho sự lố bịch và giả tạo. Với lối viết hài hước, tác phẩm vẫn giữ nguyên tính thời sự cho đến nay.', 'Bìa mềm', 29),
 (289, 'Tắt đèn', 93000, 'tieuthuyetvn8.jpg', 40, '14x21 cm', 'NXB Văn học', 290, 'Ngô Tất Tố', 'Văn học', 2020, 'Câu chuyện phản ánh hiện thực xã hội nông dân Việt Nam trước Cách mạng. Nhân vật chị Dậu hiện lên mạnh mẽ, chịu thương chịu khó. Đây là tác phẩm tiêu biểu của dòng văn học hiện thực phê phán Việt Nam.', 'Bìa mềm', 29),
-(290, 'Sống mòn', 102000, 'tieuthuyetvn9.jpg', 32, '15x23 cm', 'NXB Văn học', 410, 'Nam Cao', 'Văn học', 2021, 'Một kiệt tác hiện thực phê phán sâu sắc về sự bế tắc của trí thức tiểu tư sản. Tác phẩm thấm đẫm nỗi buồn về kiếp người sống lay lắt. Ngòi bút của Nam Cao vừa sắc sảo vừa đầy lòng trắc ẩn.', 'Bìa cứng', 29),
+(290, 'Sống mòn', 102000, 'tieuthuyetvn9.jpg', 32, '15x23 cm', 'NXB Văn học', 410, 'Nam Cao', 'Văn học', 2021, 'Một kiệt tác hiện thực phê phán sâu sắc về sự bế tắc của trí thức tiểu tư sản. Tác phẩm thấm đẫm nỗi buồn về kiếp người sống lay lắt. Ngòi bút của Nam Cao vừa sắc sảo vừa đầy lòng trắc ẩn.', 'Bìa cứng', 29);
+INSERT INTO `products` (`id_product`, `name_product`, `price`, `image_product`, `quantity`, `dimension`, `manufacturer`, `page`, `author`, `publisher`, `publisher_year`, `text_product`, `size`, `id_category`) VALUES
 (291, 'Bỉ vỏ', 94000, 'tieuthuyetvn10.jpg', 36, '14x21 cm', 'NXB Văn học', 350, 'Nguyên Hồng', 'Văn học', 2020, 'Câu chuyện bi kịch của người phụ nữ trong xã hội cũ. Tác phẩm tố cáo sự bất công và khơi dậy lòng cảm thương sâu sắc. Văn phong của Nguyên Hồng chân thành, dữ dội và đầy cảm xúc.', 'Bìa mềm', 29),
 (292, 'Kịch bản Vợ chồng A Phủ', 89000, 'phimanh1.jpg', 35, '14x21 cm', 'NXB Sân khấu', 180, 'Tô Hoài', 'Sân khấu', 2021, 'Kịch bản chuyển thể từ truyện ngắn nổi tiếng cùng tên. Tác phẩm tái hiện tinh thần phản kháng và khát vọng tự do của con người miền núi. Mỗi lời thoại đều mang sức nặng của đời sống và nhân cách.', 'Bìa mềm', 30),
 (293, 'Kịch Lão hà tiện', 99000, 'phimanh2.jpg', 30, '14x21 cm', 'NXB Văn học', 240, 'Molière', 'Văn học', 2020, 'Tác phẩm kinh điển phê phán lòng tham và đạo đức giả. Với lối viết châm biếm sắc sảo, Molière để lại tiếng cười sâu cay cho nhân loại. Tác phẩm là nền tảng của kịch cổ điển Pháp.', 'Bìa mềm', 30),
@@ -741,7 +751,8 @@ ALTER TABLE `categories`
 -- Chỉ mục cho bảng `contacts`
 --
 ALTER TABLE `contacts`
-  ADD PRIMARY KEY (`id_contact`);
+  ADD PRIMARY KEY (`id_contact`),
+  ADD KEY `contacts_phone_contact_date_contact` (`phone_contact`,`date_contact`);
 
 --
 -- Chỉ mục cho bảng `feedbacks`
@@ -845,13 +856,13 @@ ALTER TABLE `feedbacks`
 -- AUTO_INCREMENT cho bảng `informations`
 --
 ALTER TABLE `informations`
-  MODIFY `id_information` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_information` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `login`
 --
 ALTER TABLE `login`
-  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `messages`
@@ -863,19 +874,19 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=412;
+  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=418;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

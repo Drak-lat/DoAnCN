@@ -22,7 +22,7 @@ const Login = sequelize.define('Login', {
   },
   id_information: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: true // CỘT NÀY LUÔN NULL TRONG DB
   },
   id_level: {
     type: DataTypes.INTEGER,

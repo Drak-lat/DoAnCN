@@ -13,7 +13,7 @@ const Product = sequelize.define('Product', {
   author: { type: DataTypes.STRING(100) },
   publisher: { type: DataTypes.STRING(200) },
   publisher_year: { type: DataTypes.INTEGER },
-  text_product: { type: DataTypes.STRING(255) },
+  text_product: { type: DataTypes.TEXT }, // ✅ SỬA: TEXT thay vì STRING(255)
   size: { type: DataTypes.STRING(100) },
   id_category: { type: DataTypes.INTEGER }
 }, {
