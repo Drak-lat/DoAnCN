@@ -11,19 +11,17 @@ const CustomerOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     fetchOrders();
-  }, [filter]);
+  }, []);
 
   const fetchOrders = async () => {
     try {
       setLoading(true);
       setError('');
       
-      const params = filter !== 'all' ? { status: filter } : {};
-      const response = await getUserOrders(params);
+      const response = await getUserOrders();
       
       if (response.success) {
         setOrders(response.data.orders || []);
@@ -40,9 +38,7 @@ const CustomerOrders = () => {
     const statusMap = {
       'Chờ xác nhận': 'warning',
       'Đã xác nhận': 'info',
-      'Đang giao': 'primary',
-      'Đã giao': 'success',
-      'Đã hủy': 'danger'
+      'Đang giao': 'primary'
     };
     return statusMap[status] || 'secondary';
   };
@@ -122,46 +118,6 @@ const CustomerOrders = () => {
             </div>
           </div>
 
-          {/* Filter Tabs */}
-          <div className="orders-filter">
-            <button 
-              className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
-              onClick={() => setFilter('all')}
-            >
-              Tất cả
-            </button>
-            <button 
-              className={`filter-btn ${filter === 'pending' ? 'active' : ''}`}
-              onClick={() => setFilter('pending')}
-            >
-              Chờ xác nhận
-            </button>
-            <button 
-              className={`filter-btn ${filter === 'confirmed' ? 'active' : ''}`}
-              onClick={() => setFilter('confirmed')}
-            >
-              Đã xác nhận
-            </button>
-            <button 
-              className={`filter-btn ${filter === 'shipping' ? 'active' : ''}`}
-              onClick={() => setFilter('shipping')}
-            >
-              Đang giao
-            </button>
-            <button 
-              className={`filter-btn ${filter === 'completed' ? 'active' : ''}`}
-              onClick={() => setFilter('completed')}
-            >
-              Đã giao
-            </button>
-            <button 
-              className={`filter-btn ${filter === 'cancelled' ? 'active' : ''}`}
-              onClick={() => setFilter('cancelled')}
-            >
-              Đã hủy
-            </button>
-          </div>
-
           {/* Orders List */}
           <div className="customer-profile-content">
             {orders.length === 0 ? (
@@ -207,28 +163,9 @@ const CustomerOrders = () => {
                       </div>
                     </div>
 
-                    <div className="order-body">
-                      <div className="order-info">
-                        <p><strong>Người nhận:</strong> {order.receiver_name}</p>
-                        <p><strong>Số điện thoại:</strong> {order.receiver_phone}</p>
-                        <p><strong>Địa chỉ:</strong> {order.receiver_address}</p>
-                        <p><strong>Thanh toán:</strong> {order.payment_method}</p>
-                      </div>
-                      
-                      {order.OrderDetails && order.OrderDetails.length > 0 && (
-                        <div className="order-products">
-                          <p className="products-count">
-                            {order.OrderDetails.length} sản phẩm
-                          </p>
-                        </div>
-                      )}
-                    </div>
-
                     <div className="order-footer">
-                      <div className="order-total">
-                        <span>Tổng tiền:</span>
-                        <strong className="total-amount">{formatPrice(order.total)}</strong>
-                      </div>
+                      <span>{order.OrderDetails?.length || 0} sản phẩm</span>
+                      <strong className="total-amount">{formatPrice(order.total)}</strong>
                       <button className="btn-view-detail">
                         Xem chi tiết →
                       </button>

@@ -34,6 +34,7 @@ router.post('/orders/create-direct', authenticateToken, checkCustomerRole, order
 router.post('/orders/create-from-cart', authenticateToken, checkCustomerRole, orderController.createOrderFromCart);
 router.get('/orders', authenticateToken, checkCustomerRole, orderController.getUserOrders);
 router.get('/orders/:orderId', authenticateToken, checkCustomerRole, orderController.getOrderDetail);
-router.patch('/orders/:orderId/cancel', authenticateToken, checkCustomerRole, orderController.cancelOrder);
+// ✅ XÓA: Không còn chức năng hủy đơn
+// router.patch('/orders/:orderId/cancel', authenticateToken, checkCustomerRole, orderController.cancelOrder);
 
 module.exports = router;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../../../components/Header/Header';
 import Footer from '../../../components/Footer/Footer';
-import { getOrderDetail, cancelOrder } from '../../../services/orderCustomerService';
+import { getOrderDetail } from '../../../services/orderCustomerService';
 import { formatPrice, getImageUrl } from '../../../services/homeService';
 import './CustomerOrders.css';
 
@@ -12,10 +12,10 @@ const CustomerOrderDetail = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
     fetchOrderDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
 
   const fetchOrderDetail = async () => {
@@ -26,30 +26,13 @@ const CustomerOrderDetail = () => {
       const response = await getOrderDetail(orderId);
       
       if (response.success) {
-        setOrder(response.data.order);
+        setOrder(response.data); // ✅ SỬA: Lấy trực tiếp response.data thay vì response.data.order
       }
     } catch (err) {
       console.error('Fetch order detail error:', err);
       setError(err.message || 'Không thể tải chi tiết đơn hàng');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleCancelOrder = async () => {
-    if (!window.confirm('Bạn có chắc muốn hủy đơn hàng này?')) {
-      return;
-    }
-
-    try {
-      const response = await cancelOrder(orderId);
-      
-      if (response.success) {
-        setMessage({ type: 'success', text: 'Đã hủy đơn hàng thành công' });
-        fetchOrderDetail(); // Reload order
-      }
-    } catch (err) {
-      setMessage({ type: 'error', text: err.message || 'Không thể hủy đơn hàng' });
     }
   };
 
@@ -66,10 +49,6 @@ const CustomerOrderDetail = () => {
 
   const getPaymentStatusColor = (status) => {
     return status === 'Đã thanh toán' ? 'success' : 'warning';
-  };
-
-  const canCancelOrder = () => {
-    return order && (order.order_status === 'Chờ xác nhận' || order.order_status === 'Đã xác nhận');
   };
 
   if (loading) {
@@ -118,12 +97,6 @@ const CustomerOrderDetail = () => {
             <span className="breadcrumb-separator"> › </span>
             <span className="breadcrumb-current">Chi tiết đơn hàng #{order.id_order}</span>
           </div>
-
-          {message.text && (
-            <div className={`customer-message ${message.type === 'success' ? 'success-message' : 'error-message'}`}>
-              {message.text}
-            </div>
-          )}
 
           {/* Order Detail Content */}
           <div className="order-detail-container">
@@ -228,14 +201,6 @@ const CustomerOrderDetail = () => {
               >
                 ← Quay lại danh sách
               </button>
-              {canCancelOrder() && (
-                <button 
-                  onClick={handleCancelOrder}
-                  className="btn-cancel-order"
-                >
-                  Hủy đơn hàng
-                </button>
-              )}
             </div>
           </div>
         </div>

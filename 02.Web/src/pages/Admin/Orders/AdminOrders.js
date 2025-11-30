@@ -88,21 +88,23 @@ function AdminOrders() {
 
   const getStatusBadge = (status, type = 'order') => {
     const statusConfig = {
-      order: {
-        'Chờ xác nhận': { class: 'warning', text: 'Chờ xác nhận' },
-        'Đã xác nhận': { class: 'info', text: 'Đã xác nhận' },
-        'Đang giao': { class: 'primary', text: 'Đang giao' },
-        'Đã giao': { class: 'success', text: 'Đã giao' },
-        'Đã hủy': { class: 'danger', text: 'Đã hủy' }
-      },
-      payment: {
-        'Chưa thanh toán': { class: 'warning', text: 'Chưa thanh toán' },
-        'Đã thanh toán': { class: 'success', text: 'Đã thanh toán' },
-        'Đã hoàn tiền': { class: 'info', text: 'Đã hoàn tiền' }
-      }
+      'Chờ xác nhận': { class: 'warning', text: 'Chờ xác nhận' },
+      'Đã xác nhận': { class: 'info', text: 'Đã xác nhận' },
+      'Đang giao': { class: 'primary', text: 'Đang giao' }
     };
 
-    const config = statusConfig[type][status] || { class: 'secondary', text: status || 'Không xác định' };
+    const paymentConfig = {
+      'Chưa thanh toán': { class: 'warning', text: 'Chưa thanh toán' },
+      'Đã thanh toán': { class: 'success', text: 'Đã thanh toán' }
+    };
+
+    const config = type === 'order' ? statusConfig[status] : paymentConfig[status];
+    
+    // ✅ THÊM: Fallback nếu không tìm thấy status
+    if (!config) {
+      return <span className="badge badge-secondary">{status || 'Không xác định'}</span>;
+    }
+    
     return <span className={`badge badge-${config.class}`}>{config.text}</span>;
   };
 
@@ -182,8 +184,6 @@ function AdminOrders() {
               <option value="Chờ xác nhận">Chờ xác nhận</option>
               <option value="Đã xác nhận">Đã xác nhận</option>
               <option value="Đang giao">Đang giao</option>
-              <option value="Đã giao">Đã giao</option>
-              <option value="Đã hủy">Đã hủy</option>
             </select>
 
             <select
@@ -193,7 +193,6 @@ function AdminOrders() {
               <option value="">Tất cả thanh toán</option>
               <option value="Chưa thanh toán">Chưa thanh toán</option>
               <option value="Đã thanh toán">Đã thanh toán</option>
-              <option value="Đã hoàn tiền">Đã hoàn tiền</option>
             </select>
           </div>
         </div>

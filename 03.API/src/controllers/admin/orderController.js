@@ -152,7 +152,6 @@ exports.getOrderStatistics = async (req, res) => {
     
     const totalRevenue = await Order.sum('total', { 
       where: { 
-        order_status: 'Đã giao',
         payment_status: 'Đã thanh toán'
       } 
     });

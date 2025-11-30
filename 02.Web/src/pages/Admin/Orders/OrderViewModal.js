@@ -14,6 +14,7 @@ function OrderViewModal({ order, onClose, onStatusUpdate }) {
     if (order) {
       fetchOrderDetail();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
 
   const fetchOrderDetail = async () => {
@@ -191,8 +192,6 @@ function OrderViewModal({ order, onClose, onStatusUpdate }) {
                       <option value="Chờ xác nhận">Chờ xác nhận</option>
                       <option value="Đã xác nhận">Đã xác nhận</option>
                       <option value="Đang giao">Đang giao</option>
-                      <option value="Đã giao">Đã giao</option>
-                      <option value="Đã hủy">Đã hủy</option>
                     </select>
                   </div>
                   <div className="form-group">
@@ -204,7 +203,6 @@ function OrderViewModal({ order, onClose, onStatusUpdate }) {
                     >
                       <option value="Chưa thanh toán">Chưa thanh toán</option>
                       <option value="Đã thanh toán">Đã thanh toán</option>
-                      <option value="Đã hoàn tiền">Đã hoàn tiền</option>
                     </select>
                   </div>
                 </div>

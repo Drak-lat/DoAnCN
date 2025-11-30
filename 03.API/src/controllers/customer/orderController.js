@@ -62,7 +62,7 @@ exports.createDirectOrder = async (req, res) => {
       receiver_address,
       total,
       payment_method,
-      payment_status: 'Chờ thanh toán',
+      payment_status: 'Chưa thanh toán',
       order_status: 'Chờ xác nhận', 
       date_order: new Date(),
       note
@@ -177,7 +177,7 @@ exports.createOrderFromCart = async (req, res) => {
       receiver_address,
       total,
       payment_method,
-      payment_status: 'Chờ thanh toán',
+      payment_status: 'Chưa thanh toán',
       order_status: 'Chờ xác nhận', 
       date_order: new Date(),
       note
@@ -335,7 +335,7 @@ exports.getOrderDetail = async (req, res) => {
 };
 
 // Hủy đơn hàng
-exports.cancelOrder = async (req, res) => {
+/* exports.cancelOrder = async (req, res) => {
   const transaction = await sequelize.transaction();
   
   try {
@@ -400,4 +400,4 @@ exports.cancelOrder = async (req, res) => {
       message: 'Lỗi máy chủ: ' + error.message
     });
   }
-};
+}; */
