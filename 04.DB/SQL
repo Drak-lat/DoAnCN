@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 13, 2025 lúc 05:24 PM
+-- Thời gian đã tạo: Th10 30, 2025 lúc 02:21 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -52,6 +52,13 @@ CREATE TABLE `carts` (
   `id_login` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `carts`
+--
+
+INSERT INTO `carts` (`id_cart`, `id_login`) VALUES
+(1, 11);
+
 -- --------------------------------------------------------
 
 --
@@ -64,6 +71,13 @@ CREATE TABLE `cart_details` (
   `id_product` int(11) NOT NULL,
   `quantitycart_detail` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `cart_details`
+--
+
+INSERT INTO `cart_details` (`id_cartdetail`, `id_cart`, `id_product`, `quantitycart_detail`) VALUES
+(12, 1, 26, 1);
 
 -- --------------------------------------------------------
 
@@ -268,7 +282,14 @@ INSERT INTO `orders` (`id_order`, `id_login`, `receiver_name`, `receiver_phone`,
 (2, 7, 'Trần Thị B', '0987654321', '456 Đường XYZ, Quận 2, TP.HCM', 250000, '2024-11-09 14:15:00', 'Đã thanh toán', 'Chuyển khoản', 'Đã giao'),
 (3, 8, 'Lê Văn C', '0369852147', '789 Đường DEF, Quận 3, TP.HCM', 320000, '2024-11-08 09:45:00', 'Đã thanh toán', 'Ví điện tử', 'Đang giao'),
 (4, 9, 'Nguyễn Thị Vy', '0111202515', '456 Nguyễn Văn Cừ, Quận 5, TP.HCM', 150000, '2024-11-07 16:20:00', 'Chưa thanh toán', 'COD', 'Chờ xác nhận'),
-(5, 10, 'Người dùng test', '0110720051', '789 Lê Lợi, Quận 1, TP.HCM', 95000, '2024-11-06 11:45:00', 'Đã thanh toán', 'Chuyển khoản', 'Đã xác nhận');
+(5, 10, 'Người dùng test', '0110720051', '789 Lê Lợi, Quận 1, TP.HCM', 95000, '2024-11-06 11:45:00', 'Đã thanh toán', 'Chuyển khoản', 'Đã xác nhận'),
+(6, 11, 'Nguyễn Thị Thảo Vy', '0981772458', '9/3g', 87000, '2025-11-24 04:56:13', 'PENDING', 'COD', 'PENDING'),
+(7, 11, 'Nguyễn Thị Thảo Vy', '0981772458', '9/3g', 87000, '2025-11-24 05:44:09', 'PENDING', 'COD', 'PENDING'),
+(8, 11, 'Nguyễn Thị Thảo Vy', '0981772458', '9/3g Nam Lân', 384000, '2025-11-24 05:50:53', 'PENDING', 'COD', 'Đang giao'),
+(9, 11, 'vy', '0285898564', '9/3g', 87000, '2025-11-24 09:43:12', 'PENDING', 'COD', 'PENDING'),
+(10, 11, 'vy', '0285898564', '9/3', 95000, '2025-11-24 09:56:21', 'PENDING', 'COD', 'PENDING'),
+(11, 11, 'vy', '0285898564', '9/3', 91000, '2025-11-24 09:57:35', 'PENDING', 'COD', 'PENDING'),
+(12, 11, 'vy', '0285898564', '9/3', 99000, '2025-11-24 10:01:02', 'PENDING', 'COD', 'PENDING');
 
 -- --------------------------------------------------------
 
@@ -283,6 +304,20 @@ CREATE TABLE `order_details` (
   `quantity_detail` int(11) DEFAULT 1,
   `price_detail` float DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_details`
+--
+
+INSERT INTO `order_details` (`id_detail`, `id_order`, `id_product`, `quantity_detail`, `price_detail`) VALUES
+(2, 6, 26, 1, 87000),
+(3, 7, 26, 1, 87000),
+(4, 8, 28, 3, 99000),
+(5, 8, 26, 1, 87000),
+(6, 9, 26, 1, 87000),
+(7, 10, 25, 1, 95000),
+(8, 11, 21, 1, 91000),
+(9, 12, 23, 1, 99000);
 
 -- --------------------------------------------------------
 
@@ -329,14 +364,14 @@ INSERT INTO `products` (`id_product`, `name_product`, `price`, `image_product`, 
 (18, 'Tiếng Gọi Trong Nghĩa Trang', 97000, '1763050684429-305690758.jpg', 60, '14x21 cm', 'NXB Trẻ', 300, 'Dương Anh Vũ', 'NXB Trẻ', 2023, 'Một câu chuyện kinh dị xoay quanh những linh hồn chưa siêu thoát. Tiếng gọi yếu ớt giữa đêm khuya dường như vang lên từ mộ phần sâu thẳm. Người nghe thấy nó sẽ bị dẫn dụ đến nơi không bao giờ trở lại.', 'Vừa', 2),
 (19, 'Căn Phòng Số 13', 95000, '1763050721033-965010964.jpg', 40, '14x21 cm', 'NXB Văn Học', 270, 'Nguyễn Văn A', 'NXB Văn Học', 2021, 'Một căn phòng mà bất kỳ ai bước vào đều không thể quay lại. Tiếng gõ cửa lúc nửa đêm và mùi hương lạ trong không khí khiến nơi đây trở thành cơn ác mộng. Những bức tường dường như đang sống và quan sát mọi người.', 'Vừa', 2),
 (20, 'Âm Thanh Của Bóng Tối', 102000, '1763050748706-43872916.jpg', 45, '15x22 cm', 'NXB Kim Đồng', 330, 'Trần Duy Minh', 'NXB Kim Đồng', 2020, 'Một bản giao hưởng của sợ hãi và cái chết vang lên giữa đêm. Mỗi nốt nhạc như đánh thức linh hồn đã ngủ quên. Khi bản nhạc kết thúc, người nghe sẽ không bao giờ mở mắt dậy nữa.', 'Lớn', 2),
-(21, 'Ngôi Làng Bị Lãng Quên', 91000, '1763050779660-149044615.jpg', 50, '14x20 cm', 'NXB Trẻ', 310, 'Đỗ Hoàng', 'NXB Trẻ', 2019, 'Một ngôi làng ma bị xóa khỏi bản đồ, nhưng lời nguyền vẫn còn tồn tại. Những bóng người lạ lang thang trong sương mù mỗi đêm, như thể đang tìm lại ký ức đã mất. Ai đặt chân đến nơi ấy sẽ mang theo nỗi ám ảnh suốt đời.', 'Vừa', 2),
+(21, 'Ngôi Làng Bị Lãng Quên', 91000, '1763050779660-149044615.jpg', 49, '14x20 cm', 'NXB Trẻ', 310, 'Đỗ Hoàng', 'NXB Trẻ', 2019, 'Một ngôi làng ma bị xóa khỏi bản đồ, nhưng lời nguyền vẫn còn tồn tại. Những bóng người lạ lang thang trong sương mù mỗi đêm, như thể đang tìm lại ký ức đã mất. Ai đặt chân đến nơi ấy sẽ mang theo nỗi ám ảnh suốt đời.', 'Vừa', 2),
 (22, 'Vũ Trụ Trong Lòng Bàn Tay', 125000, '1763050811376-90647128.jpg', 90, '15x22 cm', 'NXB Tri Thức', 400, 'Stephen Hawking', 'NXB Tri Thức', 2020, 'Giải thích các bí ẩn của vũ trụ theo cách dễ hiểu cho mọi người. Tác phẩm giúp người đọc khám phá những quy luật cơ bản của vũ trụ từ góc nhìn vật lý hiện đại. Một cuốn sách truyền cảm hứng về sự kỳ diệu của tri thức nhân loại.', 'Lớn', 3),
-(23, 'Nguồn Gốc Các Loài', 99000, '1763050857596-707672777.jpg', 70, '14x21 cm', 'NXB Khoa Học', 350, 'Charles Darwin', 'NXB Khoa Học', 2019, 'Tác phẩm kinh điển giải thích nguồn gốc sự sống trên Trái Đất. Cuốn sách là nền tảng cho sinh học tiến hóa hiện đại. Những lập luận khoa học của Darwin đã thay đổi cách loài người nhìn nhận về tự nhiên.', 'Vừa', 3),
+(23, 'Nguồn Gốc Các Loài', 99000, '1763050857596-707672777.jpg', 69, '14x21 cm', 'NXB Khoa Học', 350, 'Charles Darwin', 'NXB Khoa Học', 2019, 'Tác phẩm kinh điển giải thích nguồn gốc sự sống trên Trái Đất. Cuốn sách là nền tảng cho sinh học tiến hóa hiện đại. Những lập luận khoa học của Darwin đã thay đổi cách loài người nhìn nhận về tự nhiên.', 'Vừa', 3),
 (24, 'Hành Trình Về Hạt Nhân', 108000, '1763050883271-799918107.jpg', 60, '14x21 cm', 'NXB Giáo Dục', 380, 'Brian Greene', 'NXB Giáo Dục', 2021, 'Một hành trình vào thế giới hạt cơ bản và năng lượng. Tác giả dẫn dắt người đọc khám phá các nguyên lý nền tảng của vật lý hiện đại. Cuốn sách mở ra góc nhìn mới về cấu trúc và bản chất của vũ trụ.', 'Vừa', 3),
-(25, 'Thời Gian Giản Đơn', 95000, '1763050903522-454702264.jpg', 50, '13x20 cm', 'NXB Trẻ', 280, 'Carlo Rovelli', 'NXB Trẻ', 2018, 'Giải thích về thời gian bằng những khái niệm gần gũi. Rovelli giúp người đọc hiểu rằng thời gian không phải là điều tuyệt đối. Một cuốn sách triết lý nhẹ nhàng dành cho những ai yêu thích suy ngẫm về vũ trụ.', 'Vừa', 3),
-(26, 'Khoa Học Và Tâm Linh', 87000, '1763051026172-662913330.jpg', 40, '13x19 cm', 'NXB Lao Động', 250, 'Michio Kaku', 'NXB Lao Động', 2022, 'Giao thoa giữa khoa học hiện đại và tâm linh cổ xưa. Cuốn sách đặt ra câu hỏi về ý thức, linh hồn và tương lai của nhân loại. Một góc nhìn táo bạo giúp người đọc mở rộng hiểu biết về chính mình.', 'Vừa', 3),
+(25, 'Thời Gian Giản Đơn', 95000, '1763050903522-454702264.jpg', 49, '13x20 cm', 'NXB Trẻ', 280, 'Carlo Rovelli', 'NXB Trẻ', 2018, 'Giải thích về thời gian bằng những khái niệm gần gũi. Rovelli giúp người đọc hiểu rằng thời gian không phải là điều tuyệt đối. Một cuốn sách triết lý nhẹ nhàng dành cho những ai yêu thích suy ngẫm về vũ trụ.', 'Vừa', 3),
+(26, 'Khoa Học Và Tâm Linh', 87000, '1763051026172-662913330.jpg', 36, '13x19 cm', 'NXB Lao Động', 250, 'Michio Kaku', 'NXB Lao Động', 2022, 'Giao thoa giữa khoa học hiện đại và tâm linh cổ xưa. Cuốn sách đặt ra câu hỏi về ý thức, linh hồn và tương lai của nhân loại. Một góc nhìn táo bạo giúp người đọc mở rộng hiểu biết về chính mình.', 'Vừa', 3),
 (27, 'Sự Sống Trong Không Gian', 118000, '1763051044661-132102249.jpg', 55, '15x22 cm', 'NXB Tri Thức', 340, 'Carl Sagan', 'NXB Tri Thức', 2019, 'Khám phá khả năng tồn tại của sự sống ngoài Trái Đất. Carl Sagan dẫn dắt người đọc qua những giả thuyết hấp dẫn về vũ trụ bao la. Một tác phẩm kinh điển truyền cảm hứng về niềm tin vào trí tuệ con người.', 'Lớn', 3),
-(28, 'Vũ Trụ Và Con Người', 99000, '1763051060168-505073432.jpg', 50, '14x21 cm', 'NXB Giáo Dục', 310, 'Nguyễn Đức Thắng', 'NXB Giáo Dục', 2021, 'Giúp người đọc hiểu sâu hơn về vị trí của con người trong vũ trụ. Cuốn sách trình bày những khám phá khoa học gần gũi, dễ hiểu. Một lựa chọn tuyệt vời cho người mới bắt đầu tìm hiểu thiên văn học.', 'Vừa', 3);
+(28, 'Vũ Trụ Và Con Người', 99000, '1763051060168-505073432.jpg', 47, '14x21 cm', 'NXB Giáo Dục', 310, 'Nguyễn Đức Thắng', 'NXB Giáo Dục', 2021, 'Giúp người đọc hiểu sâu hơn về vị trí của con người trong vũ trụ. Cuốn sách trình bày những khám phá khoa học gần gũi, dễ hiểu. Một lựa chọn tuyệt vời cho người mới bắt đầu tìm hiểu thiên văn học.', 'Vừa', 3);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -448,13 +483,13 @@ ALTER TABLE `access_levels`
 -- AUTO_INCREMENT cho bảng `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `cart_details`
 --
 ALTER TABLE `cart_details`
-  MODIFY `id_cartdetail` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_cartdetail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `categories`
@@ -496,13 +531,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
