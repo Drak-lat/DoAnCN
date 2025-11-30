@@ -1,58 +1,47 @@
+/* filepath: d:\DACN06\DoAnCN\02.Web\src\services\homeService.js */
 import api from './api';
 
-// Lấy dữ liệu trang chủ
 export const getHomeData = async (params = {}) => {
   try {
-    console.log('🔄 Starting getHomeData with params:', params);
-    
     const queryParams = new URLSearchParams(params).toString();
-    const url = `/customer/home${queryParams ? `?${queryParams}` : ''}`;
-    console.log('🚀 Calling API:', url);
+    // ✅ SỬA: Endpoint đúng
+    const url = `/customer/products${queryParams ? `?${queryParams}` : ''}`;
     
     const response = await api.get(url);
-    console.log('✅ API Response received:', {
-      success: response.data.success,
-      totalProducts: response.data.data?.totalProducts,
-      productsCount: response.data.data?.products?.length,
-      featuredCount: response.data.data?.featuredProducts?.length,
-      newCount: response.data.data?.newProducts?.length
-    });
-    
     return response.data;
   } catch (error) {
-    console.error('❌ getHomeData error:', {
-      message: error.message,
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      url: error.config?.url,
-      data: error.response?.data
-    });
-    
-    // Chi tiết lỗi cho người dùng
     if (error.code === 'ECONNREFUSED') {
-      throw { message: 'Không thể kết nối với server. Server có thể chưa khởi động.' };
+      throw new Error('Không thể kết nối với server. Server có thể chưa khởi động.');
     } else if (error.response?.status >= 500) {
-      throw { message: 'Lỗi server nội bộ. Vui lòng thử lại sau.' };
+      throw new Error('Lỗi server nội bộ. Vui lòng thử lại sau.');
     } else if (error.response?.status === 404) {
-      throw { message: 'API endpoint không tồn tại.' };
+      throw new Error('API endpoint không tồn tại.');
     }
     
-    throw error.response?.data || { message: error.message || 'Lỗi không xác định' };
+    throw error.response?.data || new Error(error.message || 'Lỗi không xác định');
   }
 };
 
-// Lấy chi tiết sản phẩm
 export const getProductDetail = async (productId) => {
   try {
-    const response = await api.get(`/customer/product/${productId}`);
+    const token = localStorage.getItem('token');
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+    
+    // ✅ SỬA: Endpoint đúng
+    const response = await api.get(`/customer/products/${productId}`, { headers });
     return response.data;
   } catch (error) {
-    console.error('❌ getProductDetail error:', error);
-    throw error.response?.data || { message: 'Lỗi kết nối' };
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      throw new Error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+    } else if (error.response?.status === 403) {
+      throw new Error('Bạn cần đăng nhập với tài khoản khách hàng để xem chi tiết sản phẩm.');
+    }
+    
+    throw error.response?.data || new Error('Lỗi kết nối');
   }
 };
 
-// Format giá tiền
 export const formatPrice = (price) => {
   if (!price) return '0 đ';
   return new Intl.NumberFormat('vi-VN', {
@@ -61,11 +50,9 @@ export const formatPrice = (price) => {
   }).format(price);
 };
 
-// Format đường dẫn ảnh
 export const getImageUrl = (imagePath) => {
   if (!imagePath) return '/placeholder-book.jpg';
   
-  // Nếu đã là URL đầy đủ
   if (imagePath.startsWith('http')) {
     return imagePath;
   }

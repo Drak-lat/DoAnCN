@@ -1,18 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const registerController = require('../controllers/customer/registerController');
-const contactController = require('../controllers/admin/contactController');
+const { authenticateToken, checkCustomerRole } = require('../middlewares/auth.middleware');
+
+// Import controllers
+const headerCustomerController = require('../controllers/customer/headerCustomerController');
 const homeController = require('../controllers/customer/homeController');
+const cartController = require('../controllers/customer/cartController');
+const orderController = require('../controllers/customer/orderController');
 
-// Existing routes
-router.post('/register', registerController.register);
-router.post('/contact', contactController.createContact);
+// Header routes - KHÔNG CẦN ĐĂNG NHẬP
+router.get('/categories', headerCustomerController.getCategories);
 
-// Test route
-router.get('/test', homeController.testDatabase);
+// ✅ SỬA: Sử dụng homeController cho home page data với featuredProducts
+router.get('/products', homeController.getHomeData);
 
-// Home routes
-router.get('/home', homeController.getHomeData);
-router.get('/product/:id', homeController.getProductDetail);
+router.get('/products/search', headerCustomerController.searchProducts);
+router.get('/categories/:categoryId/products', headerCustomerController.getProductsByCategory);
+
+// Product detail - YÊU CẦU ĐĂNG NHẬP
+router.get('/products/:id', authenticateToken, checkCustomerRole, headerCustomerController.getProductDetail);
+
+// Cart routes - YÊU CẦU ĐĂNG NHẬP
+// ⭐ ĐẶT /cart/count TRƯỚC /cart
+router.get('/cart/count', authenticateToken, checkCustomerRole, cartController.getCartCount);
+router.get('/cart', authenticateToken, checkCustomerRole, cartController.getCart);
+router.post('/cart', authenticateToken, checkCustomerRole, cartController.addToCart);
+router.put('/cart/:id_cartdetail', authenticateToken, checkCustomerRole, cartController.updateCartItem);
+router.delete('/cart/:id_cartdetail', authenticateToken, checkCustomerRole, cartController.removeFromCart);
+router.delete('/cart', authenticateToken, checkCustomerRole, cartController.clearCart);
+
+// ✅ SỬA: Order routes - Khớp với service
+router.post('/orders/create-direct', authenticateToken, checkCustomerRole, orderController.createDirectOrder);
+router.post('/orders/create-from-cart', authenticateToken, checkCustomerRole, orderController.createOrderFromCart);
+router.get('/orders', authenticateToken, checkCustomerRole, orderController.getUserOrders);
+router.get('/orders/:orderId', authenticateToken, checkCustomerRole, orderController.getOrderDetail);
+router.patch('/orders/:orderId/cancel', authenticateToken, checkCustomerRole, orderController.cancelOrder);
 
 module.exports = router;

@@ -1,8 +1,40 @@
+/* ✅ Page wrapper */
+.customer-profile-page {
+  margin-top: 80px;
+  padding: 20px 0 40px 0;
+  min-height: 100vh;
+  background-color: #f3f2ec;
+}
+
+.customer-profile-page::before {
+  content: '';
+  display: block;
+  height: 20px;
+  background-color: #f3f2ec;
+  margin-top: -20px;
+}
+
+.customer-profile-loading-wrapper {
+  margin-top: 80px;
+  padding: 20px 0 40px 0;
+  min-height: 100vh;
+  background-color: #f3f2ec;
+}
+
+.customer-profile-loading-wrapper::before {
+  content: '';
+  display: block;
+  height: 20px;
+  background-color: #f3f2ec;
+  margin-top: -20px;
+}
+
+/* ✅ Container */
 .customer-profile-container {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
-  font-family: 'Montserrat', 'Quicksand', sans-serif;
+  padding: 0 30px;
+  font-family: "Montserrat", Arial, sans-serif;
   animation: fadeIn 0.4s ease;
 }
 
@@ -11,108 +43,126 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ✅ Header - Xóa nền trắng */
 .customer-profile-header {
-  text-align: center;
+  text-align: left;
   margin-bottom: 30px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .customer-profile-header h1 {
-  font-size: 28px;
-  font-weight: 600;
-  color: #111;
-  margin-bottom: 10px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 8px;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 .customer-profile-header p {
   color: #666;
   font-size: 16px;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 500;
 }
 
+/* ✅ Message */
 .customer-message {
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  font-size: 14px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  font-size: 15px;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .customer-message.success-message {
-  background: #e8f5e8;
-  color: #2e7d32;
-  border: 1px solid #c8e6c9;
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
 }
 
 .customer-message.error-message {
-  background: #ffebee;
-  color: #c62828;
-  border: 1px solid #ffcdd2;
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }
 
+/* ✅ Menu - Compact hơn */
 .customer-profile-menu {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   margin-bottom: 30px;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
   flex-wrap: wrap;
 }
 
 .customer-menu-item {
-  padding: 12px 20px;
-  background: #f8f9fa;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
+  padding: 12px 24px;
+  background: white;
+  border: 2px solid #e6e6e6;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  color: #495057;
+  font-weight: 600;
+  color: #555;
   transition: all 0.3s ease;
   text-align: center;
-  min-width: 120px;
+  font-family: "Montserrat", Arial, sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .customer-menu-item:hover {
-  background: #ff8800;
+  background: #007bff;
   color: white;
-  border-color: #ff8800;
+  border-color: #007bff;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
 }
 
 .customer-menu-item.active {
-  background: #ff8800;
+  background: #007bff;
   color: white;
-  border-color: #ff8800;
-  font-weight: 600;
+  border-color: #007bff;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
 }
 
 .customer-menu-item.logout {
-  background: #dc3545;
-  color: white;
+  background: white;
+  color: #dc3545;
   border-color: #dc3545;
 }
 
 .customer-menu-item.logout:hover {
-  background: #c82333;
-  border-color: #c82333;
+  background: #dc3545;
+  color: white;
+  border-color: #dc3545;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
 }
 
+/* ✅ Content */
 .customer-profile-content {
-  background: #faf8f3;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f0f0f0;
 }
 
+/* ✅ Summary */
 .customer-profile-summary {
   display: flex;
   align-items: center;
   gap: 25px;
-  margin-bottom: 30px;
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 10px;
-  border: 1px solid #e5e5e5;
+  margin-bottom: 35px;
+  padding: 25px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 16px;
+  border: 1px solid #dee2e6;
 }
 
 .customer-user-avatar {
@@ -120,117 +170,141 @@
 }
 
 .customer-avatar-placeholder {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background: linear-gradient(90deg, #ff8800 0%, #eabf82 100%);
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 32px;
+  font-weight: 700;
   color: white;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
 }
 
 .customer-user-basic h3 {
-  margin: 0 0 10px 0;
-  color: #111;
-  font-size: 22px;
-  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: #222;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 .customer-user-basic p {
-  margin: 8px 0;
+  margin: 6px 0;
   color: #666;
-  font-size: 14px;
+  font-size: 15px;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 .customer-level-badge {
-  background: #4CAF50;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
-  padding: 4px 10px;
-  border-radius: 15px;
-  font-size: 11px;
-  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "Montserrat", Arial, sans-serif;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
+/* ✅ Form */
 .customer-inputs-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 30px;
+  gap: 25px;
   margin-bottom: 25px;
 }
 
 .customer-input-group {
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .customer-input-group label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   font-weight: 600;
-  color: #111;
+  color: #333;
   font-size: 15px;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 .customer-input-group input {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  padding: 13px 18px;
+  border: 2px solid #e6e6e6;
+  border-radius: 12px;
   font-size: 15px;
-  background: #fefefe;
+  background: #fafafa;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  color: #333;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 .customer-input-group input:focus {
-  border-color: #ff8800;
+  border-color: #007bff;
   background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(255, 136, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 
 .customer-input-group small {
   display: block;
-  margin-top: 5px;
+  margin-top: 6px;
   color: #666;
-  font-size: 12px;
+  font-size: 13px;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
+/* ✅ Button */
 .customer-profile-btn {
   width: 100%;
-  padding: 13px 0;
+  padding: 15px 0;
   border: none;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #ff8800 0%, #eabf82 100%);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   color: #fff;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(255, 136, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
   transition: all 0.3s ease;
-  margin-top: 20px;
+  margin-top: 25px;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 .customer-profile-btn:hover {
-  background: linear-gradient(90deg, #eabf82 0%, #ff8800 100%);
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
 }
 
+/* ✅ Loading */
 .customer-profile-loading {
   text-align: center;
-  padding: 50px;
-  font-size: 16px;
-  color: #666;
+  padding: 100px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #007bff;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+  font-family: "Montserrat", Arial, sans-serif;
+  border: 1px solid #f0f0f0;
 }
 
-.customer-profile-password h3 {
-  color: #111;
-  margin-bottom: 20px;
-  font-size: 20px;
-}
-
+/* ✅ Responsive */
 @media (max-width: 768px) {
+  .customer-profile-container {
+    padding: 0 20px;
+  }
+  
+  .customer-profile-header h1 {
+    font-size: 26px;
+  }
+  
   .customer-inputs-row {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -239,19 +313,35 @@
   .customer-profile-summary {
     flex-direction: column;
     text-align: center;
-    gap: 15px;
+    padding: 20px;
   }
   
   .customer-profile-content {
-    padding: 20px;
+    padding: 30px 25px;
   }
   
   .customer-profile-menu {
     flex-direction: column;
     gap: 10px;
   }
+}
+
+@media (max-width: 480px) {
+  .customer-profile-container {
+    padding: 0 15px;
+  }
   
-  .customer-menu-item {
-    min-width: auto;
+  .customer-profile-header h1 {
+    font-size: 22px;
+  }
+  
+  .customer-profile-content {
+    padding: 25px 20px;
+  }
+  
+  .customer-avatar-placeholder {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
   }
 }

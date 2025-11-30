@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'change_this_secret';
 
-module.exports = (req, res, next) => {
+const authenticateToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ success: false, msg: 'Thiếu token' });
 
@@ -19,3 +19,15 @@ module.exports = (req, res, next) => {
     return res.status(401).json({ success: false, msg: 'Token không hợp lệ hoặc hết hạn' });
   }
 };
+
+const checkCustomerRole = (req, res, next) => {
+  if (req.user && req.user.id_level === 2) {
+    return next();
+  }
+  return res.status(403).json({ 
+    success: false, 
+    msg: 'Yêu cầu quyền khách hàng' 
+  });
+};
+
+module.exports = { authenticateToken, checkCustomerRole };

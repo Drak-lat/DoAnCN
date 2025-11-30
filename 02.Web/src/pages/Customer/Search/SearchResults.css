@@ -1,0 +1,390 @@
+.search-page {
+  margin-top: 80px;
+  padding: 20px 0 40px 0;
+  min-height: 100vh;
+  background-color: #f3f2ec;
+}
+
+.search-page::before {
+  content: '';
+  display: block;
+  height: 20px;
+  background-color: #f3f2ec;
+  margin-top: -20px;
+}
+
+.container {
+  max-width: 1200px; /* ✅ SỬA: Tăng từ 1140px lên 1200px */
+  margin: 0 auto;
+  padding: 0 30px; /* ✅ SỬA: Tăng padding để thoáng hơn */
+}
+
+.search-header {
+  margin-bottom: 40px;
+  text-align: center;
+  padding: 40px; /* ✅ SỬA: Tăng padding */
+  background: white;
+  border-radius: 20px; /* ✅ SỬA: Bo tròn nhiều hơn */
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1); /* ✅ SỬA: Shadow đẹp hơn */
+  border: 1px solid #f0f0f0; /* ✅ THÊM: Viền nhẹ */
+}
+
+.search-header h1 {
+  font-size: 36px; /* ✅ SỬA: Tăng size */
+  color: #222;
+  margin-bottom: 15px; /* ✅ SỬA: Tăng margin */
+  font-weight: 700; /* ✅ SỬA: Đậm hơn */
+  font-family: "Montserrat", Arial, sans-serif;
+  letter-spacing: -0.5px; /* ✅ THÊM: Letter spacing */
+}
+
+.search-info {
+  color: #666;
+  font-size: 18px; /* ✅ SỬA: Tăng size */
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 500; /* ✅ THÊM: Medium weight */
+}
+
+.search-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 40px; /* ✅ SỬA: Tăng margin */
+  padding: 25px 30px; /* ✅ SỬA: Tăng padding */
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0; /* ✅ THÊM: Viền nhẹ */
+}
+
+.sort-options {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* ✅ SỬA: Tăng gap */
+}
+
+.sort-options label {
+  font-weight: 600; /* ✅ SỬA: Đậm hơn */
+  color: #333;
+  font-size: 16px; /* ✅ SỬA: Tăng size */
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.sort-options select {
+  padding: 12px 18px; /* ✅ SỬA: Tăng padding */
+  border: 2px solid #e6e6e6;
+  border-radius: 10px; /* ✅ SỬA: Bo tròn nhiều hơn */
+  background-color: #fafafa;
+  font-size: 15px; /* ✅ SỬA: Tăng size */
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  font-family: "Montserrat", Arial, sans-serif;
+  transition: all 0.3s ease;
+  min-width: 180px; /* ✅ THÊM: Width tối thiểu */
+}
+
+.sort-options select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15); /* ✅ SỬA: Shadow đậm hơn */
+  background-color: white; /* ✅ THÊM: Background trắng khi focus */
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* ✅ SỬA: Tăng từ 220px lên 280px */
+  gap: 40px; /* ✅ SỬA: Tăng gap từ 30px lên 40px */
+  justify-items: center;
+  max-width: 100%; /* ✅ SỬA: Xóa giới hạn width */
+  margin: 0 auto 50px auto; /* ✅ SỬA: Tăng margin-bottom */
+  padding: 0 15px; /* ✅ SỬA: Tăng padding */
+}
+
+.product-card {
+  background: white;
+  border-radius: 20px; /* ✅ SỬA: Bo tròn nhiều hơn */
+  padding: 24px; /* ✅ SỬA: Tăng padding từ 16px lên 24px */
+  text-align: center;
+  transition: all 0.4s ease; /* ✅ SỬA: Transition mượt hơn */
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08); /* ✅ SỬA: Shadow đẹp hơn */
+  width: 100%;
+  max-width: 300px; /* ✅ SỬA: Tăng max-width */
+  cursor: pointer;
+  border: 1px solid #f5f5f5; /* ✅ SỬA: Viền nhẹ hơn */
+  position: relative; /* ✅ THÊM: Cho hover effect */
+  overflow: hidden; /* ✅ THÊM: Ẩn overflow */
+}
+
+.product-card:hover {
+  transform: translateY(-12px); /* ✅ SỬA: Nâng cao hơn */
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); /* ✅ SỬA: Shadow đẹp hơn */
+  border-color: #e0e0e0;
+}
+
+/* ✅ THÊM: Hover overlay effect */
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 123, 255, 0.03), rgba(255, 136, 0, 0.03));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.product-card:hover::before {
+  opacity: 1;
+}
+
+.product-image {
+  margin-bottom: 20px; /* ✅ SỬA: Tăng margin */
+  overflow: hidden;
+  border-radius: 16px; /* ✅ SỬA: Bo tròn nhiều hơn */
+  position: relative; /* ✅ THÊM: Cho z-index */
+  z-index: 1; /* ✅ THÊM: Đưa lên trên overlay */
+}
+
+.product-image img {
+  width: 100%;
+  height: 260px; /* ✅ SỬA: Tăng chiều cao từ 200px lên 260px */
+  object-fit: cover;
+  transition: transform 0.4s ease; /* ✅ SỬA: Transition mượt hơn */
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.08); /* ✅ SỬA: Scale nhiều hơn */
+}
+
+.product-info {
+  padding-top: 8px; /* ✅ SỬA: Tăng padding */
+  position: relative; /* ✅ THÊM: Cho z-index */
+  z-index: 1; /* ✅ THÊM: Đưa lên trên overlay */
+}
+
+.product-title {
+  font-size: 17px; /* ✅ SỬA: Tăng từ 15px lên 17px */
+  font-weight: 700; /* ✅ SỬA: Đậm hơn */
+  margin: 15px 0 12px 0; /* ✅ SỬA: Tăng margin */
+  color: #222;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5; /* ✅ SỬA: Tăng line-height */
+  min-height: 51px; /* ✅ SỬA: Tăng min-height */
+  font-family: "Montserrat", Arial, sans-serif;
+  transition: color 0.3s ease; /* ✅ THÊM: Transition cho color */
+}
+
+.product-card:hover .product-title {
+  color: #007bff; /* ✅ THÊM: Màu xanh khi hover */
+}
+
+.product-author {
+  color: #666;
+  font-size: 14px; /* ✅ SỬA: Tăng từ 13px lên 14px */
+  margin: 8px 0; /* ✅ SỬA: Tăng margin */
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 500; /* ✅ THÊM: Medium weight */
+}
+
+.product-publisher {
+  color: #888;
+  font-size: 13px; /* ✅ SỬA: Tăng từ 12px lên 13px */
+  margin: 8px 0; /* ✅ SỬA: Tăng margin */
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 400; /* ✅ THÊM: Normal weight */
+}
+
+.product-price {
+  color: #D62828;
+  font-weight: 800; /* ✅ SỬA: Đậm hơn */
+  font-size: 18px; /* ✅ SỬA: Tăng từ 16px lên 18px */
+  margin-top: 15px; /* ✅ SỬA: Tăng margin */
+  font-family: "Montserrat", Arial, sans-serif;
+  padding: 8px 16px; /* ✅ THÊM: Padding cho price */
+  background: rgba(214, 40, 40, 0.1); /* ✅ THÊM: Background nhẹ */
+  border-radius: 25px; /* ✅ THÊM: Bo tròn */
+  display: inline-block; /* ✅ THÊM: Inline block */
+  transition: all 0.3s ease; /* ✅ THÊM: Transition */
+}
+
+.product-card:hover .product-price {
+  background: rgba(214, 40, 40, 0.15); /* ✅ THÊM: Đậm hơn khi hover */
+  transform: translateY(-2px); /* ✅ THÊM: Nâng lên khi hover */
+}
+
+.no-results {
+  text-align: center;
+  padding: 100px 40px; /* ✅ SỬA: Tăng padding */
+  background: white;
+  border-radius: 20px; /* ✅ SỬA: Bo tròn nhiều hơn */
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.1); /* ✅ SỬA: Shadow đẹp hơn */
+  border: 1px solid #f0f0f0; /* ✅ THÊM: Viền nhẹ */
+}
+
+.no-results h3 {
+  font-size: 28px; /* ✅ SỬA: Tăng size */
+  color: #222;
+  margin-bottom: 16px; /* ✅ SỬA: Tăng margin */
+  font-weight: 700; /* ✅ SỬA: Đậm hơn */
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.no-results p {
+  color: #666;
+  font-size: 18px; /* ✅ SỬA: Tăng size */
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 500; /* ✅ THÊM: Medium weight */
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 100px 40px; /* ✅ SỬA: Tăng padding */
+  font-size: 20px; /* ✅ SỬA: Tăng size */
+  font-weight: 600; /* ✅ SỬA: Đậm hơn */
+  background: white;
+  border-radius: 20px; /* ✅ SỬA: Bo tròn nhiều hơn */
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.1); /* ✅ SỬA: Shadow đẹp hơn */
+  font-family: "Montserrat", Arial, sans-serif;
+  border: 1px solid #f0f0f0; /* ✅ THÊM: Viền nhẹ */
+}
+
+.loading {
+  color: #007bff;
+}
+
+.error {
+  color: #D62828;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px; /* ✅ SỬA: Tăng margin */
+}
+
+.pagination-info {
+  padding: 16px 30px; /* ✅ SỬA: Tăng padding */
+  background: white;
+  border-radius: 30px; /* ✅ SỬA: Bo tròn nhiều hơn */
+  color: #666;
+  font-weight: 600; /* ✅ SỬA: Đậm hơn */
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1); /* ✅ SỬA: Shadow đẹp hơn */
+  font-size: 15px; /* ✅ SỬA: Tăng size */
+  font-family: "Montserrat", Arial, sans-serif;
+  border: 1px solid #f0f0f0; /* ✅ THÊM: Viền nhẹ */
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* ✅ SỬA: Responsive tốt hơn */
+    gap: 35px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 25px; /* ✅ SỬA: Giảm padding trên tablet */
+  }
+  
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 30px;
+  }
+  
+  .product-card {
+    max-width: 280px; /* ✅ SỬA: Giảm max-width */
+  }
+}
+
+@media (max-width: 768px) {
+  .search-page {
+    padding: 20px 0;
+  }
+  
+  .container {
+    padding: 0 20px; /* ✅ SỬA: Giảm padding trên mobile */
+  }
+  
+  .search-header {
+    padding: 30px 25px; /* ✅ SỬA: Giảm padding */
+    margin-bottom: 30px;
+  }
+  
+  .search-header h1 {
+    font-size: 28px; /* ✅ SỬA: Giảm size trên mobile */
+  }
+  
+  .search-info {
+    font-size: 16px; /* ✅ SỬA: Giảm size */
+  }
+  
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr); /* ✅ SỬA: 2 cột trên mobile */
+    gap: 20px;
+    padding: 0 10px;
+  }
+  
+  .product-card {
+    padding: 20px; /* ✅ SỬA: Giảm padding */
+    max-width: none; /* ✅ SỬA: Không giới hạn width */
+  }
+  
+  .product-image img {
+    height: 220px; /* ✅ SỬA: Giảm height */
+  }
+  
+  .search-controls {
+    padding: 20px 25px; /* ✅ SỬA: Giảm padding */
+    margin-bottom: 30px;
+  }
+  
+  .sort-options {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .sort-options select {
+    width: 100%; /* ✅ THÊM: Full width trên mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 15px; /* ✅ SỬA: Padding nhỏ nhất */
+  }
+  
+  .search-header {
+    padding: 25px 20px; /* ✅ SỬA: Padding nhỏ */
+  }
+  
+  .search-header h1 {
+    font-size: 24px; /* ✅ SỬA: Size nhỏ */
+  }
+  
+  .products-grid {
+    grid-template-columns: 1fr; /* ✅ SỬA: 1 cột trên màn hình rất nhỏ */
+    gap: 20px;
+    padding: 0 5px;
+  }
+  
+  .product-card {
+    padding: 18px; /* ✅ SỬA: Padding nhỏ */
+  }
+  
+  .product-image img {
+    height: 200px; /* ✅ SỬA: Height nhỏ */
+  }
+  
+  .product-title {
+    font-size: 16px; /* ✅ SỬA: Size nhỏ hơn */
+  }
+}

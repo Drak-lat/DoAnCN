@@ -72,8 +72,10 @@ function CustomerProfile() {
     return (
       <>
         <Header />
-        <div style={{marginTop: '100px'}} className="customer-profile-loading">
-          Đang tải thông tin...
+        <div className="customer-profile-loading-wrapper">
+          <div className="customer-profile-loading">
+            Đang tải thông tin...
+          </div>
         </div>
       </>
     );
@@ -82,7 +84,7 @@ function CustomerProfile() {
   return (
     <>
       <Header />
-      <div style={{marginTop: '100px', padding: '20px', minHeight: '100vh', background: '#f8fafc'}}>
+      <div className="customer-profile-page">
         <div className="customer-profile-container">
           <div className="customer-profile-header">
             <h1>Tài khoản của tôi</h1>

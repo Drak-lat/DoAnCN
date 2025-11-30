@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const app = express();
 
-// ✅ SỬA: CORS config đơn giản hơn
+
 app.use(cors({
   origin: '*', // Cho phép tất cả origins (chỉ để test)
   credentials: true

@@ -18,13 +18,21 @@ import AdminOrders from './pages/Admin/Orders/AdminOrders';
 import AdminContacts from './pages/Admin/Contacts/AdminContacts';
 import Contact from './pages/Shared/Contact/Contact';
 import Home from './pages/Shared/Home/Home';
+import CategoryProducts from './pages/Customer/Category/CategoryProducts';
+import SearchResults from './pages/Customer/Search/SearchResults';
+import ProductDetail from './pages/Customer/Product/ProductDetail';
+import Cart from './pages/Customer/Cart/Cart';
+import Checkout from './pages/Customer/Checkout/Checkout';
+import CheckoutSuccess from './pages/Customer/Checkout/CheckoutSuccess';
+import CustomerOrders from './pages/Customer/Orders/CustomerOrders';
+import CustomerOrderDetail from './pages/Customer/Orders/CustomerOrderDetail';
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          {/* ✅ Sử dụng Home component */}
+          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           
@@ -88,7 +96,7 @@ function App() {
             </ProtectedRoute>
           } />
           
-          {/* Customer routes */}
+          {/* Customer routes - YÊU CẦU ĐĂNG NHẬP */}
           <Route path="/customer/profile" element={
             <ProtectedRoute requiredLevel={2}>
               <CustomerProfile />
@@ -103,14 +111,13 @@ function App() {
 
           <Route path="/customer/orders" element={
             <ProtectedRoute requiredLevel={2}>
-              <>
-                <Header />
-                <div style={{marginTop: '100px', padding: '20px'}}>
-                  <h2>Đơn hàng của tôi</h2>
-                  <p>Trang đơn hàng sẽ được phát triển sau</p>
-                </div>
-                <Footer />
-              </>
+              <CustomerOrders />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/customer/orders/:orderId" element={
+            <ProtectedRoute requiredLevel={2}>
+              <CustomerOrderDetail />
             </ProtectedRoute>
           } />
 
@@ -137,6 +144,37 @@ function App() {
                 </div>
                 <Footer />
               </>
+            </ProtectedRoute>
+          } />
+
+          {/* Public category và search routes */}
+          <Route path="/category/:categoryId" element={<CategoryProducts />} />
+          <Route path="/search" element={<SearchResults />} />
+          
+          {/* Product Detail - YÊU CẦU ĐĂNG NHẬP VỚI QUYỀN KHÁCH HÀNG */}
+          <Route path="/product/:id" element={
+            <ProtectedRoute requiredLevel={2}>
+              <ProductDetail />
+            </ProtectedRoute>
+          } />
+          
+          {/* ✅ SỬA: Cart route - Đường dẫn đúng */}
+          <Route path="/cart" element={
+            <ProtectedRoute requiredLevel={2}>
+              <Cart />
+            </ProtectedRoute>
+          } />
+          
+          {/* Checkout routes */}
+          <Route path="/checkout" element={
+            <ProtectedRoute requiredLevel={2}>
+              <Checkout />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/checkout/success" element={
+            <ProtectedRoute requiredLevel={2}>
+              <CheckoutSuccess />
             </ProtectedRoute>
           } />
           

@@ -1,8 +1,8 @@
-const auth = require('./auth.middleware');
+const { authenticateToken } = require('./auth.middleware');
 
 module.exports = (req, res, next) => {
   // Gọi auth middleware trước
-  auth(req, res, (err) => {
+  authenticateToken(req, res, (err) => {
     if (err) return next(err);
     
     // Kiểm tra quyền admin

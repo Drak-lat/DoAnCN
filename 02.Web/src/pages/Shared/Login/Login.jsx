@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Login.css';
 import { login as loginService } from '../../../services/authService';
 import { useNavigate, Link } from 'react-router-dom';
-import Header from '../../../components/Header/Header'; // ✅ Thêm import Header
+import Header from '../../../components/Header/Header'; 
 
 function Login() {
   const [loginType, setLoginType] = useState('phone');

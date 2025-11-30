@@ -1,6 +1,6 @@
 .footer {
     font-family: 'Montserrat', Arial, sans-serif;
-    margin-top: 50px;
+    margin-top: 0; /* ✅ SỬA: Bỏ margin-top để không có khoảng trống */
 }
 
 /* ==== Phần banner tải app (màu đậm hơn) ==== */
@@ -11,6 +11,7 @@
     gap: 80px;
     background-color: #e6e4dc;
     padding: 50px 24px;
+    margin-top: 0; /* ✅ THÊM: Đảm bảo không có margin */
 }
 
 .promo-banner img {
@@ -62,6 +63,7 @@
 .footer-container {
     background-color: #F3F2EC;
     padding: 40px 24px 20px 24px;
+    margin-top: 0; /* ✅ THÊM: Đảm bảo không có margin */
 }
 
 .footer-top {
