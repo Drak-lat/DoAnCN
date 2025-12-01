@@ -10,7 +10,6 @@ const CustomerReviews = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [message, setMessage] = useState({ type: '', text: '' });
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -33,7 +32,7 @@ const CustomerReviews = () => {
       }
     } catch (err) {
       console.error('Fetch orders error:', err);
-      setError(err.message || 'Không thể tải danh sách đơn hàng');
+      setMessage({ type: 'error', text: err.message || 'Không thể tải danh sách đơn hàng' });
     } finally {
       setLoading(false);
     }

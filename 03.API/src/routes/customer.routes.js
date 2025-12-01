@@ -3,6 +3,7 @@ const router = express.Router();
 const { authenticateToken, checkCustomerRole } = require('../middlewares/auth.middleware');
 
 // Import controllers
+const registerController = require('../controllers/customer/registerController'); // ✅ THÊM
 const headerCustomerController = require('../controllers/customer/headerCustomerController');
 const homeController = require('../controllers/customer/homeController');
 const cartController = require('../controllers/customer/cartController');
@@ -10,10 +11,13 @@ const orderController = require('../controllers/customer/orderController');
 const feedbackController = require('../controllers/customer/feedbackController');
 const messageController = require('../controllers/customer/messageController');
 
+// ✅ THÊM: Register route - KHÔNG CẦN ĐĂNG NHẬP
+router.post('/register', registerController.register);
+
 // Header routes - KHÔNG CẦN ĐĂNG NHẬP
 router.get('/categories', headerCustomerController.getCategories);
 
-// ✅ SỬA: Sử dụng homeController cho home page data với featuredProducts
+// ✅ THÊM: Home page products
 router.get('/products', homeController.getHomeData);
 
 router.get('/products/search', headerCustomerController.searchProducts);
