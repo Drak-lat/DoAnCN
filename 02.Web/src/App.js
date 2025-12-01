@@ -40,19 +40,19 @@ function App() {
           {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-          
+
           {/* Shared routes */}
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/contact" element={<Contact />} />
-          
+
           {/* Admin routes */}
           <Route path="/dashboard" element={
             <ProtectedRoute requiredLevel={1}>
               <Dashboard />
             </ProtectedRoute>
           } />
-          
+
           <Route path="/admin/profile" element={
             <ProtectedRoute requiredLevel={1}>
               <AdminProfile />
@@ -64,7 +64,7 @@ function App() {
               <AdminChangePassword />
             </ProtectedRoute>
           } />
-          
+
           <Route path="/admin/products" element={
             <ProtectedRoute requiredLevel={1}>
               <AdminProducts />
@@ -82,7 +82,7 @@ function App() {
               <EditProduct />
             </ProtectedRoute>
           } />
-          
+
           <Route path="/admin/users" element={
             <ProtectedRoute requiredLevel={1}>
               <AdminUsers />
@@ -119,7 +119,7 @@ function App() {
               <AdminMessages />
             </ProtectedRoute>
           } />
-          
+
           {/* Customer routes - YÊU CẦU ĐĂNG NHẬP */}
           <Route path="/customer/profile" element={
             <ProtectedRoute requiredLevel={2}>
@@ -161,39 +161,35 @@ function App() {
           {/* Public category và search routes */}
           <Route path="/category/:categoryId" element={<CategoryProducts />} />
           <Route path="/search" element={<SearchResults />} />
-          
+
           {/* Product Detail - YÊU CẦU ĐĂNG NHẬP VỚI QUYỀN KHÁCH HÀNG */}
           <Route path="/product/:id" element={
             <ProtectedRoute requiredLevel={2}>
               <ProductDetail />
             </ProtectedRoute>
           } />
-          
+
           {/* Cart route */}
           <Route path="/cart" element={
             <ProtectedRoute requiredLevel={2}>
               <Cart />
             </ProtectedRoute>
           } />
-          
+
           {/* Checkout routes */}
           <Route path="/checkout" element={
             <ProtectedRoute requiredLevel={2}>
               <Checkout />
             </ProtectedRoute>
           } />
-          
-          <Route path="/checkout/success" element={
-            <ProtectedRoute requiredLevel={2}>
-              <CheckoutSuccess />
-            </ProtectedRoute>
-          } />
-          
+
+          <Route path="/checkout/success" element={<CheckoutSuccess />} />
+
           {/* Catch all routes */}
           <Route path="*" element={
             <>
               <Header />
-              <div style={{marginTop: '100px', padding: '20px'}}>
+              <div style={{ marginTop: '100px', padding: '20px' }}>
                 <h2>Trang không tìm thấy</h2>
                 <p>Đường dẫn này không tồn tại</p>
               </div>

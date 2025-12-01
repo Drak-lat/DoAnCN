@@ -6,10 +6,29 @@ import Footer from '../../../components/Footer/Footer';
 import { formatPrice } from '../../../services/homeService';
 import './CheckoutSuccess.css';
 
+
+import { useMemo } from 'react';
+
 const CheckoutSuccess = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const orderData = location.state;
+  // Lấy orderData từ state hoặc từ query string (dành cho redirect từ PayPal)
+  const orderData = useMemo(() => {
+    if (location.state) return location.state;
+    // Parse query string
+    const params = new URLSearchParams(location.search);
+    const orderId = params.get('orderId');
+    const total = params.get('total');
+    const orderStatus = params.get('orderStatus');
+    const status = params.get('status');
+    if (status === 'fail') {
+      return { fail: true };
+    }
+    if (orderId && total) {
+      return { orderId, total, orderStatus };
+    }
+    return null;
+  }, [location]);
 
   if (!orderData) {
     return (
@@ -19,10 +38,33 @@ const CheckoutSuccess = () => {
           <div className="container">
             <div className="success-content">
               <div className="success-icon">
-                <div className="checkmark">❌</div> {/* ✅ SỬA: Thêm icon */}
+                <div className="checkmark">❌</div>
               </div>
               <h2>Không tìm thấy thông tin đơn hàng</h2>
               <p>Vui lòng thử lại hoặc liên hệ hỗ trợ khách hàng.</p>
+              <button onClick={() => navigate('/')} className="btn-home">
+                Về trang chủ
+              </button>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (orderData.fail) {
+    return (
+      <>
+        <Header />
+        <div className="success-page">
+          <div className="container">
+            <div className="success-content">
+              <div className="success-icon">
+                <div className="checkmark">❌</div>
+              </div>
+              <h2>Thanh toán thất bại</h2>
+              <p>Đơn hàng của bạn chưa được thanh toán thành công. Vui lòng thử lại hoặc liên hệ hỗ trợ khách hàng.</p>
               <button onClick={() => navigate('/')} className="btn-home">
                 Về trang chủ
               </button>
@@ -43,10 +85,10 @@ const CheckoutSuccess = () => {
             <div className="success-icon">
               <div className="checkmark">✓</div>
             </div>
-            
+
             <h1>Đặt hàng thành công!</h1>
             <p className="success-message">
-              Cảm ơn bạn đã đặt hàng tại <strong>HavanaBook</strong>. 
+              Cảm ơn bạn đã đặt hàng tại <strong>HavanaBook</strong>.
               Chúng tôi sẽ liên hệ với bạn trong vòng <strong>24 giờ</strong> để xác nhận đơn hàng.
             </p>
 
@@ -72,14 +114,14 @@ const CheckoutSuccess = () => {
             </div>
 
             <div className="success-actions">
-              <button 
-                onClick={() => navigate('/customer/orders')} 
+              <button
+                onClick={() => navigate('/customer/orders')}
                 className="btn-orders"
               >
                 Xem đơn hàng của tôi
               </button>
-              <button 
-                onClick={() => navigate('/')} 
+              <button
+                onClick={() => navigate('/')}
                 className="btn-continue"
               >
                 Tiếp tục mua sắm

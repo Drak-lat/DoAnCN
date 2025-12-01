@@ -5,7 +5,8 @@ import Header from '../../../components/Header/Header';
 import Footer from '../../../components/Footer/Footer';
 import { formatPrice, getImageUrl } from '../../../services/homeService';
 // ✅ SỬA: Import từ service đúng
-import { createDirectOrder, createOrderFromCart } from '../../../services/orderCustomerService';
+import { createDirectOrder, createOrderFromCart, createVnpayPayment } from '../../../services/orderCustomerService';
+import api from '../../../services/api';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -20,7 +21,7 @@ const Checkout = () => {
     payment_method: 'COD',
     note: ''
   });
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -42,7 +43,7 @@ const Checkout = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validation
     if (!orderData.receiver_name.trim()) {
       setError('Vui lòng nhập tên người nhận');
@@ -64,14 +65,54 @@ const Checkout = () => {
       return;
     }
 
+    // Nếu chọn VNPAY thì gọi API lấy link VNPAY và redirect
+    if (orderData.payment_method === 'VNPAY') {
+      try {
+        setLoading(true);
+        setError('');
+        const vnpayRes = await createVnpayPayment(checkoutData.total);
+        if (vnpayRes?.paymentUrl) {
+          window.location.href = vnpayRes.paymentUrl;
+          return;
+        } else {
+          setError('Không tạo được link thanh toán VNPAY');
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        setError(err.message || 'Lỗi khi tạo thanh toán VNPAY');
+        setLoading(false);
+        return;
+      }
+    }
+
+    // Nếu chọn PayPal thì gọi API lấy link PayPal và redirect
+    if (orderData.payment_method === 'PAYPAL') {
+      try {
+        setLoading(true);
+        setError('');
+        const paypalRes = await api.get(`/customer/create_paypal?amount=${checkoutData.total}`);
+        if (paypalRes?.data?.paymentUrl) {
+          window.location.href = paypalRes.data.paymentUrl;
+          return;
+        } else {
+          setError('Không tạo được link thanh toán PayPal');
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        setError(err.message || 'Lỗi khi tạo thanh toán PayPal');
+        setLoading(false);
+        return;
+      }
+    }
+
+    // Xử lý COD như cũ
     try {
       setLoading(true);
       setError('');
-
       let response;
-
       if (checkoutData.type === 'direct') {
-        // Mua ngay từ ProductDetail
         const orderPayload = {
           ...orderData,
           items: checkoutData.items,
@@ -79,7 +120,6 @@ const Checkout = () => {
         };
         response = await createDirectOrder(orderPayload);
       } else if (checkoutData.type === 'cart') {
-        // Mua từ giỏ hàng
         const orderPayload = {
           ...orderData,
           cart_item_ids: checkoutData.cartItemIds || [],
@@ -87,25 +127,21 @@ const Checkout = () => {
         };
         response = await createOrderFromCart(orderPayload);
       }
-      
       if (response?.success) {
-        // Cập nhật cart count nếu mua từ giỏ hàng
         if (checkoutData.type === 'cart') {
           window.dispatchEvent(new CustomEvent('cartUpdated'));
         }
-        
         navigate('/checkout/success', {
           state: {
             orderId: response.data.id_order,
             total: response.data.total,
-            orderStatus: response.data.order_status, // ✅ Đã là "Chờ xác nhận"
+            orderStatus: response.data.order_status,
           }
         });
       } else {
         setError(response?.message || 'Đã có lỗi xảy ra khi đặt hàng');
       }
     } catch (err) {
-      console.error('Checkout error:', err);
       setError(err.message || 'Đã có lỗi xảy ra khi đặt hàng');
     } finally {
       setLoading(false);
@@ -155,7 +191,7 @@ const Checkout = () => {
                   {items.map((item, index) => (
                     <div key={item.id_product || index} className="order-item">
                       <div className="item-image">
-                        <img 
+                        <img
                           src={getImageUrl(item.image_url || item.Product?.image_product)}
                           alt={item.name || item.Product?.name_product}
                           onError={(e) => e.target.src = '/placeholder-book.jpg'}
@@ -174,18 +210,18 @@ const Checkout = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="order-total">
                   <div className="total-row">
                     <span>Tạm tính:</span>
                     <span>{formatPrice(checkoutData.total)}</span>
                   </div>
-                  
+
                   <div className="total-row">
                     <span>Phí vận chuyển:</span>
-                    <span style={{color: '#28a745'}}>Miễn phí</span>
+                    <span style={{ color: '#28a745' }}>Miễn phí</span>
                   </div>
-                  
+
                   <div className="total-row final-total">
                     <span>Tổng cộng:</span>
                     <span>{formatPrice(checkoutData.total)}</span>
@@ -209,7 +245,7 @@ const Checkout = () => {
                         required
                       />
                     </div>
-                    
+
                     <div className="form-group">
                       <label>Số điện thoại *</label>
                       <input
@@ -222,7 +258,7 @@ const Checkout = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="form-group">
                     <label>Địa chỉ nhận hàng *</label>
                     <textarea
@@ -234,7 +270,7 @@ const Checkout = () => {
                       required
                     />
                   </div>
-                  
+
                   <div className="form-group">
                     <label>Phương thức thanh toán</label>
                     <select
@@ -243,10 +279,11 @@ const Checkout = () => {
                       onChange={handleInputChange}
                     >
                       <option value="COD">Thanh toán khi nhận hàng (COD)</option>
-                      <option value="BANK">Chuyển khoản ngân hàng</option>
+                      <option value="PAYPAL">PayPal</option>
+                      <option value="VNPAY">Chuyển khoản ngân hàng</option>
                     </select>
                   </div>
-                  
+
                   <div className="form-group">
                     <label>Ghi chú</label>
                     <textarea
@@ -257,9 +294,9 @@ const Checkout = () => {
                       rows="2"
                     />
                   </div>
-                  
+
                   <div className="checkout-actions">
-                    <button 
+                    <button
                       type="button"
                       onClick={() => navigate(-1)}
                       className="btn-back-checkout"
@@ -267,20 +304,20 @@ const Checkout = () => {
                     >
                       ← Quay lại
                     </button>
-                    
-                    <button 
+
+                    <button
                       type="submit"
                       disabled={loading}
                       className="btn-place-order"
                     >
                       {loading ? (
                         <>
-                          <span style={{marginRight: '8px'}}>⏳</span>
+                          <span style={{ marginRight: '8px' }}>⏳</span>
                           Đang xử lý...
                         </>
                       ) : (
                         <>
-                          <span style={{marginRight: '8px'}}>🛒</span>
+                          <span style={{ marginRight: '8px' }}>🛒</span>
                           Đặt hàng ngay
                         </>
                       )}

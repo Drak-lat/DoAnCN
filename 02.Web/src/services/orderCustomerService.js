@@ -1,4 +1,18 @@
+
 import api from './api';
+
+// Tạo link thanh toán VNPAY
+export const createVnpayPayment = async (amount, bankCode = '') => {
+  try {
+    let url = `/create_payment?amount=${amount}`;
+    if (bankCode) url += `&bankCode=${bankCode}`;
+    const response = await api.get(url);
+    return response.data;
+  } catch (error) {
+    console.error('❌ createVnpayPayment error:', error);
+    throw error.response?.data || { message: 'Lỗi kết nối VNPAY' };
+  }
+};
 
 function authHeader() {
   const token = localStorage.getItem('token');
@@ -82,3 +96,4 @@ export const confirmOrderReceived = async (orderId) => {
     throw error.response?.data || { message: 'Lỗi kết nối' };
   }
 };
+

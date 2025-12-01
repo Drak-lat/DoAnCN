@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 const { authenticateToken, checkCustomerRole } = require('../middlewares/auth.middleware');
@@ -9,6 +10,8 @@ const cartController = require('../controllers/customer/cartController');
 const orderController = require('../controllers/customer/orderController');
 const feedbackController = require('../controllers/customer/feedbackController');
 const messageController = require('../controllers/customer/messageController');
+const vnpayController = require('../controllers/customer/vnpayController');
+const paypalController = require('../controllers/customer/paypalController');
 
 // Header routes - KHÔNG CẦN ĐĂNG NHẬP
 router.get('/categories', headerCustomerController.getCategories);
@@ -51,4 +54,18 @@ router.get('/my-feedbacks', authenticateToken, checkCustomerRole, feedbackContro
 router.get('/messages', authenticateToken, checkCustomerRole, messageController.getMyMessages);
 router.post('/messages', authenticateToken, checkCustomerRole, messageController.sendMessageToAdmin);
 
+// VNPAY payment route
+router.get('/create_payment', vnpayController.createPayment);
+router.get('/vnpay_return', vnpayController.vnpayReturn);
+
+router.get('/create_paypal', paypalController.createPayment);
+router.get('/paypal_success', paypalController.executePayment);
+router.get('/paypal_cancel', paypalController.cancelPayment);
+router.get('/paypal_payment', paypalController.createPayment);   // alias cho /create_paypal
+
+
+
+
+
 module.exports = router;
+
