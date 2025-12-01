@@ -50,6 +50,20 @@ Feedback.belongsTo(Product, { foreignKey: 'id_product' });
 Login.hasMany(Feedback, { foreignKey: 'id_login' });
 Feedback.belongsTo(Login, { foreignKey: 'id_login' });
 
+// Order - Feedback (1-n)
+Feedback.belongsTo(Order, { foreignKey: 'id_order' });
+Order.hasMany(Feedback, { foreignKey: 'id_order' });
+
+// Feedback associations
+Feedback.belongsTo(Product, { foreignKey: 'id_product' });
+Product.hasMany(Feedback, { foreignKey: 'id_product' });
+
+Feedback.belongsTo(Login, { foreignKey: 'id_login' });
+Login.hasMany(Feedback, { foreignKey: 'id_login' });
+
+Feedback.belongsTo(Order, { foreignKey: 'id_order' });
+Order.hasMany(Feedback, { foreignKey: 'id_order' });
+
 // Login - Message (Sender/Receiver)
 Login.hasMany(Message, { foreignKey: 'id_sender', as: 'SentMessages' });
 Login.hasMany(Message, { foreignKey: 'id_receiver', as: 'ReceivedMessages' });

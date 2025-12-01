@@ -86,26 +86,21 @@ function AdminOrders() {
     });
   };
 
-  const getStatusBadge = (status, type = 'order') => {
-    const statusConfig = {
-      'Chờ xác nhận': { class: 'warning', text: 'Chờ xác nhận' },
-      'Đã xác nhận': { class: 'info', text: 'Đã xác nhận' },
-      'Đang giao': { class: 'primary', text: 'Đang giao' }
+  const getStatusBadge = (status) => {
+    const statusMap = {
+      'Chờ xác nhận': 'pending',
+      'Đã xác nhận': 'confirmed',
+      'Đã giao': 'shipping',
+      'Đã nhận': 'completed'
     };
-
-    const paymentConfig = {
-      'Chưa thanh toán': { class: 'warning', text: 'Chưa thanh toán' },
-      'Đã thanh toán': { class: 'success', text: 'Đã thanh toán' }
-    };
-
-    const config = type === 'order' ? statusConfig[status] : paymentConfig[status];
     
-    // ✅ THÊM: Fallback nếu không tìm thấy status
-    if (!config) {
-      return <span className="badge badge-secondary">{status || 'Không xác định'}</span>;
-    }
+    const className = statusMap[status] || 'default';
     
-    return <span className={`badge badge-${config.class}`}>{config.text}</span>;
+    return (
+      <span className={`badge badge-${className}`}>
+        {status || 'Không xác định'}
+      </span>
+    );
   };
 
   const getPageItems = (totalPages, currentPage, maxButtons = 7) => {
@@ -183,7 +178,7 @@ function AdminOrders() {
               <option value="">Tất cả trạng thái</option>
               <option value="Chờ xác nhận">Chờ xác nhận</option>
               <option value="Đã xác nhận">Đã xác nhận</option>
-              <option value="Đang giao">Đang giao</option>
+              <option value="Đã giao">Đã giao</option>
             </select>
 
             <select

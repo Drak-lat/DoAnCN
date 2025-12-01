@@ -69,3 +69,16 @@ export const cancelOrder = async (orderId) => {
     throw error.response?.data || { message: 'Lỗi kết nối' };
   }
 };
+
+// Xác nhận đơn hàng đã nhận
+export const confirmOrderReceived = async (orderId) => {
+  try {
+    const response = await api.patch(`/customer/orders/${orderId}/confirm-received`, {}, {
+      headers: authHeader()
+    });
+    return response.data;
+  } catch (error) {
+    console.error('❌ confirmOrderReceived error:', error);
+    throw error.response?.data || { message: 'Lỗi kết nối' };
+  }
+};

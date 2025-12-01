@@ -559,6 +559,158 @@
   font-family: 'Montserrat', Arial, sans-serif;
 }
 
+/* Product Feedbacks */
+.product-feedbacks-section {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.product-feedbacks-section h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.feedbacks-summary {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.avg-rating {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.rating-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: #ffc107;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.rating-stars {
+  font-size: 24px;
+  color: #ffc107;
+}
+
+.rating-count {
+  font-size: 16px;
+  color: #666;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.feedbacks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.no-feedbacks {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.feedback-item {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.feedback-header strong {
+  font-size: 16px;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.feedback-rating {
+  color: #ffc107;
+  font-size: 18px;
+}
+
+.feedback-comment {
+  margin: 12px 0;
+  line-height: 1.6;
+  font-size: 14px;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.feedback-date {
+  font-size: 13px;
+  color: #999;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.admin-reply {
+  margin-top: 15px;
+  padding: 15px;
+  background: #e3f2fd;
+  border-left: 4px solid #007bff;
+  border-radius: 8px;
+}
+
+.admin-reply strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #007bff;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.admin-reply p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.reply-date {
+  font-size: 12px;
+  color: #666;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+/* Product Feedbacks - Thêm margin-bottom */
+.product-feedbacks {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 40px; /* ✅ Thêm margin-bottom */
+}
+
+.product-feedbacks h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 25px 0;
+  font-family: 'Montserrat', Arial, sans-serif;
+  text-align: center;
+  position: relative;
+}
+
+.product-feedbacks h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background: #ff8800;
+  border-radius: 1px;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .container {

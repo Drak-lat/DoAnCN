@@ -6,6 +6,7 @@ const productController = require('../controllers/admin/productController');
 const userController = require('../controllers/admin/userController');
 const orderController = require('../controllers/admin/orderController');
 const contactController = require('../controllers/admin/contactController'); // Thêm import
+const feedbackController = require('../controllers/admin/feedbackController'); // Thêm import
 
 // Dashboard routes
 router.get('/dashboard', adminMiddleware, dashboardController.getDashboard);
@@ -47,5 +48,11 @@ router.get('/contacts', adminMiddleware, contactController.getAllContacts);
 router.get('/contacts/statistics', adminMiddleware, contactController.getContactStatistics);
 router.get('/contacts/:id', adminMiddleware, contactController.getContactById);
 router.delete('/contacts/:id', adminMiddleware, contactController.deleteContact);
+
+// Feedback Management routes
+router.get('/feedbacks/products', adminMiddleware, feedbackController.getProductsWithFeedback);
+router.get('/feedbacks/products/:productId', adminMiddleware, feedbackController.getProductFeedbacksAdmin);
+router.patch('/feedbacks/:feedbackId/reply', adminMiddleware, feedbackController.replyFeedback);
+router.delete('/feedbacks/:feedbackId', adminMiddleware, feedbackController.deleteFeedback);
 
 module.exports = router;

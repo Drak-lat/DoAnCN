@@ -7,6 +7,7 @@ const headerCustomerController = require('../controllers/customer/headerCustomer
 const homeController = require('../controllers/customer/homeController');
 const cartController = require('../controllers/customer/cartController');
 const orderController = require('../controllers/customer/orderController');
+const feedbackController = require('../controllers/customer/feedbackController');
 
 // Header routes - KHÔNG CẦN ĐĂNG NHẬP
 router.get('/categories', headerCustomerController.getCategories);
@@ -34,7 +35,15 @@ router.post('/orders/create-direct', authenticateToken, checkCustomerRole, order
 router.post('/orders/create-from-cart', authenticateToken, checkCustomerRole, orderController.createOrderFromCart);
 router.get('/orders', authenticateToken, checkCustomerRole, orderController.getUserOrders);
 router.get('/orders/:orderId', authenticateToken, checkCustomerRole, orderController.getOrderDetail);
+router.patch('/orders/:orderId/confirm-received', authenticateToken, checkCustomerRole, orderController.confirmReceived);
+
 // ✅ XÓA: Không còn chức năng hủy đơn
 // router.patch('/orders/:orderId/cancel', authenticateToken, checkCustomerRole, orderController.cancelOrder);
+
+// Feedback routes
+router.get('/products/:productId/feedbacks', feedbackController.getProductFeedbacks); // Công khai
+router.get('/my-orders-feedback', authenticateToken, checkCustomerRole, feedbackController.getMyOrdersForFeedback);
+router.post('/feedbacks', authenticateToken, checkCustomerRole, feedbackController.createFeedback);
+router.get('/my-feedbacks', authenticateToken, checkCustomerRole, feedbackController.getMyFeedbacks);
 
 module.exports = router;

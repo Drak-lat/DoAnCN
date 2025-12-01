@@ -199,6 +199,16 @@
   border: 1px solid #f5c6cb;
 }
 
+.badge-shipping {
+  background: #17a2b8;
+  color: white;
+}
+
+.badge-completed {
+  background: #28a745;
+  color: white;
+}
+
 .order-actions {
   display: flex;
   gap: 8px;

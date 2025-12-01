@@ -26,6 +26,9 @@ import Checkout from './pages/Customer/Checkout/Checkout';
 import CheckoutSuccess from './pages/Customer/Checkout/CheckoutSuccess';
 import CustomerOrders from './pages/Customer/Orders/CustomerOrders';
 import CustomerOrderDetail from './pages/Customer/Orders/CustomerOrderDetail';
+import CustomerReviews from './pages/Customer/Reviews/CustomerReviews';
+import AdminFeedback from './pages/Admin/Feedback/AdminFeedback';
+import FeedbackDetail from './pages/Admin/Feedback/FeedbackDetail';
 
 function App() {
   return (
@@ -95,6 +98,18 @@ function App() {
               <AdminContacts />
             </ProtectedRoute>
           } />
+
+          <Route path="/admin/feedback" element={
+            <ProtectedRoute requiredLevel={1}>
+              <AdminFeedback />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/admin/feedback/:productId" element={
+            <ProtectedRoute requiredLevel={1}>
+              <FeedbackDetail />
+            </ProtectedRoute>
+          } />
           
           {/* Customer routes - YÊU CẦU ĐĂNG NHẬP */}
           <Route path="/customer/profile" element={
@@ -123,14 +138,7 @@ function App() {
 
           <Route path="/customer/reviews" element={
             <ProtectedRoute requiredLevel={2}>
-              <>
-                <Header />
-                <div style={{marginTop: '100px', padding: '20px'}}>
-                  <h2>Nhận xét của tôi</h2>
-                  <p>Trang nhận xét sẽ được phát triển sau</p>
-                </div>
-                <Footer />
-              </>
+              <CustomerReviews />
             </ProtectedRoute>
           } />
 

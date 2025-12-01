@@ -401,3 +401,48 @@ exports.getOrderDetail = async (req, res) => {
     });
   }
 }; */
+
+// Khách hàng xác nhận đã nhận hàng
+exports.confirmReceived = async (req, res) => {
+  try {
+    const { id_login } = req.user;
+    const { orderId } = req.params;
+
+    const order = await Order.findOne({
+      where: { 
+        id_order: orderId,
+        id_login 
+      }
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy đơn hàng'
+      });
+    }
+
+    if (order.order_status !== 'Đã giao') {
+      return res.status(400).json({
+        success: false,
+        message: 'Chỉ có thể xác nhận đơn hàng đã giao'
+      });
+    }
+
+    await order.update({
+      order_status: 'Đã nhận'
+    });
+
+    return res.json({
+      success: true,
+      message: 'Xác nhận đã nhận hàng thành công',
+      data: order
+    });
+  } catch (error) {
+    console.error('Confirm received error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Lỗi máy chủ: ' + error.message
+    });
+  }
+};

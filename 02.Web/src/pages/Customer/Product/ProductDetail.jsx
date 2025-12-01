@@ -4,6 +4,7 @@ import Header from '../../../components/Header/Header';
 import Footer from '../../../components/Footer/Footer';
 import { getProductDetail } from '../../../services/homeService';
 import { addToCart } from '../../../services/cartService';
+import { getProductFeedbacks } from '../../../services/feedbackService';
 import { formatPrice, getImageUrl } from '../../../services/homeService';
 import './ProductDetail.css';
 
@@ -12,6 +13,9 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [avgRating, setAvgRating] = useState(0);
+  const [totalFeedbacks, setTotalFeedbacks] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -55,6 +59,27 @@ const ProductDetail = () => {
       return () => clearTimeout(timer);
     }
   }, [message]);
+
+  // Load feedbacks khi có product
+  useEffect(() => {
+    if (product) {
+      loadFeedbacks();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product]);
+
+  const loadFeedbacks = async () => {
+    try {
+      const response = await getProductFeedbacks(id);
+      if (response.success) {
+        setFeedbacks(response.data.feedbacks || []);
+        setAvgRating(response.data.avgRating || 0);
+        setTotalFeedbacks(response.data.totalFeedbacks || 0);
+      }
+    } catch (error) {
+      console.error('Load feedbacks error:', error);
+    }
+  };
 
   const handleQuantityChange = (change) => {
     setQuantity(prev => {
@@ -120,6 +145,10 @@ const ProductDetail = () => {
 
   const handleRelatedProductClick = (productId) => {
     navigate(`/product/${productId}`);
+  };
+
+  const renderStars = (rating) => {
+    return '★'.repeat(rating) + '☆'.repeat(5 - rating);
   };
 
   // Loading và Error states giữ nguyên...
@@ -296,7 +325,7 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          {/* Product Details - giữ nguyên */}
+          {/* Product Details */}
           <div className="product-details">
             <div className="details-section">
               <h2>Thông tin chi tiết</h2>
@@ -357,7 +386,58 @@ const ProductDetail = () => {
             )}
           </div>
 
-          {/* Related Products - giữ nguyên */}
+          {/* ✅ Feedbacks Section - DI CHUYỂN LÊN TRÊN */}
+          <div className="product-feedbacks">
+            <h2>Đánh giá sản phẩm</h2>
+            
+            <div className="feedback-summary">
+              <div className="avg-rating">
+                {renderStars(Math.round(Number(avgRating) || 0))}
+                <span className="rating-text">{(Number(avgRating) || 0).toFixed(1)} / 5</span>
+              </div>
+              <div className="total-feedbacks">
+                {totalFeedbacks} đánh giá
+              </div>
+            </div>
+
+            <div className="feedback-list">
+              {feedbacks.length === 0 ? (
+                <div className="no-feedbacks">
+                  Chưa có đánh giá nào cho sản phẩm này.
+                </div>
+              ) : (
+                feedbacks.map(feedback => (
+                  <div key={feedback.id_feedback} className="feedback-item">
+                    <div className="feedback-header">
+                      <div className="feedback-author">
+                        {feedback.Login?.username || feedback.Login?.Information?.name_information || 'Khách hàng'}
+                      </div>
+                      <div className="feedback-rating">
+                        {renderStars(feedback.rating)}
+                      </div>
+                    </div>
+                    <div className="feedback-content">
+                      {feedback.comment}
+                    </div>
+                    <div className="feedback-date">
+                      {new Date(feedback.created_at).toLocaleDateString('vi-VN')}
+                    </div>
+                    {feedback.admin_reply && (
+                      <div className="admin-reply">
+                        <strong>Phản hồi từ Admin:</strong>
+                        <p>{feedback.admin_reply}</p>
+                        <span className="reply-date">
+                          {new Date(feedback.reply_at).toLocaleDateString('vi-VN')}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Related Products - ĐẶT XUỐNG DƯỚI */}
           {relatedProducts.length > 0 && (
             <div className="related-products">
               <h2>Sản phẩm liên quan</h2>

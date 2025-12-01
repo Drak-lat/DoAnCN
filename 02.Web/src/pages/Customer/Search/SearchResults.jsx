@@ -15,12 +15,7 @@ const SearchResults = () => {
   const [pagination, setPagination] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filters, setFilters] = useState({
-    category: searchParams.get('category') || '',
-    sort: searchParams.get('sort') || 'relevance',
-    minPrice: searchParams.get('minPrice') || '',
-    maxPrice: searchParams.get('maxPrice') || ''
-  });
+  const [sortBy, setSortBy] = useState('relevance'); // ✅ Đổi từ filters thành sortBy
 
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -37,7 +32,7 @@ const SearchResults = () => {
           q: searchQuery,
           page: searchParams.get('page') || 1,
           limit: 12,
-          ...filters
+          sort: sortBy // ✅ Sử dụng sortBy trực tiếp
         };
 
         const response = await searchProducts(params);
@@ -55,14 +50,14 @@ const SearchResults = () => {
     };
 
     fetchSearchResults();
-  }, [searchQuery, searchParams, filters, navigate]);
+  }, [searchQuery, searchParams, sortBy, navigate]); // ✅ Đổi filters thành sortBy
 
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
   };
 
   const handleSortChange = (newSort) => {
-    setFilters(prev => ({ ...prev, sort: newSort }));
+    setSortBy(newSort); // ✅ Đơn giản hóa
   };
 
   if (loading) {
@@ -71,7 +66,7 @@ const SearchResults = () => {
         <Header />
         <div className="search-page">
           <div className="container">
-            <div className="loading">Đang tìm kiếm...</div>
+            <div className="loading">Đang tải...</div>
           </div>
         </div>
         <Footer />
@@ -98,21 +93,28 @@ const SearchResults = () => {
       <Header />
       <div className="search-page">
         <div className="container">
+          {/* ✅ Header giống CategoryProducts */}
           <div className="search-header">
-            <h1>Kết quả tìm kiếm cho: "{searchQuery}"</h1>
+            {/* Breadcrumb */}
+            <div className="breadcrumb">
+              <span onClick={() => navigate('/')} className="breadcrumb-link">Trang chủ</span>
+              <span className="breadcrumb-separator"> › </span>
+              <span className="breadcrumb-current">Kết quả tìm kiếm: "{searchQuery}"</span>
+            </div>
+            
             {pagination && (
               <p className="search-info">
-                Tìm thấy {pagination.totalProducts} sản phẩm
+                {pagination.totalProducts} sản phẩm
               </p>
             )}
           </div>
 
-          {/* Sort options */}
+          {/* ✅ Sort options giống CategoryProducts */}
           <div className="search-controls">
             <div className="sort-options">
               <label>Sắp xếp theo:</label>
               <select 
-                value={filters.sort} 
+                value={sortBy} 
                 onChange={(e) => handleSortChange(e.target.value)}
               >
                 <option value="relevance">Liên quan nhất</option>
@@ -124,8 +126,9 @@ const SearchResults = () => {
             </div>
           </div>
 
+          {/* ✅ No products giống CategoryProducts */}
           {products.length === 0 ? (
-            <div className="no-results">
+            <div className="no-products">
               <h3>Không tìm thấy sản phẩm nào</h3>
               <p>Hãy thử tìm kiếm với từ khóa khác.</p>
             </div>
@@ -159,7 +162,7 @@ const SearchResults = () => {
             </div>
           )}
 
-          {/* Pagination */}
+          {/* ✅ Pagination giống CategoryProducts */}
           {pagination && pagination.totalPages > 1 && (
             <div className="pagination">
               <div className="pagination-info">

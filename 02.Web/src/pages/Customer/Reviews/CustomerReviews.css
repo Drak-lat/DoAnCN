@@ -1,0 +1,279 @@
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.review-order-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.review-order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 15px;
+}
+
+.review-order-header strong {
+  font-size: 16px;
+  color: #222;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.review-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.review-product-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.review-product-item img {
+  width: 60px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.review-product-info {
+  flex: 1;
+}
+
+.review-product-info h4 {
+  font-size: 15px;
+  margin-bottom: 6px;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.review-product-price {
+  color: #D62828;
+  font-weight: 600;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.btn-review {
+  padding: 8px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.btn-review:hover {
+  background: #0056b3;
+}
+
+.badge-reviewed {
+  padding: 6px 12px;
+  background: #d1e7dd;
+  color: #0f5132;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.no-reviews {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.no-reviews-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.no-reviews h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.no-reviews p {
+  color: #666;
+  margin-bottom: 20px;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h3 {
+  font-size: 20px;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #666;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.feedback-product {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.feedback-product img {
+  width: 60px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.feedback-product h4 {
+  font-size: 16px;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.feedback-rating {
+  margin-bottom: 20px;
+}
+
+.feedback-rating label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.star-rating {
+  display: flex;
+  gap: 5px;
+}
+
+.star {
+  font-size: 32px;
+  color: #ddd;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.star.active {
+  color: #ffc107;
+}
+
+.star:hover {
+  transform: scale(1.1);
+}
+
+.feedback-comment label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.feedback-comment textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Montserrat", Arial, sans-serif;
+  resize: vertical;
+}
+
+.feedback-comment textarea:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn-cancel,
+.btn-submit {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.btn-cancel {
+  background: white;
+  border: 2px solid #e0e0e0;
+  color: #666;
+}
+
+.btn-cancel:hover {
+  background: #f8f9fa;
+}
+
+.btn-submit {
+  background: #007bff;
+  border: none;
+  color: white;
+}
+
+.btn-submit:hover {
+  background: #0056b3;
+}
+
+.btn-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

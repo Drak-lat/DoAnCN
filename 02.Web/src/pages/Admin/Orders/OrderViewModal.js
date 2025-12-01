@@ -185,13 +185,14 @@ function OrderViewModal({ order, onClose, onStatusUpdate }) {
                   <div className="form-group">
                     <label>Trạng thái đơn hàng:</label>
                     <select 
-                      value={orderStatus} 
+                      value={orderStatus}
                       onChange={(e) => setOrderStatus(e.target.value)}
                       disabled={updating}
                     >
                       <option value="Chờ xác nhận">Chờ xác nhận</option>
                       <option value="Đã xác nhận">Đã xác nhận</option>
-                      <option value="Đang giao">Đang giao</option>
+                      <option value="Đã giao">Đã giao</option>
+                      <option value="Đã nhận">Đã nhận</option>
                     </select>
                   </div>
                   <div className="form-group">

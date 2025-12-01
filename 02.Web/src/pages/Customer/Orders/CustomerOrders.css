@@ -393,6 +393,24 @@
   color: white;
 }
 
+.btn-confirm-received {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 14px;
+  margin-top: 10px;
+  position: relative; /* ✅ THÊM */
+  z-index: 10; /* ✅ THÊM - Đảm bảo nút ở trên cùng */
+}
+
+.btn-confirm-received:hover {
+  background-color: #218838;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .order-header,

@@ -21,12 +21,12 @@
 
 .search-header {
   margin-bottom: 40px;
-  text-align: center;
-  padding: 40px; /* ✅ SỬA: Tăng padding */
-  background: white;
-  border-radius: 20px; /* ✅ SỬA: Bo tròn nhiều hơn */
-  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1); /* ✅ SỬA: Shadow đẹp hơn */
-  border: 1px solid #f0f0f0; /* ✅ THÊM: Viền nhẹ */
+  text-align: left; /* ✅ ĐỔI từ center thành left */
+  padding: 0; /* ✅ ĐỔI từ 40px thành 0 */
+  background: transparent; /* ✅ ĐỔI từ white thành transparent */
+  border-radius: 0; /* ✅ ĐỔI từ 20px thành 0 */
+  box-shadow: none; /* ✅ ĐỔI từ shadow thành none */
+  border: none; /* ✅ XÓA border */
 }
 
 .search-header h1 {
@@ -40,54 +40,59 @@
 
 .search-info {
   color: #666;
-  font-size: 18px; /* ✅ SỬA: Tăng size */
+  font-size: 18px;
   font-family: "Montserrat", Arial, sans-serif;
-  font-weight: 500; /* ✅ THÊM: Medium weight */
+  font-weight: 500;
 }
 
 .search-controls {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 40px; /* ✅ SỬA: Tăng margin */
-  padding: 25px 30px; /* ✅ SỬA: Tăng padding */
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f0f0f0; /* ✅ THÊM: Viền nhẹ */
+  margin-bottom: 30px; /* ✅ GIẢM từ 40px xuống 30px */
+  padding: 0; /* ✅ ĐỔI từ 25px 30px thành 0 */
+  background: transparent; /* ✅ ĐỔI từ white thành transparent */
+  border-radius: 0; /* ✅ ĐỔI từ 16px thành 0 */
+  box-shadow: none; /* ✅ ĐỔI từ shadow thành none */
+  border: none; /* ✅ XÓA border */
 }
 
 .sort-options {
   display: flex;
   align-items: center;
-  gap: 20px; /* ✅ SỬA: Tăng gap */
+  gap: 15px; /* ✅ GIẢM từ 20px xuống 15px */
+  background: white; /* ✅ THÊM: Nền trắng cho phần sort */
+  padding: 12px 20px; /* ✅ THÊM: Padding vừa phải */
+  border-radius: 12px; /* ✅ THÊM: Bo tròn */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* ✅ THÊM: Shadow nhẹ */
 }
 
 .sort-options label {
-  font-weight: 600; /* ✅ SỬA: Đậm hơn */
+  font-weight: 600;
   color: #333;
-  font-size: 16px; /* ✅ SỬA: Tăng size */
+  font-size: 15px; /* ✅ GIẢM từ 16px xuống 15px */
   font-family: "Montserrat", Arial, sans-serif;
+  white-space: nowrap; /* ✅ THÊM: Không xuống dòng */
 }
 
 .sort-options select {
-  padding: 12px 18px; /* ✅ SỬA: Tăng padding */
+  padding: 10px 16px; /* ✅ GIẢM từ 12px 18px */
   border: 2px solid #e6e6e6;
-  border-radius: 10px; /* ✅ SỬA: Bo tròn nhiều hơn */
+  border-radius: 8px; /* ✅ GIẢM từ 10px xuống 8px */
   background-color: #fafafa;
-  font-size: 15px; /* ✅ SỬA: Tăng size */
+  font-size: 14px; /* ✅ GIẢM từ 15px xuống 14px */
   color: #333;
   cursor: pointer;
   outline: none;
   font-family: "Montserrat", Arial, sans-serif;
   transition: all 0.3s ease;
-  min-width: 180px; /* ✅ THÊM: Width tối thiểu */
+  min-width: 160px; /* ✅ GIẢM từ 180px xuống 160px */
 }
 
 .sort-options select:focus {
   border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15); /* ✅ SỬA: Shadow đậm hơn */
-  background-color: white; /* ✅ THÊM: Background trắng khi focus */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  background-color: white;
 }
 
 .products-grid {
@@ -218,67 +223,59 @@
   transform: translateY(-2px); /* ✅ THÊM: Nâng lên khi hover */
 }
 
-.no-results {
+/* ✅ ĐỔI class name từ .no-results thành .no-products */
+.no-products {
   text-align: center;
-  padding: 100px 40px; /* ✅ SỬA: Tăng padding */
+  padding: 100px 40px;
   background: white;
-  border-radius: 20px; /* ✅ SỬA: Bo tròn nhiều hơn */
-  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.1); /* ✅ SỬA: Shadow đẹp hơn */
-  border: 1px solid #f0f0f0; /* ✅ THÊM: Viền nhẹ */
+  border-radius: 20px;
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f0f0f0;
 }
 
-.no-results h3 {
-  font-size: 28px; /* ✅ SỬA: Tăng size */
+.no-products h3 {
+  font-size: 28px;
   color: #222;
-  margin-bottom: 16px; /* ✅ SỬA: Tăng margin */
-  font-weight: 700; /* ✅ SỬA: Đậm hơn */
+  margin-bottom: 16px;
+  font-weight: 700;
   font-family: "Montserrat", Arial, sans-serif;
 }
 
-.no-results p {
+.no-products p {
   color: #666;
-  font-size: 18px; /* ✅ SỬA: Tăng size */
+  font-size: 18px;
   font-family: "Montserrat", Arial, sans-serif;
-  font-weight: 500; /* ✅ THÊM: Medium weight */
+  font-weight: 500;
 }
 
-.loading,
-.error {
-  text-align: center;
-  padding: 100px 40px; /* ✅ SỬA: Tăng padding */
-  font-size: 20px; /* ✅ SỬA: Tăng size */
-  font-weight: 600; /* ✅ SỬA: Đậm hơn */
-  background: white;
-  border-radius: 20px; /* ✅ SỬA: Bo tròn nhiều hơn */
-  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.1); /* ✅ SỬA: Shadow đẹp hơn */
-  font-family: "Montserrat", Arial, sans-serif;
-  border: 1px solid #f0f0f0; /* ✅ THÊM: Viền nhẹ */
-}
-
-.loading {
-  color: #007bff;
-}
-
-.error {
-  color: #D62828;
-}
-
-.pagination {
+/* ✅ THÊM: Breadcrumb styles - giống CategoryProducts */
+.breadcrumb {
   display: flex;
-  justify-content: center;
-  margin-top: 50px; /* ✅ SỬA: Tăng margin */
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
-.pagination-info {
-  padding: 16px 30px; /* ✅ SỬA: Tăng padding */
-  background: white;
-  border-radius: 30px; /* ✅ SỬA: Bo tròn nhiều hơn */
+.breadcrumb-link {
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  color: #999;
+}
+
+.breadcrumb-current {
   color: #666;
-  font-weight: 600; /* ✅ SỬA: Đậm hơn */
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1); /* ✅ SỬA: Shadow đẹp hơn */
-  font-size: 15px; /* ✅ SỬA: Tăng size */
-  font-family: "Montserrat", Arial, sans-serif;
-  border: 1px solid #f0f0f0; /* ✅ THÊM: Viền nhẹ */
+  font-weight: 600;
 }
 
 /* Responsive */

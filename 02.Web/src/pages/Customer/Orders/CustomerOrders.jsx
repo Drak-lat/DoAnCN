@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/Header/Header';
 import Footer from '../../../components/Footer/Footer';
-import { getUserOrders } from '../../../services/orderCustomerService';
+import { getUserOrders, confirmOrderReceived } from '../../../services/orderCustomerService';
 import { formatPrice } from '../../../services/homeService';
 import './CustomerOrders.css';
 
@@ -11,6 +11,7 @@ const CustomerOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     fetchOrders();
@@ -57,6 +58,20 @@ const CustomerOrders = () => {
     navigate('/login');
   };
 
+  const handleConfirmReceived = async (orderId) => {
+    if (!window.confirm('Xác nhận bạn đã nhận được hàng?')) return;
+    
+    try {
+      const response = await confirmOrderReceived(orderId);
+      if (response.success) {
+        setMessage({ type: 'success', text: 'Xác nhận đã nhận hàng thành công!' });
+        fetchOrders(); // Reload orders
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: error.message || 'Lỗi xác nhận đơn hàng' });
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -84,6 +99,11 @@ const CustomerOrders = () => {
           {error && (
             <div className="customer-message error-message">
               {error}
+            </div>
+          )}
+          {message && (
+            <div className={`customer-message ${message.type}-message`}>
+              {message.text}
             </div>
           )}
 
@@ -170,6 +190,18 @@ const CustomerOrders = () => {
                         Xem chi tiết →
                       </button>
                     </div>
+
+                    {order.order_status === 'Đã giao' && (
+                      <button 
+                        className="btn-confirm-received"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleConfirmReceived(order.id_order);
+                        }}
+                      >
+                        Đã nhận hàng
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
