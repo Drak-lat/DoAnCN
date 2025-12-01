@@ -12,12 +12,12 @@ import AdminProfile from './pages/Admin/Profile/AdminProfile';
 import AdminChangePassword from './pages/Admin/Profile/AdminChangePassword';
 import CustomerProfile from './pages/Customer/Profile/CustomerProfile';
 import CustomerChangePassword from './pages/Customer/Profile/CustomerChangePassword';
+import Home from './pages/Shared/Home/Home';
+import Contact from './pages/Shared/Contact/Contact';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import AdminUsers from './pages/Admin/Users/AdminUsers';
 import AdminOrders from './pages/Admin/Orders/AdminOrders';
 import AdminContacts from './pages/Admin/Contacts/AdminContacts';
-import Contact from './pages/Shared/Contact/Contact';
-import Home from './pages/Shared/Home/Home';
 import CategoryProducts from './pages/Customer/Category/CategoryProducts';
 import SearchResults from './pages/Customer/Search/SearchResults';
 import ProductDetail from './pages/Customer/Product/ProductDetail';
@@ -29,6 +29,8 @@ import CustomerOrderDetail from './pages/Customer/Orders/CustomerOrderDetail';
 import CustomerReviews from './pages/Customer/Reviews/CustomerReviews';
 import AdminFeedback from './pages/Admin/Feedback/AdminFeedback';
 import FeedbackDetail from './pages/Admin/Feedback/FeedbackDetail';
+import CustomerMessages from './pages/Customer/Messages/CustomerMessages'; // ✅ THÊM
+import AdminMessages from './pages/Admin/Messages/AdminMessages'; // ✅ THÊM
 
 function App() {
   return (
@@ -110,6 +112,13 @@ function App() {
               <FeedbackDetail />
             </ProtectedRoute>
           } />
+
+          {/* ✅ THÊM: Admin Messages */}
+          <Route path="/admin/messages" element={
+            <ProtectedRoute requiredLevel={1}>
+              <AdminMessages />
+            </ProtectedRoute>
+          } />
           
           {/* Customer routes - YÊU CẦU ĐĂNG NHẬP */}
           <Route path="/customer/profile" element={
@@ -142,16 +151,10 @@ function App() {
             </ProtectedRoute>
           } />
 
+          {/* ✅ SỬA: Customer Messages - Route đúng */}
           <Route path="/messages" element={
             <ProtectedRoute requiredLevel={2}>
-              <>
-                <Header />
-                <div style={{marginTop: '100px', padding: '20px', minHeight: '60vh'}}>
-                  <h2>Tin nhắn</h2>
-                  <p>Trang tin nhắn sẽ được phát triển sau</p>
-                </div>
-                <Footer />
-              </>
+              <CustomerMessages />
             </ProtectedRoute>
           } />
 
@@ -166,7 +169,7 @@ function App() {
             </ProtectedRoute>
           } />
           
-          {/* ✅ SỬA: Cart route - Đường dẫn đúng */}
+          {/* Cart route */}
           <Route path="/cart" element={
             <ProtectedRoute requiredLevel={2}>
               <Cart />

@@ -59,46 +59,48 @@ function AdminFeedback() {
       <div className="admin-main">
         <AdminHeader title="Quản lý phản hồi" />
         <div className="admin-content">
-          <div className="content-header">
-            <form onSubmit={handleSearch} className="search-form">
-              <input
-                type="text"
-                placeholder="Tìm kiếm sản phẩm..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="search-input"
-              />
-              <button type="submit" className="btn-search">Tìm kiếm</button>
-            </form>
-          </div>
+          <div className="feedback-page">
+            <div className="content-header">
+              <form onSubmit={handleSearch} className="search-form">
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm sản phẩm..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="search-input"
+                />
+                <button type="submit" className="btn-search">Tìm kiếm</button>
+              </form>
+            </div>
 
-          <div className="feedback-products-grid">
-            {products.length === 0 ? (
-              <div className="no-data">Không có sản phẩm nào có đánh giá</div>
-            ) : (
-              products.map(product => (
-                <div key={product.id_product} className="feedback-product-card">
-                  <img
-                    src={getImageUrl(product.image_product)}
-                    alt={product.name_product}
-                    onError={(e) => e.target.src = '/placeholder-book.jpg'}
-                  />
-                  <div className="feedback-product-info">
-                    <h3>{product.name_product}</h3>
-                    <div className="feedback-stats">
-                      <span className="rating">⭐ {product.avgRating}</span>
-                      <span className="count">{product.feedbackCount} đánh giá</span>
+            <div className="feedback-products-grid">
+              {products.length === 0 ? (
+                <div className="no-data">Không có sản phẩm nào có đánh giá</div>
+              ) : (
+                products.map(product => (
+                  <div key={product.id_product} className="feedback-product-card">
+                    <img
+                      src={getImageUrl(product.image_product)}
+                      alt={product.name_product}
+                      onError={(e) => e.target.src = '/placeholder-book.jpg'}
+                    />
+                    <div className="feedback-product-info">
+                      <h3>{product.name_product}</h3>
+                      <div className="feedback-stats">
+                        <span className="rating">⭐ {product.avgRating}</span>
+                        <span className="count">{product.feedbackCount} đánh giá</span>
+                      </div>
+                      <button
+                        onClick={() => handleViewFeedbacks(product.id_product)}
+                        className="btn-view-feedbacks"
+                      >
+                        Xem đánh giá
+                      </button>
                     </div>
-                    <button
-                      onClick={() => handleViewFeedbacks(product.id_product)}
-                      className="btn-view-feedbacks"
-                    >
-                      Xem đánh giá
-                    </button>
                   </div>
-                </div>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>

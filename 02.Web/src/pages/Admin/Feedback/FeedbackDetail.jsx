@@ -112,63 +112,65 @@ function FeedbackDetail() {
       <div className="admin-main">
         <AdminHeader title="Chi tiết đánh giá" />
         <div className="admin-content">
-          <div className="content-header">
-            <button onClick={() => navigate('/admin/feedback')} className="btn-back">
-              ← Quay lại
-            </button>
-          </div>
-
-          {message.text && (
-            <div className={`alert alert-${message.type}`}>
-              {message.text}
+          <div className="feedback-detail-page">
+            <div className="content-header">
+              <button onClick={() => navigate('/admin/feedback')} className="btn-back">
+                ← Quay lại
+              </button>
             </div>
-          )}
 
-          {feedbacks.length === 0 ? (
-            <div className="no-data">Chưa có đánh giá nào</div>
-          ) : (
-            <div className="feedbacks-list">
-              {feedbacks.map(feedback => (
-                <div key={feedback.id_feedback} className="feedback-item">
-                  <div className="feedback-header">
-                    <div className="feedback-user">
-                      <strong>{feedback.Login?.username || feedback.Login?.Information?.name_information || 'Khách hàng'}</strong>
-                      <span className="feedback-rating">{renderStars(feedback.rating)}</span>
-                    </div>
-                    <span className="feedback-date">
-                      {new Date(feedback.created_at).toLocaleDateString('vi-VN')}
-                    </span>
-                  </div>
-                  <div className="feedback-comment">
-                    {feedback.comment}
-                  </div>
-                  {feedback.admin_reply && (
-                    <div className="admin-reply-box">
-                      <strong>Phản hồi của Admin:</strong>
-                      <p>{feedback.admin_reply}</p>
-                      <span className="reply-date">
-                        {new Date(feedback.reply_at).toLocaleDateString('vi-VN')}
+            {message.text && (
+              <div className={`alert alert-${message.type}`}>
+                {message.text}
+              </div>
+            )}
+
+            {feedbacks.length === 0 ? (
+              <div className="no-data">Chưa có đánh giá nào</div>
+            ) : (
+              <div className="feedbacks-list">
+                {feedbacks.map(feedback => (
+                  <div key={feedback.id_feedback} className="feedback-item">
+                    <div className="feedback-header">
+                      <div className="feedback-user">
+                        <strong>{feedback.Login?.username || feedback.Login?.Information?.name_information || 'Khách hàng'}</strong>
+                        <span className="feedback-rating">{renderStars(feedback.rating)}</span>
+                      </div>
+                      <span className="feedback-date">
+                        {new Date(feedback.created_at).toLocaleDateString('vi-VN')}
                       </span>
                     </div>
-                  )}
-                  <div className="feedback-actions">
-                    <button
-                      onClick={() => handleOpenReply(feedback)}
-                      className="btn-reply"
-                    >
-                      {feedback.admin_reply ? 'Sửa phản hồi' : 'Phản hồi'}
-                    </button>
-                    <button
-                      onClick={() => handleDeleteFeedback(feedback.id_feedback)}
-                      className="btn-delete"
-                    >
-                      Xóa
-                    </button>
+                    <div className="feedback-comment">
+                      {feedback.comment}
+                    </div>
+                    {feedback.admin_reply && (
+                      <div className="admin-reply-box">
+                        <strong>Phản hồi của Admin:</strong>
+                        <p>{feedback.admin_reply}</p>
+                        <span className="reply-date">
+                          {new Date(feedback.reply_at).toLocaleDateString('vi-VN')}
+                        </span>
+                      </div>
+                    )}
+                    <div className="feedback-actions">
+                      <button
+                        onClick={() => handleOpenReply(feedback)}
+                        className="btn-reply"
+                      >
+                        {feedback.admin_reply ? 'Sửa phản hồi' : 'Phản hồi'}
+                      </button>
+                      <button
+                        onClick={() => handleDeleteFeedback(feedback.id_feedback)}
+                        className="btn-delete"
+                      >
+                        Xóa
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

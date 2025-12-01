@@ -11,19 +11,20 @@
   margin-bottom: 30px;
   background: white;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .products-header h1 {
-  color: #2c3e50;
+  color: #111827;
   margin: 0;
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 .btn-add-product {
-  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -34,27 +35,28 @@
   gap: 8px;
   font-weight: 600;
   font-size: 14px;
+  font-family: "Montserrat", Arial, sans-serif;
   transition: all 0.3s;
-  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .btn-add-product:hover {
-  background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 /* Message */
 .message {
-  padding: 15px 20px;
-  border-radius: 8px;
+  padding: 16px 20px;
+  border-radius: 10px;
   margin-bottom: 20px;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   animation: slideDown 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 @keyframes slideDown {
@@ -69,27 +71,26 @@
 }
 
 .message.success {
-  background: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-  border-left: 4px solid #28a745;
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #065f46;
+  border-left: 4px solid #10b981;
 }
 
 .message.error {
-  background: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-  border-left: 4px solid #dc3545;
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #991b1b;
+  border-left: 4px solid #ef4444;
 }
 
 .message button {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
   color: inherit;
-  padding: 0 5px;
+  padding: 0 8px;
   transition: opacity 0.3s;
+  line-height: 1;
 }
 
 .message button:hover {
@@ -100,8 +101,8 @@
 .products-filters {
   background: white;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   margin-bottom: 20px;
   display: flex;
   gap: 20px;
@@ -116,63 +117,76 @@
 
 .search-input-group {
   display: flex;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
   overflow: hidden;
-  transition: border-color 0.3s;
+  transition: all 0.3s;
 }
 
 .search-input-group:focus-within {
-  border-color: #3498db;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
 }
 
 .search-input-group input {
   flex: 1;
-  padding: 12px 15px;
+  padding: 12px 16px;
   border: none;
   outline: none;
   font-size: 14px;
+  font-family: "Montserrat", Arial, sans-serif;
+  background: #f9fafb;
+}
+
+.search-input-group input:focus {
+  background: white;
 }
 
 .search-input-group button {
-  background: #3498db;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  padding: 0 20px;
+  padding: 0 24px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s;
+  font-size: 16px;
 }
 
 .search-input-group button:hover {
-  background: #2980b9;
+  opacity: 0.9;
 }
 
 .filter-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  color: #6b7280;
 }
 
 .filter-group select {
-  padding: 10px 15px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
   outline: none;
   font-size: 14px;
+  font-family: "Montserrat", Arial, sans-serif;
   cursor: pointer;
   min-width: 200px;
-  transition: border-color 0.3s;
+  transition: all 0.3s;
+  background: #f9fafb;
 }
 
 .filter-group select:focus {
-  border-color: #3498db;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
 }
 
 /* Table */
 .products-table-container {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   overflow: hidden;
   margin-bottom: 20px;
 }
@@ -183,33 +197,37 @@
 }
 
 .products-table th {
-  background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 15px;
+  padding: 16px;
   text-align: left;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 .products-table td {
-  padding: 15px;
-  border-bottom: 1px solid #ecf0f1;
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
   vertical-align: middle;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 14px;
+  color: #374151;
 }
 
 .products-table tbody tr {
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .products-table tbody tr:hover {
-  background: #f8f9fa;
+  background: #f9fafb;
 }
 
 .product-name {
-  font-weight: 500;
-  color: #2c3e50;
+  font-weight: 600;
+  color: #111827;
   max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -217,14 +235,15 @@
 }
 
 .product-price {
-  color: #e74c3c;
+  color: #ef4444;
   font-weight: 700;
   font-size: 15px;
 }
 
 .product-quantity {
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
+  color: #6b7280;
 }
 
 .product-actions {
@@ -236,31 +255,50 @@
 .btn-action {
   width: 36px;
   height: 36px;
-  border: none;
+  border: 2px solid #e5e7eb;
+  background: white;
   border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   transition: all 0.3s;
+  font-size: 14px;
 }
 
 .btn-action:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .btn-view {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.btn-view:hover {
+  background: #3b82f6;
+  color: white;
 }
 
 .btn-edit {
-  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+.btn-edit:hover {
+  background: #8b5cf6;
+  color: white;
 }
 
 .btn-delete {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.btn-delete:hover {
+  background: #ef4444;
+  color: white;
 }
 
 /* Pagination */
@@ -270,36 +308,37 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 20px;
   padding: 20px;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .pagination button {
   padding: 10px 16px;
-  border: 2px solid #ddd;
+  border: 2px solid #e5e7eb;
   background: white;
   cursor: pointer;
-  border-radius: 6px;
-  font-weight: 500;
+  border-radius: 8px;
+  font-weight: 600;
+  font-family: "Montserrat", Arial, sans-serif;
   transition: all 0.3s;
   min-width: 40px;
+  color: #6b7280;
 }
 
 .pagination button:hover:not(:disabled) {
-  background: #3498db;
+  background: #667eea;
   color: white;
-  border-color: #3498db;
+  border-color: #667eea;
   transform: translateY(-2px);
 }
 
 .pagination button.active {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  border-color: #3498db;
-  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+  border-color: #667eea;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .pagination button:disabled {
@@ -310,16 +349,17 @@
 
 .pagination-ellipsis {
   padding: 8px 12px;
-  color: #7f8c8d;
+  color: #9ca3af;
   font-weight: 600;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 .loading, .no-data {
   text-align: center;
   padding: 60px 20px;
-  color: #7f8c8d;
+  color: #9ca3af;
   font-size: 16px;
-  font-style: italic;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 /* Responsive */

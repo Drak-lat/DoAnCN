@@ -8,6 +8,7 @@ const homeController = require('../controllers/customer/homeController');
 const cartController = require('../controllers/customer/cartController');
 const orderController = require('../controllers/customer/orderController');
 const feedbackController = require('../controllers/customer/feedbackController');
+const messageController = require('../controllers/customer/messageController');
 
 // Header routes - KHÔNG CẦN ĐĂNG NHẬP
 router.get('/categories', headerCustomerController.getCategories);
@@ -45,5 +46,9 @@ router.get('/products/:productId/feedbacks', feedbackController.getProductFeedba
 router.get('/my-orders-feedback', authenticateToken, checkCustomerRole, feedbackController.getMyOrdersForFeedback);
 router.post('/feedbacks', authenticateToken, checkCustomerRole, feedbackController.createFeedback);
 router.get('/my-feedbacks', authenticateToken, checkCustomerRole, feedbackController.getMyFeedbacks);
+
+// Message routes
+router.get('/messages', authenticateToken, checkCustomerRole, messageController.getMyMessages);
+router.post('/messages', authenticateToken, checkCustomerRole, messageController.sendMessageToAdmin);
 
 module.exports = router;

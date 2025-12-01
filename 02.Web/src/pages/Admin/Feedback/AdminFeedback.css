@@ -1,5 +1,16 @@
 /* AdminFeedback.css - Theo style AdminOrders */
 
+/* Full-width layout override */
+.admin-content {
+  padding: 0 !important;
+}
+
+.feedback-page {
+  padding: 20px;
+  margin: 0;
+  width: 100%;
+}
+
 .content-header {
   background: white;
   padding: 20px;
