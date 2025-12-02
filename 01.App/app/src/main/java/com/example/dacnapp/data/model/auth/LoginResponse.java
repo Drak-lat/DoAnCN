@@ -1,4 +1,4 @@
-package com.example.dacnapp.data.model;
+package com.example.dacnapp.data.model.auth;
 
 public class LoginResponse {
     public boolean success;

@@ -8,12 +8,12 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.dacnapp.R;
-import com.example.dacnapp.data.model.LoginResponse;
+import com.example.dacnapp.data.model.auth.LoginResponse;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edtPhone, edtEmail, edtPassword;
     private Button btnLogin;
-    private TextView tvMsg, btnGoToRegister, tvLoginTypeNote;
+    private TextView tvMsg, btnGoToRegister, tvLoginTypeNote, tvForgotPassword;
     private LoginViewModel viewModel;
     // trạng thái loginType: true = phone, false = email
     private boolean isPhoneLogin = true;
@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         tvMsg = findViewById(R.id.tvMsg);
         btnGoToRegister = findViewById(R.id.btnGoToRegister);
         tvLoginTypeNote = findViewById(R.id.tvLoginTypeNote);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
@@ -96,6 +97,9 @@ public class LoginActivity extends AppCompatActivity {
 
         btnGoToRegister.setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
+        });
+        tvForgotPassword.setOnClickListener(v -> {
+            startActivity(new Intent(this, ForgotPasswordActivity.class));
         });
     }
 }
