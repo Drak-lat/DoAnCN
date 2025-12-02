@@ -56,6 +56,15 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        // Support button handler  
+        LinearLayout supportLayout = findViewById(R.id.supportLayout);
+        if (supportLayout != null) {
+            supportLayout.setOnClickListener(v -> {
+                Intent intent = new Intent(RegisterActivity.this, com.example.dacnapp.ui.contact.ContactActivity.class);
+                startActivity(intent);
+            });
+        }
+
         btnGoToLogin.setOnClickListener(v -> {
             startActivity(new Intent(this, LoginActivity.class));
             finish();

@@ -82,7 +82,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.user != null && response.user.id_level == 2) {
                     tvMsg.setText("Đăng nhập thành công!");
                     getSharedPreferences("auth", MODE_PRIVATE)
-                            .edit().putString("token", response.token).apply();
+                            .edit()
+                            .putString("token", response.token)
+                            .putInt("id_login", response.user.id_login)
+                            .apply();
                     startActivity(new Intent(this, com.example.dacnapp.MainActivity.class));
                     finish();
                 } else {
@@ -98,8 +101,18 @@ public class LoginActivity extends AppCompatActivity {
         btnGoToRegister.setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
         });
+        
         tvForgotPassword.setOnClickListener(v -> {
             startActivity(new Intent(this, ForgotPasswordActivity.class));
         });
+
+        // Support button handler
+        LinearLayout supportLayout = findViewById(R.id.supportLayout);
+        if (supportLayout != null) {
+            supportLayout.setOnClickListener(v -> {
+                Intent intent = new Intent(LoginActivity.this, com.example.dacnapp.ui.contact.ContactActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 }

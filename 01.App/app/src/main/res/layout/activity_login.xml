@@ -12,11 +12,15 @@
         android:layout_height="108dp">
 
         <LinearLayout
+            android:id="@+id/supportLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:padding="18dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
 
             <ImageView
                 android:layout_width="54dp"

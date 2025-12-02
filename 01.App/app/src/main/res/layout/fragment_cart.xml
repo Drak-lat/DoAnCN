@@ -5,71 +5,65 @@
     android:orientation="vertical"
     android:background="#FAF8F3">
 
-
-    <!-- Messages List -->
+    <!-- Content -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMessages"
+            android:id="@+id/rvCart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp"
-            android:clipToPadding="false"/>
+            android:clipToPadding="false" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Chưa có tin nhắn nào\nHãy gửi tin nhắn đầu tiên cho chúng tôi!"
+            android:text="Giỏ hàng trống"
             android:textSize="15sp"
             android:textColor="#999999"
-            android:gravity="center"
-            android:fontFamily="@font/quicksand_regular"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </FrameLayout>
 
-    <!-- Input Area -->
+    <!-- Bottom bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:background="#FFFFFF"
-        android:padding="12dp"
-        android:elevation="8dp">
+        android:padding="16dp"
+        android:elevation="4dp">
 
-        <EditText
-            android:id="@+id/edtMessage"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tvTotalAmount"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/input_bg"
-            android:hint="Nhập tin nhắn..."
-            android:padding="12dp"
-            android:fontFamily="@font/quicksand_regular"
-            android:maxLines="4"
-            android:inputType="textMultiLine|textCapSentences"/>
+            android:text="Tổng: 0 đ"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#D32F2F"
+            android:gravity="end"
+            android:layout_marginBottom="12dp" />
 
         <Button
-            android:id="@+id/btnSend"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnCheckout"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Gửi"
+            android:text="Thanh Toán"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:fontFamily="@font/quicksand_regular"
-            android:background="@drawable/button_bg"
-            android:layout_marginStart="8dp"
-            android:paddingHorizontal="20dp"/>
+            android:background="@drawable/button_primary_bg"
+            android:enabled="false" />
     </LinearLayout>
 </LinearLayout>

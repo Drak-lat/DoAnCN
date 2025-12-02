@@ -255,7 +255,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="Đánh Giá"
+            android:text="Thêm vào giỏ"
             android:textSize="15sp"
             android:textColor="#FF8800"
             android:textStyle="bold"
