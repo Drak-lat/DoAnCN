@@ -3,7 +3,7 @@ package com.example.dacnapp.ui.auth;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.dacnapp.data.model.LoginResponse;
+import com.example.dacnapp.data.model.auth.LoginResponse;
 import com.example.dacnapp.data.repository.AuthRepository;
 import retrofit2.Call;
 import retrofit2.Callback;

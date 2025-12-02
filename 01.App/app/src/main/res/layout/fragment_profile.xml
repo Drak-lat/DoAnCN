@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F2EC">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Xin chào user (Click to view profile details) -->
+        <LinearLayout
+            android:id="@+id/btnViewProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/profile_item_bg"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <!-- Icon user -->
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_account"
+                android:background="@drawable/circle_bg"
+                android:padding="12dp"/>
+
+            <TextView
+                android:id="@+id/tvWelcome"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Xin Chào"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#111"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="12dp"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_right"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+        <!-- Xem Lịch Sử Mua Hàng -->
+        <LinearLayout
+            android:id="@+id/btnOrders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/profile_item_bg"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Xem Lịch Sử Mua Hàng"
+                android:textSize="15sp"
+                android:textColor="#111"
+                android:layout_gravity="center_vertical"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_right"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+        <!-- Xem Đánh Giá Sách -->
+        <LinearLayout
+            android:id="@+id/btnReviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/profile_item_bg"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Xem Đánh Giá Sách"
+                android:textSize="15sp"
+                android:textColor="#111"
+                android:layout_gravity="center_vertical"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_right"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+        <!-- Bạn Có Thể Thích (Title) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn Có Thể Thích"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#111"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Recommended products RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecommended"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</ScrollView>

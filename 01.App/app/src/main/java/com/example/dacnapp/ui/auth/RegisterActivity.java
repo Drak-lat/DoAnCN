@@ -56,6 +56,15 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        // Support button handler  
+        LinearLayout supportLayout = findViewById(R.id.supportLayout);
+        if (supportLayout != null) {
+            supportLayout.setOnClickListener(v -> {
+                Intent intent = new Intent(RegisterActivity.this, com.example.dacnapp.ui.contact.ContactActivity.class);
+                startActivity(intent);
+            });
+        }
+
         btnGoToLogin.setOnClickListener(v -> {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -72,21 +81,48 @@ public class RegisterActivity extends AppCompatActivity {
                 tvMsg.setText("Vui lòng nhập tên đăng nhập");
                 return;
             }
+            
+            // ✅ THÊM: Validate mật khẩu
             if (TextUtils.isEmpty(password)) {
                 tvMsg.setText("Vui lòng nhập mật khẩu");
                 return;
             }
+            if (password.length() < 10) {
+                tvMsg.setText("Mật khẩu phải có ít nhất 10 ký tự!");
+                return;
+            }
+            if (!password.matches(".*[A-Za-z].*") || !password.matches(".*[0-9].*")) {
+                tvMsg.setText("Mật khẩu phải có cả chữ và số!");
+                return;
+            }
+            
             if (TextUtils.isEmpty(rePassword) || !password.equals(rePassword)) {
                 tvMsg.setText("Mật khẩu nhập lại không khớp");
                 return;
             }
-            if (isPhoneRegister && TextUtils.isEmpty(phone)) {
-                tvMsg.setText("Vui lòng nhập số điện thoại");
-                return;
+            
+            // ✅ THÊM: Validate SĐT
+            if (isPhoneRegister) {
+                if (TextUtils.isEmpty(phone)) {
+                    tvMsg.setText("Vui lòng nhập số điện thoại");
+                    return;
+                }
+                if (!phone.matches("^0\\d{9}$")) {
+                    tvMsg.setText("SĐT phải bắt đầu bằng 0 và có 10 số!");
+                    return;
+                }
             }
-            if (!isPhoneRegister && TextUtils.isEmpty(email)) {
-                tvMsg.setText("Vui lòng nhập email");
-                return;
+            
+            // ✅ THÊM: Validate Email
+            if (!isPhoneRegister) {
+                if (TextUtils.isEmpty(email)) {
+                    tvMsg.setText("Vui lòng nhập email");
+                    return;
+                }
+                if (!email.matches("^[^\\s@]+@gmail\\.com$")) {
+                    tvMsg.setText("Email phải là Gmail!");
+                    return;
+                }
             }
 
             viewModel.register(username, password, phone, email);

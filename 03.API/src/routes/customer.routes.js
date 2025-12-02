@@ -4,18 +4,20 @@ const router = express.Router();
 const { authenticateToken, checkCustomerRole } = require('../middlewares/auth.middleware');
 
 // Import controllers
-const registerController = require('../controllers/customer/registerController'); // ✅ THÊM
+const registerController = require('../controllers/customer/registerController');
 const headerCustomerController = require('../controllers/customer/headerCustomerController');
 const homeController = require('../controllers/customer/homeController');
 const cartController = require('../controllers/customer/cartController');
 const orderController = require('../controllers/customer/orderController');
 const feedbackController = require('../controllers/customer/feedbackController');
 const messageController = require('../controllers/customer/messageController');
-const vnpayController = require('../controllers/customer/vnpayController');
 const paypalController = require('../controllers/customer/paypalController');
 
-// ✅ THÊM: Register route - KHÔNG CẦN ĐĂNG NHẬP
+// Register route - KHÔNG CẦN ĐĂNG NHẬP
 router.post('/register', registerController.register);
+
+// Contact route - KHÔNG CẦN ĐĂNG NHẬP (khách hàng gửi liên hệ)
+router.post('/contact', contactController.createContact); // ⭐ THÊM
 
 // Header routes - KHÔNG CẦN ĐĂNG NHẬP
 router.get('/categories', headerCustomerController.getCategories);

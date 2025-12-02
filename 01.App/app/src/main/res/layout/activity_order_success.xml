@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FAF8F3"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <!-- Success Icon -->
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="✓"
+        android:textSize="72sp"
+        android:textColor="#4CAF50"
+        android:gravity="center"
+        android:background="@drawable/circle_success_bg"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đặt hàng thành công!"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#111"
+        android:fontFamily="@font/quicksand_regular"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cảm ơn bạn đã đặt hàng tại HavanaBook"
+        android:textSize="14sp"
+        android:textColor="#666"
+        android:fontFamily="@font/quicksand_regular"
+        android:gravity="center"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- Order Info Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:elevation="2dp"
+        android:radius="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tvOrderId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mã đơn hàng: #12345"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#111"
+                android:fontFamily="@font/quicksand_regular"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvOrderStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trạng thái: Chờ xác nhận"
+                android:textSize="14sp"
+                android:textColor="#FF8800"
+                android:fontFamily="@font/quicksand_regular"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tổng tiền: 0 đ"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#D32F2F"
+                android:fontFamily="@font/quicksand_regular"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EEEEEE"
+                android:layout_marginVertical="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="📞 Hỗ trợ: 1900-xxxx"
+                android:textSize="13sp"
+                android:textColor="#666"
+                android:fontFamily="@font/quicksand_regular"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="💡 Lưu ý: Vui lòng giữ máy để nhân viên có thể liên hệ xác nhận đơn hàng."
+        android:textSize="12sp"
+        android:textColor="#666"
+        android:fontFamily="@font/quicksand_regular"
+        android:gravity="center"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- Action Buttons -->
+    <Button
+        android:id="@+id/btnViewOrders"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Xem đơn hàng của tôi"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:fontFamily="@font/quicksand_regular"
+        android:background="@drawable/button_bg"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnContinueShopping"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Tiếp tục mua sắm"
+        android:textColor="#6B5B4B"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:fontFamily="@font/quicksand_regular"
+        android:background="@drawable/button_outline_bg"/>
+</LinearLayout>

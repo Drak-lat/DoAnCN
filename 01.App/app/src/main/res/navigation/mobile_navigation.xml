@@ -19,7 +19,21 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.dacnapp.ui.notifications.NotificationsFragment"
+        android:name="com.example.dacnapp.ui.notifications.MessagesFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <!-- ✅ THÊM: Giỏ hàng -->
+    <fragment
+        android:id="@+id/navigation_cart"
+        android:name="com.example.dacnapp.ui.cart.CartFragment"
+        android:label="Giỏ Hàng"
+        tools:layout="@layout/fragment_cart" />
+
+    <!-- ✅ THÊM: Trang cá nhân -->
+    <fragment
+        android:id="@+id/navigation_account"
+        android:name="com.example.dacnapp.ui.profile.ProfileFragment"
+        android:label="Bạn"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

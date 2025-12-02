@@ -12,11 +12,15 @@
         android:layout_height="108dp">
 
         <LinearLayout
+            android:id="@+id/supportLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:padding="18dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
 
             <ImageView
                 android:layout_width="54dp"
@@ -136,14 +140,15 @@
             android:layout_weight="1"/>
 
         <TextView
-            android:id="@+id/btnForgot"
+            android:id="@+id/tvForgotPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quên Mật Khẩu?"
-            android:textColor="#6B5B4B"
-            android:textSize="14sp"
-            android:fontFamily="@font/quicksand_regular"
-            android:layout_gravity="end"/>
+            android:text="Quên mật khẩu?"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"/>
+
     </LinearLayout>
 
     <!-- Nút đăng nhập -->
