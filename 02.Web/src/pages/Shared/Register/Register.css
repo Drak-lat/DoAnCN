@@ -194,3 +194,21 @@ body, html {
   margin-bottom: 18px;
   font-size: 14px;
 }
+
+.forgot-password {
+  width: 100%;
+  text-align: left;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.forgot-password a {
+  color: #000000;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}

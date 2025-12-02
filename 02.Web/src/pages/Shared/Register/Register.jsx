@@ -171,6 +171,9 @@ function Register() {
                 </>
               )}
             </div>
+            <div className="forgot-password">
+              <a href="/forgot-password">Quên mật khẩu?</a>
+            </div>
             <button className="register-btn" type="submit">
               ĐĂNG KÍ
             </button>

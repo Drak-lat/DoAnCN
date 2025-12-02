@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Remove useSearchParams
 import Header from '../../../components/Header/Header';
 import Footer from '../../../components/Footer/Footer';
 import { getHomeData, formatPrice, getImageUrl } from '../../../services/homeService';
 import './Home.css';
 
 const Home = () => {
-  // ✅ SỬA: State theo structure của bạn nhưng tương thích với design
   const [homeData, setHomeData] = useState({
     products: [],
     featuredProducts: [],
@@ -18,7 +17,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [searchParams] = useSearchParams();
+  // Remove this line: const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   // ✅ SỬA: Lấy products từ homeData thay vì trực tiếp
