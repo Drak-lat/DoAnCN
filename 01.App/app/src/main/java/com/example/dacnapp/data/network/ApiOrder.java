@@ -54,7 +54,8 @@ public interface ApiOrder {
     @GET("customer/create_paypal") 
     Call<PaypalResponse> createPaypalPayment(
             @Query("amount") double amount,
-            @Query("platform") String platform
+            @Query("platform") String platform ,
+            @Query("orderId") int orderId 
     );
     
 }

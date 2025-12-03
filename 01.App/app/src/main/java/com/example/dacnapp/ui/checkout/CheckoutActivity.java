@@ -23,6 +23,7 @@ import com.example.dacnapp.R;
 import com.example.dacnapp.data.network.ApiOrder;
 import com.example.dacnapp.data.network.ApiClient;
 import com.example.dacnapp.data.model.paypal.PaypalResponse;
+import com.example.dacnapp.ui.checkout.OrderSuccessActivity; // Đảm bảo import đúng
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import retrofit2.Response;
 public class CheckoutActivity extends AppCompatActivity {
     private static final String TAG = "CheckoutActivity";
 
+    // ... (Khai báo biến View giữ nguyên) ...
     private RecyclerView rvItems;
     private EditText edtName, edtPhone, edtAddress, edtNote;
     private RadioGroup rgPaymentMethod;
@@ -46,9 +48,12 @@ public class CheckoutActivity extends AppCompatActivity {
     private CheckoutViewModel viewModel;
     private CheckoutItemAdapter adapter;
 
-    private String checkoutType; // "direct" hoặc "cart"
+    private String checkoutType;
     private List<CheckoutItem> items;
     private double totalAmount;
+    
+    // ✅ Thêm biến để lưu phương thức thanh toán hiện tại
+    private String currentPaymentMethod = "COD"; 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +63,12 @@ public class CheckoutActivity extends AppCompatActivity {
         initViews();
         viewModel = new ViewModelProvider(this).get(CheckoutViewModel.class);
 
-        // Lấy dữ liệu từ màn hình trước (Cart hoặc ProductDetail)
         Intent intent = getIntent();
         checkoutType = intent.getStringExtra("type");
         items = (List<CheckoutItem>) intent.getSerializableExtra("items");
 
         if (items == null || items.isEmpty()) {
-            Toast.makeText(this, "Không có sản phẩm nào để thanh toán", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Không có sản phẩm", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -72,12 +76,13 @@ public class CheckoutActivity extends AppCompatActivity {
         setupRecyclerView();
         loadUserInfo();
         calculateTotal();
-        setupObservers();
+        setupObservers(); // <-- Quan trọng
 
         btnPlaceOrder.setOnClickListener(v -> placeOrder());
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
     }
 
+    // ... (Các hàm initViews, setupRecyclerView, loadUserInfo, calculateTotal giữ nguyên) ...
     private void initViews() {
         rvItems = findViewById(R.id.rvCheckoutItems);
         edtName = findViewById(R.id.edtReceiverName);
@@ -90,7 +95,7 @@ public class CheckoutActivity extends AppCompatActivity {
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
         progressBar = findViewById(R.id.progressBar);
     }
-
+    
     private void setupRecyclerView() {
         adapter = new CheckoutItemAdapter(items);
         rvItems.setLayoutManager(new LinearLayoutManager(this));
@@ -114,83 +119,81 @@ public class CheckoutActivity extends AppCompatActivity {
         tvTotalAmount.setText(formatter.format(totalAmount) + " đ");
     }
 
+    // ✅ SỬA LOGIC HÀM NÀY
     private void placeOrder() {
         String name = edtName.getText().toString().trim();
         String phone = edtPhone.getText().toString().trim();
         String address = edtAddress.getText().toString().trim();
         String note = edtNote.getText().toString().trim();
 
-        // 1. Validation (Kiểm tra dữ liệu nhập)
-        if (TextUtils.isEmpty(name)) {
-            edtName.setError("Vui lòng nhập tên người nhận");
-            edtName.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(phone)) {
-            edtPhone.setError("Vui lòng nhập số điện thoại");
-            edtPhone.requestFocus();
-            return;
-        }
-        if (!phone.matches("^0\\d{9}$")) {
-            edtPhone.setError("Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0)");
-            edtPhone.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(address)) {
-            edtAddress.setError("Vui lòng nhập địa chỉ giao hàng");
-            edtAddress.requestFocus();
-            return;
-        }
+        // 1. Validation
+        if (TextUtils.isEmpty(name)) { edtName.setError("Nhập tên"); return; }
+        if (TextUtils.isEmpty(phone)) { edtPhone.setError("Nhập SĐT"); return; }
+        if (TextUtils.isEmpty(address)) { edtAddress.setError("Nhập địa chỉ"); return; }
 
-        // 2. Xác định phương thức thanh toán
+        // 2. Lấy phương thức thanh toán
         int selectedId = rgPaymentMethod.getCheckedRadioButtonId();
-        String paymentMethod = "COD"; // Mặc định
-        
-        // Lưu ý: Đảm bảo ID trong file XML layout trùng khớp (rbCOD, rbPaypal)
+        currentPaymentMethod = "COD"; // Reset mặc định
         if (selectedId == R.id.rbPaypal) {
-            paymentMethod = "PAYPAL";
+            currentPaymentMethod = "PAYPAL";
         }
+        // Lưu ý: Nếu có VNPAY thì thêm: else if (selectedId == R.id.rbVnpay) currentPaymentMethod = "VNPAY";
 
-        // 3. Lưu thông tin người dùng (để lần sau tự điền)
-        SharedPreferences.Editor editor = getSharedPreferences("user_info", MODE_PRIVATE).edit();
-        editor.putString("name", name);
-        editor.putString("phone", phone);
-        editor.putString("address", address);
-        editor.apply();
-
-        // 4. XỬ LÝ THANH TOÁN PAYPAL
-        if (paymentMethod.equals("PAYPAL")) {
-            handlePaypalPayment();
-            return; // Dừng lại, không chạy code tạo order COD ở dưới
-        }
-
-        // 5. XỬ LÝ THANH TOÁN COD (NHƯ CŨ)
+        // 3. Luôn luôn TẠO ĐƠN HÀNG trước (Dù là COD hay PayPal)
+        // ViewModel sẽ gọi API createOrder, kết quả trả về ở setupObservers
         if ("direct".equals(checkoutType)) {
-            viewModel.createDirectOrder(name, phone, address, paymentMethod, note, items, totalAmount);
+            viewModel.createDirectOrder(name, phone, address, currentPaymentMethod, note, items, totalAmount);
         } else {
             List<Integer> cartItemIds = new ArrayList<>();
             for (CheckoutItem item : items) {
-                if (item.getCartDetailId() != null) {
-                    cartItemIds.add(item.getCartDetailId());
-                }
+                if (item.getCartDetailId() != null) cartItemIds.add(item.getCartDetailId());
             }
-            viewModel.createOrderFromCart(name, phone, address, paymentMethod, note, cartItemIds);
+            viewModel.createOrderFromCart(name, phone, address, currentPaymentMethod, note, cartItemIds);
         }
-    }
-
-    // Tách riêng hàm xử lý PayPal cho gọn
-    private void handlePaypalPayment() {
-        // Hiện loading
+        
+        // Hiển thị loading trong khi chờ tạo đơn
         progressBar.setVisibility(View.VISIBLE);
         btnPlaceOrder.setEnabled(false);
+    }
 
-        Log.d(TAG, "Bắt đầu gọi API PayPal: Amount=" + totalAmount);
+    // ✅ SỬA LOGIC OBSERVER ĐỂ XỬ LÝ TIẾP THEO
+    private void setupObservers() {
+        viewModel.getOrderResult().observe(this, response -> {
+            // Lưu ý: Đừng tắt loading vội nếu là PayPal, vì còn phải gọi API tiếp
+            
+            if (response != null && response.success) {
+                int newOrderId = response.data.id_order; // Lấy ID đơn hàng vừa tạo
+                Log.d(TAG, "✅ Tạo đơn thành công. ID=" + newOrderId + ", Method=" + currentPaymentMethod);
 
-        // Gọi API
+                if ("PAYPAL".equals(currentPaymentMethod)) {
+                    // Nếu là PayPal -> Lấy ID đó đi gọi API lấy link
+                    handlePaypalPayment(newOrderId); 
+                } else {
+                    // Nếu là COD -> Xong luôn -> Chuyển màn hình
+                    progressBar.setVisibility(View.GONE);
+                    btnPlaceOrder.setEnabled(true);
+                    goToSuccessScreen(newOrderId, response.data.total, response.data.order_status);
+                }
+            } else {
+                progressBar.setVisibility(View.GONE);
+                btnPlaceOrder.setEnabled(true);
+                String errorMsg = response != null ? response.message : "Đặt hàng thất bại";
+                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Observer loading của ViewModel (Optional)
+        // viewModel.getLoading().observe(...) 
+    }
+
+    // ✅ SỬA: Nhận thêm orderId
+    private void handlePaypalPayment(int orderId) {
+        Log.d(TAG, "Bắt đầu lấy link PayPal cho OrderID: " + orderId);
+
         ApiOrder apiOrder = ApiClient.getClient().create(ApiOrder.class);
         
-        // Lưu ý: amount truyền vào là VND, backend sẽ tự chia cho 25000
-        apiOrder.createPaypalPayment(totalAmount, "app").enqueue(new Callback<PaypalResponse>() {
+        // Gọi API create_paypal, truyền thêm orderId
+        apiOrder.createPaypalPayment(totalAmount, "app", orderId).enqueue(new Callback<PaypalResponse>() {
             @Override
             public void onResponse(Call<PaypalResponse> call, Response<PaypalResponse> response) {
                 progressBar.setVisibility(View.GONE);
@@ -198,22 +201,18 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     String paymentUrl = response.body().getPaymentUrl();
-                    Log.d(TAG, "✅ Đã nhận Link PayPal: " + paymentUrl);
-
-                    if (paymentUrl != null && !paymentUrl.isEmpty()) {
-                        // Mở trình duyệt Chrome hoặc mặc định
+                    if (paymentUrl != null) {
+                        Log.d(TAG, "🔗 Mở trình duyệt: " + paymentUrl);
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(Uri.parse(paymentUrl));
                         startActivity(intent);
-                        
-                        // Lúc này App sẽ tạm dừng, Chrome sẽ mở lên.
-                        // Khi user thanh toán xong, Deep Link sẽ gọi OrderSuccessActivity
+                        // App sẽ pause ở đây, User qua trình duyệt thanh toán
                     } else {
-                        Toast.makeText(CheckoutActivity.this, "Link thanh toán rỗng", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CheckoutActivity.this, "Link lỗi", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Log.e(TAG, "❌ Lỗi Server: Code=" + response.code());
-                    Toast.makeText(CheckoutActivity.this, "Không tạo được link: " + response.message(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "❌ Lỗi API PayPal: " + response.message());
+                    Toast.makeText(CheckoutActivity.this, "Lỗi tạo thanh toán", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -221,44 +220,20 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onFailure(Call<PaypalResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 btnPlaceOrder.setEnabled(true);
-                Log.e(TAG, "❌ Lỗi Kết nối: " + t.getMessage());
-                
-                // Hiển thị lỗi rõ ràng hơn
-                String errorMsg = t.getMessage();
-                if (errorMsg != null && errorMsg.contains("Failed to connect")) {
-                    errorMsg = "Không thể kết nối Server (Kiểm tra lại IP 10.0.2.2)";
-                }
-                Toast.makeText(CheckoutActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                Log.e(TAG, "❌ Lỗi mạng: " + t.getMessage());
+                Toast.makeText(CheckoutActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void setupObservers() {
-        viewModel.getOrderResult().observe(this, response -> {
-            progressBar.setVisibility(View.GONE);
-            btnPlaceOrder.setEnabled(true);
-
-            if (response != null && response.success) {
-                Toast.makeText(this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
-
-                // Chuyển sang màn hình thành công
-                Intent intent = new Intent(this, OrderSuccessActivity.class);
-                intent.putExtra("orderId", response.data.id_order);
-                intent.putExtra("orderStatus", response.data.order_status);
-                intent.putExtra("total", response.data.total);
-                // Xóa các màn hình cũ trong stack để user không back lại được trang checkout
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            } else {
-                String errorMsg = response != null ? response.message : "Đặt hàng thất bại";
-                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
-            }
-        });
-
-        viewModel.getLoading().observe(this, isLoading -> {
-            progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-            btnPlaceOrder.setEnabled(!isLoading);
-        });
+    private void goToSuccessScreen(int orderId, double total, String status) {
+        Toast.makeText(this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, OrderSuccessActivity.class); // Đảm bảo bạn có Activity này
+        intent.putExtra("orderId", orderId);
+        intent.putExtra("orderStatus", status);
+        intent.putExtra("total", total);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }
