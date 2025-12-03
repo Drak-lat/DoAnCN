@@ -49,6 +49,7 @@ function AdminMessages() {
     return () => {
       socketService.off('new_message', handleNewMessage);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // ⭐ Empty array - chỉ setup 1 lần
 
   useEffect(() => {
