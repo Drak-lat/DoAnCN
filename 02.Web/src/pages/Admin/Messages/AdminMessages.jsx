@@ -6,6 +6,7 @@ import {
   getMessagesWithCustomer, 
   sendMessageToCustomer 
 } from '../../../services/messageService';
+import socketService from '../../../services/socketService';
 import './AdminMessages.css';
 
 function AdminMessages() {
@@ -18,11 +19,37 @@ function AdminMessages() {
   const [newMessage, setNewMessage] = useState('');
   const [error, setError] = useState('');
   const messagesEndRef = useRef(null);
+  const selectedCustomerRef = useRef(selectedCustomer); // ⭐ Dùng ref để tránh stale closure
   const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+
+  // ⭐ Update ref mỗi khi selectedCustomer thay đổi
+  useEffect(() => {
+    selectedCustomerRef.current = selectedCustomer;
+  }, [selectedCustomer]);
 
   useEffect(() => {
     fetchCustomers();
-  }, []);
+    
+    socketService.connect(currentUser.id_login);
+
+    const handleNewMessage = (data) => {
+      fetchCustomers();
+      
+      const currentSelectedCustomer = selectedCustomerRef.current;
+      
+      if (currentSelectedCustomer && 
+          (data.receiverId === currentSelectedCustomer.id_login || 
+           data.senderId === currentSelectedCustomer.id_login)) {
+        fetchMessages(currentSelectedCustomer.id_login);
+      }
+    };
+
+    socketService.on('new_message', handleNewMessage);
+
+    return () => {
+      socketService.off('new_message', handleNewMessage);
+    };
+  }, []); // ⭐ Empty array - chỉ setup 1 lần
 
   useEffect(() => {
     if (selectedCustomer) {
@@ -91,10 +118,8 @@ function AdminMessages() {
       );
       
       if (response.success) {
-        setMessages([...messages, response.data]);
         setNewMessage('');
-        // Cập nhật last message trong danh sách customers
-        fetchCustomers();
+        // Socket sẽ tự update
       }
     } catch (err) {
       setError(err.message || 'Không thể gửi tin nhắn');

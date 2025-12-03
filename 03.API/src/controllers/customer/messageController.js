@@ -6,7 +6,6 @@ exports.getMyMessages = async (req, res) => {
   try {
     const { id_login } = req.user;
 
-    // Lấy tất cả tin nhắn giữa customer và admin (id_level = 1)
     const messages = await Message.findAll({
       where: {
         [Op.or]: [
@@ -63,7 +62,6 @@ exports.sendMessageToAdmin = async (req, res) => {
       });
     }
 
-    // Tìm admin (id_level = 1) đầu tiên
     const admin = await Login.findOne({
       where: { id_level: 1 }
     });
@@ -75,7 +73,6 @@ exports.sendMessageToAdmin = async (req, res) => {
       });
     }
 
-    // Tạo tin nhắn mới
     const message = await Message.create({
       id_sender: id_login,
       id_receiver: admin.id_login,
@@ -83,7 +80,6 @@ exports.sendMessageToAdmin = async (req, res) => {
       created_at: new Date()
     });
 
-    // Lấy lại tin nhắn với đầy đủ thông tin
     const newMessage = await Message.findByPk(message.id_message, {
       include: [
         {
@@ -106,6 +102,16 @@ exports.sendMessageToAdmin = async (req, res) => {
         }
       ]
     });
+
+    // ⭐ EMIT SOCKET EVENT - Gửi tin nhắn realtime
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('new_message', {
+        receiverId: admin.id_login,
+        senderId: id_login,
+        message: newMessage
+      });
+    }
 
     return res.json({
       success: true,

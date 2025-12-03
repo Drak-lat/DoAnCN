@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/Header/Header';
 import Footer from '../../../components/Footer/Footer';
 import { getMyMessages, sendMessageToAdmin } from '../../../services/messageService';
+import socketService from '../../../services/socketService';
 import './CustomerMessages.css';
 
 const CustomerMessages = () => {
@@ -17,7 +18,21 @@ const CustomerMessages = () => {
 
   useEffect(() => {
     fetchMessages();
-  }, []);
+    
+    socketService.connect(currentUser.id_login);
+
+    const handleNewMessage = (data) => {
+      if (data.receiverId === currentUser.id_login || data.senderId === currentUser.id_login) {
+        fetchMessages();
+      }
+    };
+
+    socketService.on('new_message', handleNewMessage);
+
+    return () => {
+      socketService.off('new_message', handleNewMessage);
+    };
+  }, [currentUser.id_login]);
 
   useEffect(() => {
     scrollToBottom();
@@ -57,7 +72,7 @@ const CustomerMessages = () => {
       const response = await sendMessageToAdmin(newMessage.trim());
       
       if (response.success) {
-        setMessages([...messages, response.data]);
+        // Không cần setMessages vì socket sẽ tự update
         setNewMessage('');
       }
     } catch (err) {

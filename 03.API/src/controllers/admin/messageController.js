@@ -122,7 +122,6 @@ exports.sendMessageToCustomer = async (req, res) => {
       });
     }
 
-    // Kiểm tra customer tồn tại
     const customer = await Login.findOne({
       where: { 
         id_login: customerId,
@@ -137,14 +136,13 @@ exports.sendMessageToCustomer = async (req, res) => {
       });
     }
 
-    // Tạo tin nhắn mới
     const message = await Message.create({
       id_sender: id_login,
       id_receiver: customerId,
-      content: content.trim()
+      content: content.trim(),
+      created_at: new Date()
     });
 
-    // Lấy thông tin tin nhắn vừa tạo
     const newMessage = await Message.findByPk(message.id_message, {
       include: [
         {
@@ -167,6 +165,16 @@ exports.sendMessageToCustomer = async (req, res) => {
         }
       ]
     });
+
+    // ⭐ EMIT SOCKET EVENT - Gửi tin nhắn realtime
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('new_message', {
+        receiverId: parseInt(customerId),
+        senderId: id_login,
+        message: newMessage
+      });
+    }
 
     return res.status(201).json({
       success: true,
