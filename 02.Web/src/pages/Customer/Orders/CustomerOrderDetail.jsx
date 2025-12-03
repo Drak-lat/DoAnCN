@@ -22,9 +22,9 @@ const CustomerOrderDetail = () => {
     try {
       setLoading(true);
       setError('');
-      
+
       const response = await getOrderDetail(orderId);
-      
+
       if (response.success) {
         setOrder(response.data); // ✅ SỬA: Lấy trực tiếp response.data thay vì response.data.order
       }
@@ -48,7 +48,9 @@ const CustomerOrderDetail = () => {
   };
 
   const getPaymentStatusColor = (status) => {
-    return status === 'Đã thanh toán' ? 'success' : 'warning';
+    if (status === 'Đã thanh toán') return 'success';
+    if (status === 'Chưa thanh toán') return 'danger';
+    return 'warning';
   };
 
   if (loading) {
@@ -152,8 +154,8 @@ const CustomerOrderDetail = () => {
                 {order.OrderDetails && order.OrderDetails.map((item, index) => (
                   <div key={index} className="order-product-item">
                     <div className="product-image">
-                      <img 
-                        src={getImageUrl(item.Product?.image_product)} 
+                      <img
+                        src={getImageUrl(item.Product?.image_product)}
                         alt={item.Product?.name_product}
                         onError={(e) => e.target.src = '/placeholder-book.jpg'}
                       />
@@ -195,7 +197,7 @@ const CustomerOrderDetail = () => {
 
             {/* Actions */}
             <div className="order-detail-actions">
-              <button 
+              <button
                 onClick={() => navigate('/customer/orders')}
                 className="btn-back"
               >

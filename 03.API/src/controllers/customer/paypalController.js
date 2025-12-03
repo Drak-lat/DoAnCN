@@ -18,16 +18,17 @@ exports.createPayment = (req, res) => {
 
     console.log(`2. Số tiền: ${amountVND} VND -> ${amountUSD} USD. Platform: ${platform}`);
 
-    // CẤU HÌNH RETURN URL
+    // LẤY orderId từ query
+    const orderId = req.query.orderId;
     let returnUrl, cancelUrl;
     if (platform === 'app') {
         const SERVER_URL = 'http://10.0.2.2:3000'; // Cho máy ảo Android
-        returnUrl = `${SERVER_URL}/api/customer/paypal_success?platform=app`;
-        cancelUrl = `${SERVER_URL}/api/customer/paypal_cancel?platform=app`;
+        returnUrl = `${SERVER_URL}/api/customer/paypal_success?platform=app${orderId ? `&orderId=${orderId}` : ''}`;
+        cancelUrl = `${SERVER_URL}/api/customer/paypal_cancel?platform=app${orderId ? `&orderId=${orderId}` : ''}`;
     } else {
         const SERVER_URL = 'http://localhost:3000'; // Cho Web
-        returnUrl = `${SERVER_URL}/api/customer/paypal_success?platform=web`;
-        cancelUrl = `${SERVER_URL}/api/customer/paypal_cancel?platform=web`;
+        returnUrl = `${SERVER_URL}/api/customer/paypal_success?platform=web${orderId ? `&orderId=${orderId}` : ''}`;
+        cancelUrl = `${SERVER_URL}/api/customer/paypal_cancel?platform=web${orderId ? `&orderId=${orderId}` : ''}`;
     }
 
     const create_payment_json = {
@@ -87,28 +88,44 @@ exports.createPayment = (req, res) => {
 };
 
 exports.executePayment = (req, res) => {
-    // ... Giữ nguyên code cũ của bạn hoặc thêm log tương tự ...
-    // Code cũ của bạn ở phần execute ổn, nhưng nên thêm log
+    // Thêm cập nhật trạng thái đơn hàng sau khi execute thành công
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
     const platform = req.query.platform || 'web';
+    const systemOrderId = req.query.orderId; // Truyền orderId hệ thống qua query
 
-    console.log(`Nhận request Execute: PayerID=${payerId}, PaymentID=${paymentId}`);
+    console.log(`Nhận request Execute: PayerID=${payerId}, PaymentID=${paymentId}, orderId=${systemOrderId}`);
 
     const execute_payment_json = { "payer_id": payerId };
 
-    paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+    paypal.payment.execute(paymentId, execute_payment_json, async function (error, payment) {
         if (error) {
             console.log("❌ Lỗi Execute:", error);
             if (platform === 'app') return res.redirect('dacnapp://payment/success?status=fail');
             return res.redirect('http://localhost:3001/checkout/success?status=fail');
         } else {
             console.log("✅ Execute thành công!");
-            const orderId = payment.id;
+            const paypalId = payment.id;
             const total = payment.transactions[0].amount.total;
 
-            if (platform === 'app') return res.redirect(`dacnapp://payment/success?orderId=${orderId}&total=${total}&status=success`);
-            return res.redirect(`http://localhost:3001/checkout/success?orderId=${orderId}&total=${total}&status=success`);
+            // Cập nhật trạng thái đơn hàng trong DB
+            if (systemOrderId) {
+                try {
+                    const { Order } = require('../../models');
+                    await Order.update(
+                        { payment_status: 'Đã thanh toán' },
+                        { where: { id_order: systemOrderId } }
+                    );
+                    console.log(`Đã cập nhật trạng thái thanh toán cho đơn hàng #${systemOrderId}`);
+                } catch (err) {
+                    console.error('Lỗi cập nhật trạng thái đơn hàng:', err);
+                }
+            } else {
+                console.warn('Không tìm thấy orderId hệ thống để cập nhật trạng thái!');
+            }
+
+            if (platform === 'app') return res.redirect(`dacnapp://payment/success?orderId=${systemOrderId}&total=${total}&status=success`);
+            return res.redirect(`http://localhost:3001/checkout/success?orderId=${systemOrderId}&total=${total}&status=success`);
         }
     });
 };

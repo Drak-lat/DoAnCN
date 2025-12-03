@@ -21,9 +21,9 @@ const CustomerOrders = () => {
     try {
       setLoading(true);
       setError('');
-      
+
       const response = await getUserOrders();
-      
+
       if (response.success) {
         setOrders(response.data.orders || []);
       }
@@ -45,7 +45,9 @@ const CustomerOrders = () => {
   };
 
   const getPaymentStatusColor = (status) => {
-    return status === 'Đã thanh toán' ? 'success' : 'warning';
+    if (status === 'Đã thanh toán') return 'success';
+    if (status === 'Chưa thanh toán') return 'danger';
+    return 'warning';
   };
 
   const handleOrderClick = (orderId) => {
@@ -60,7 +62,7 @@ const CustomerOrders = () => {
 
   const handleConfirmReceived = async (orderId) => {
     if (!window.confirm('Xác nhận bạn đã nhận được hàng?')) return;
-    
+
     try {
       const response = await confirmOrderReceived(orderId);
       if (response.success) {
@@ -109,13 +111,13 @@ const CustomerOrders = () => {
 
           {/* Menu Navigation */}
           <div className="customer-profile-menu">
-            <div 
+            <div
               className="customer-menu-item"
               onClick={() => navigate('/customer/profile')}
             >
               Thông tin cá nhân
             </div>
-            <div 
+            <div
               className="customer-menu-item"
               onClick={() => navigate('/customer/change-password')}
             >
@@ -124,13 +126,13 @@ const CustomerOrders = () => {
             <div className="customer-menu-item active">
               Đơn hàng của tôi
             </div>
-            <div 
+            <div
               className="customer-menu-item"
               onClick={() => navigate('/customer/reviews')}
             >
               Nhận xét của tôi
             </div>
-            <div 
+            <div
               className="customer-menu-item logout"
               onClick={handleLogout}
             >
@@ -145,7 +147,7 @@ const CustomerOrders = () => {
                 <div className="no-orders-icon">📦</div>
                 <h3>Chưa có đơn hàng nào</h3>
                 <p>Hãy mua sắm và đặt hàng ngay!</p>
-                <button 
+                <button
                   onClick={() => navigate('/')}
                   className="btn-shopping"
                 >
@@ -155,8 +157,8 @@ const CustomerOrders = () => {
             ) : (
               <div className="orders-list">
                 {orders.map(order => (
-                  <div 
-                    key={order.id_order} 
+                  <div
+                    key={order.id_order}
                     className="order-card"
                     onClick={() => handleOrderClick(order.id_order)}
                   >
@@ -192,7 +194,7 @@ const CustomerOrders = () => {
                     </div>
 
                     {order.order_status === 'Đã giao' && (
-                      <button 
+                      <button
                         className="btn-confirm-received"
                         onClick={(e) => {
                           e.stopPropagation();
