@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dacnapp.R;
-import com.example.dacnapp.data.model.message.MessageResponse;
+import com.example.dacnapp.data.model.message.AdminResponse;
 
 import org.json.JSONObject;
 
@@ -31,15 +31,17 @@ import io.socket.emitter.Emitter;
 
 public class MessagesFragment extends Fragment {
     private static final String TAG = "MessagesFragment";
-    private RecyclerView rvMessages;
+    private RecyclerView rvMessages, rvAdmins;
     private EditText edtMessage;
     private Button btnSend;
     private ProgressBar progressBar;
-    private TextView tvEmpty;
-    private MessageAdapter adapter;
+    private TextView tvEmpty, tvSelectAdmin;
+    private MessageAdapter messageAdapter;
+    private AdminAdapter adminAdapter;
     private MessagesViewModel viewModel;
     private Socket socket;
     private int currentUserId;
+    private Integer selectedAdminId = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -48,36 +50,56 @@ public class MessagesFragment extends Fragment {
 
         // Initialize views
         rvMessages = root.findViewById(R.id.rvMessages);
+        rvAdmins = root.findViewById(R.id.rvAdmins);
         edtMessage = root.findViewById(R.id.edtMessage);
         btnSend = root.findViewById(R.id.btnSend);
         progressBar = root.findViewById(R.id.progressBar);
         tvEmpty = root.findViewById(R.id.tvEmpty);
+        tvSelectAdmin = root.findViewById(R.id.tvSelectAdmin);
 
         // Get current user ID
         SharedPreferences prefs = getContext().getSharedPreferences("auth", getContext().MODE_PRIVATE);
         currentUserId = prefs.getInt("id_login", 0);
 
-        // Setup RecyclerView
-        adapter = new MessageAdapter(getContext());
+        // Setup Admin RecyclerView
+        adminAdapter = new AdminAdapter((admin, position) -> {
+            selectedAdminId = admin.id_login;
+            viewModel.loadMessages(selectedAdminId);
+            tvSelectAdmin.setVisibility(View.GONE);
+        });
+        rvAdmins.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        rvAdmins.setAdapter(adminAdapter);
+
+        // Setup Message RecyclerView
+        messageAdapter = new MessageAdapter(getContext());
         rvMessages.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvMessages.setAdapter(adapter);
+        rvMessages.setAdapter(messageAdapter);
 
         // Setup ViewModel
         viewModel = new ViewModelProvider(this).get(MessagesViewModel.class);
 
-        // ⭐ SETUP SOCKET.IO
+        // Setup Socket
         connectSocket();
+
+        // Observe admins
+        viewModel.getAdmins().observe(getViewLifecycleOwner(), admins -> {
+            if (admins != null && !admins.isEmpty()) {
+                adminAdapter.setAdmins(admins);
+            }
+        });
 
         // Observe messages
         viewModel.getMessages().observe(getViewLifecycleOwner(), messages -> {
             if (messages != null && !messages.isEmpty()) {
-                adapter.setMessages(messages);
+                messageAdapter.setMessages(messages);
                 rvMessages.setVisibility(View.VISIBLE);
                 tvEmpty.setVisibility(View.GONE);
                 rvMessages.scrollToPosition(messages.size() - 1);
             } else {
-                rvMessages.setVisibility(View.GONE);
-                tvEmpty.setVisibility(View.VISIBLE);
+                if (selectedAdminId != null) {
+                    rvMessages.setVisibility(View.GONE);
+                    tvEmpty.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -94,22 +116,26 @@ public class MessagesFragment extends Fragment {
         viewModel.getSendSuccess().observe(getViewLifecycleOwner(), success -> {
             if (success) {
                 edtMessage.setText("");
-                // Không cần reload vì socket sẽ tự update
             }
         });
 
         // Send button
         btnSend.setOnClickListener(v -> {
+            if (selectedAdminId == null) {
+                Toast.makeText(getContext(), "Vui lòng chọn admin", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             String content = edtMessage.getText().toString().trim();
             if (!content.isEmpty()) {
-                viewModel.sendMessage(content);
+                viewModel.sendMessage(content, selectedAdminId);
             } else {
                 Toast.makeText(getContext(), "Vui lòng nhập nội dung", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Load messages
-        viewModel.loadMessages();
+        // Load admins
+        viewModel.loadAdmins();
 
         return root;
     }
@@ -118,42 +144,28 @@ public class MessagesFragment extends Fragment {
         try {
             socket = IO.socket("http://10.0.2.2:3000");
 
-            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d(TAG, "Socket connected");
-                    // Đăng ký user online
-                    socket.emit("user_online", currentUserId);
-                }
+            socket.on(Socket.EVENT_CONNECT, args -> {
+                Log.d(TAG, "Socket connected");
+                socket.emit("user_online", currentUserId);
             });
 
-            socket.on("new_message", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(() -> {
-                            try {
-                                JSONObject data = (JSONObject) args[0];
-                                int receiverId = data.getInt("receiverId");
-                                int senderId = data.getInt("senderId");
+            socket.on("new_message", args -> {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        try {
+                            JSONObject data = (JSONObject) args[0];
+                            int receiverId = data.getInt("receiverId");
+                            int senderId = data.getInt("senderId");
 
-                                // Chỉ reload nếu tin nhắn liên quan đến user hiện tại
-                                if (receiverId == currentUserId || senderId == currentUserId) {
-                                    Log.d(TAG, "New message received, reloading...");
-                                    viewModel.loadMessages();
-                                }
-                            } catch (Exception e) {
-                                Log.e(TAG, "Error parsing message", e);
+                            if ((receiverId == currentUserId && senderId == selectedAdminId) ||
+                                (senderId == currentUserId && receiverId == selectedAdminId)) {
+                                Log.d(TAG, "New message received, reloading...");
+                                viewModel.loadMessages(selectedAdminId);
                             }
-                        });
-                    }
-                }
-            });
-
-            socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    Log.d(TAG, "Socket disconnected");
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error parsing message", e);
+                        }
+                    });
                 }
             });
 
@@ -170,22 +182,5 @@ public class MessagesFragment extends Fragment {
             socket.disconnect();
             socket.off();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (viewModel != null) {
-            viewModel.loadMessages();
-        }
-        if (socket != null && !socket.connected()) {
-            socket.connect();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // Không disconnect khi pause, chỉ disconnect khi destroy
     }
 }

@@ -5,6 +5,42 @@
     android:orientation="vertical"
     android:background="#FAF8F3">
 
+    <!-- Admin Selector -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:padding="12dp"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn Admin:"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:fontFamily="@font/quicksand_regular"
+            android:layout_marginBottom="8dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAdmins"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvSelectAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:text="Vui lòng chọn admin để bắt đầu trò chuyện"
+        android:textSize="15sp"
+        android:textColor="#999999"
+        android:fontFamily="@font/quicksand_regular"/>
 
     <!-- Messages List -->
     <FrameLayout
@@ -17,7 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp"
-            android:clipToPadding="false"/>
+            android:clipToPadding="false"
+            android:visibility="gone"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -31,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Chưa có tin nhắn nào\nHãy gửi tin nhắn đầu tiên cho chúng tôi!"
+            android:text="Chưa có tin nhắn nào\nHãy gửi tin nhắn đầu tiên!"
             android:textSize="15sp"
             android:textColor="#999999"
             android:gravity="center"

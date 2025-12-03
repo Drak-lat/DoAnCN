@@ -1,34 +1,72 @@
 const { Message, Login, Information, sequelize } = require('../../models');
 const { Op } = require('sequelize');
 
-// Admin: Lấy danh sách khách hàng đã nhắn tin
+// Admin: Lấy danh sách khách hàng đã nhắn tin VỚI ADMIN NÀY
 exports.getCustomersWithMessages = async (req, res) => {
   try {
-    const { id_login } = req.user; // Admin ID
+    const { id_login } = req.user; // Admin ID hiện tại
 
-    // Lấy danh sách customer đã nhắn tin với admin
-    const customers = await sequelize.query(`
-      SELECT DISTINCT 
-        l.id_login,
-        l.username,
-        i.name_information,
-        (SELECT content FROM messages 
-         WHERE (id_sender = l.id_login OR id_receiver = l.id_login)
-         ORDER BY created_at DESC LIMIT 1) as last_message,
-        (SELECT created_at FROM messages 
-         WHERE (id_sender = l.id_login OR id_receiver = l.id_login)
-         ORDER BY created_at DESC LIMIT 1) as last_message_time
-      FROM login l
-      LEFT JOIN informations i ON l.id_login = i.id_login
-      WHERE l.id_level = 2
-      AND EXISTS (
-        SELECT 1 FROM messages m 
-        WHERE (m.id_sender = l.id_login OR m.id_receiver = l.id_login)
-      )
-      ORDER BY last_message_time DESC
-    `, {
-      type: sequelize.QueryTypes.SELECT
+    // Lấy tất cả tin nhắn liên quan đến admin này
+    const messages = await Message.findAll({
+      where: {
+        [Op.or]: [
+          { id_sender: id_login },
+          { id_receiver: id_login }
+        ]
+      },
+      include: [
+        {
+          model: Login,
+          as: 'Sender',
+          // ✅ BỎ where: { id_level: 2 } để lấy cả admin và customer
+          attributes: ['id_login', 'username', 'id_level'],
+          include: [{
+            model: Information,
+            attributes: ['name_information']
+          }]
+        },
+        {
+          model: Login,
+          as: 'Receiver',
+          // ✅ BỎ where: { id_level: 2 } để lấy cả admin và customer
+          attributes: ['id_login', 'username', 'id_level'],
+          include: [{
+            model: Information,
+            attributes: ['name_information']
+          }]
+        }
+      ],
+      order: [['created_at', 'DESC']]
     });
+
+    // Xử lý để lấy danh sách customer duy nhất với tin nhắn cuối
+    const customerMap = new Map();
+
+    messages.forEach(msg => {
+      // Xác định customer (không phải admin)
+      let customer = null;
+      
+      // ✅ SỬA: Kiểm tra Sender và Receiver có tồn tại trước
+      if (msg.id_sender === id_login && msg.Receiver && msg.Receiver.id_level === 2) {
+        // Admin gửi cho customer
+        customer = msg.Receiver;
+      } else if (msg.id_receiver === id_login && msg.Sender && msg.Sender.id_level === 2) {
+        // Customer gửi cho admin
+        customer = msg.Sender;
+      }
+
+      if (customer && !customerMap.has(customer.id_login)) {
+        customerMap.set(customer.id_login, {
+          id_login: customer.id_login,
+          username: customer.username,
+          name_information: customer.Information?.name_information || null,
+          last_message: msg.content,
+          last_message_time: msg.created_at
+        });
+      }
+    });
+
+    const customers = Array.from(customerMap.values());
 
     return res.json({
       success: true,

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_margin="4dp"
+    android:background="@drawable/admin_item_normal"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tvAdminNumber"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/admin_avatar_bg"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvAdminName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin 1"
+        android:textSize="13sp"
+        android:textColor="#333333"
+        android:fontFamily="@font/quicksand_regular"
+        android:layout_marginTop="4dp"/>
+</LinearLayout>

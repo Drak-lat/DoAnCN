@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../../components/Admin/AdminLayout/AdminLayout';
 import { getDashboard, getTopProducts } from '../../../services/adminService';
+import { getImageUrl } from '../../../services/homeService';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -103,9 +104,10 @@ function Dashboard() {
                       <td>{index + 1}</td>
                       <td>
                         <img 
-                          src={item.Product?.image_product || '/placeholder.jpg'} 
+                          src={getImageUrl(item.Product?.image_product)} 
                           alt={item.Product?.name_product}
                           className="product-image"
+                          onError={(e) => e.target.src = '/placeholder.jpg'}
                         />
                       </td>
                       <td>{item.Product?.name_product}</td>

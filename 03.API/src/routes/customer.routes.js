@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const { authenticateToken, checkCustomerRole } = require('../middlewares/auth.middleware');
@@ -57,6 +56,7 @@ router.post('/feedbacks', authenticateToken, checkCustomerRole, feedbackControll
 router.get('/my-feedbacks', authenticateToken, checkCustomerRole, feedbackController.getMyFeedbacks);
 
 // Message routes
+router.get('/admins', authenticateToken, checkCustomerRole, messageController.getAvailableAdmins); // ✅ THÊM
 router.get('/messages', authenticateToken, checkCustomerRole, messageController.getMyMessages);
 router.post('/messages', authenticateToken, checkCustomerRole, messageController.sendMessageToAdmin);
 

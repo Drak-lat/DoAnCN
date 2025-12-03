@@ -5,32 +5,44 @@ function authHeader() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// ==================== CUSTOMER ====================
-
-// Customer: Lấy tất cả tin nhắn với admin
-export const getMyMessages = async () => {
+// ✅ SỬA: Thêm authHeader vào request
+export const getAvailableAdmins = async () => {
   try {
-    const response = await api.get('/customer/messages', {
+    const response = await api.get('/customer/admins', {
       headers: authHeader()
     });
     return response.data;
   } catch (error) {
-    console.error('❌ getMyMessages error:', error);
-    throw error.response?.data || { message: 'Lỗi kết nối' };
+    console.error('❌ getAvailableAdmins error:', error.response?.data || error);
+    throw error.response?.data || { message: 'Lỗi khi lấy danh sách admin' };
   }
 };
 
-// Customer: Gửi tin nhắn cho admin
-export const sendMessageToAdmin = async (content) => {
+// ✅ SỬA: Thêm authHeader vào request
+export const getMyMessages = async (adminId = null) => {
+  try {
+    const url = adminId ? `/customer/messages?adminId=${adminId}` : '/customer/messages';
+    const response = await api.get(url, {
+      headers: authHeader()
+    });
+    return response.data;
+  } catch (error) {
+    console.error('❌ getMyMessages error:', error.response?.data || error);
+    throw error.response?.data || { message: 'Lỗi khi lấy tin nhắn' };
+  }
+};
+
+// ✅ SỬA: Thêm authHeader vào request
+export const sendMessageToAdmin = async (content, adminId) => {
   try {
     const response = await api.post('/customer/messages', 
-      { content },
+      { content, adminId },
       { headers: authHeader() }
     );
     return response.data;
   } catch (error) {
-    console.error('❌ sendMessageToAdmin error:', error);
-    throw error.response?.data || { message: 'Lỗi kết nối' };
+    console.error('❌ sendMessageToAdmin error:', error.response?.data || error);
+    throw error.response?.data || { message: 'Lỗi khi gửi tin nhắn' };
   }
 };
 

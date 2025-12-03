@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.dacnapp.data.model.message.AdminResponse;
 import com.example.dacnapp.data.model.message.MessageResponse;
 import com.example.dacnapp.data.model.message.SendMessageRequest;
 import com.example.dacnapp.data.model.message.SendMessageResponse;
@@ -21,6 +22,7 @@ import retrofit2.Response;
 
 public class MessagesViewModel extends AndroidViewModel {
     private ApiMessage apiMessage;
+    private MutableLiveData<List<AdminResponse.AdminData>> admins = new MutableLiveData<>();
     private MutableLiveData<List<MessageResponse.MessageData>> messages = new MutableLiveData<>();
     private MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private MutableLiveData<String> error = new MutableLiveData<>();
@@ -31,16 +33,41 @@ public class MessagesViewModel extends AndroidViewModel {
         apiMessage = ApiClient.getClient().create(ApiMessage.class);
     }
 
+    public LiveData<List<AdminResponse.AdminData>> getAdmins() { return admins; }
     public LiveData<List<MessageResponse.MessageData>> getMessages() { return messages; }
     public LiveData<Boolean> getLoading() { return loading; }
     public LiveData<String> getError() { return error; }
     public LiveData<Boolean> getSendSuccess() { return sendSuccess; }
 
-    public void loadMessages() {
+    // ✅ THÊM: Load danh sách admin
+    public void loadAdmins() {
+        String token = getToken();
+
+        apiMessage.getAvailableAdmins("Bearer " + token).enqueue(new Callback<AdminResponse>() {
+            @Override
+            public void onResponse(Call<AdminResponse> call, Response<AdminResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().success && response.body().data != null) {
+                        admins.setValue(response.body().data.admins);
+                    }
+                } else {
+                    error.setValue("Không thể tải danh sách admin");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AdminResponse> call, Throwable t) {
+                error.setValue("Lỗi kết nối: " + t.getMessage());
+            }
+        });
+    }
+
+    // ✅ SỬA: Thêm adminId parameter
+    public void loadMessages(Integer adminId) {
         loading.setValue(true);
         String token = getToken();
 
-        apiMessage.getMyMessages("Bearer " + token).enqueue(new Callback<MessageResponse>() {
+        apiMessage.getMyMessages("Bearer " + token, adminId).enqueue(new Callback<MessageResponse>() {
             @Override
             public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
                 loading.setValue(false);
@@ -61,10 +88,11 @@ public class MessagesViewModel extends AndroidViewModel {
         });
     }
 
-    public void sendMessage(String content) {
+    // ✅ SỬA: Thêm adminId parameter
+    public void sendMessage(String content, int adminId) {
         loading.setValue(true);
         String token = getToken();
-        SendMessageRequest request = new SendMessageRequest(content);
+        SendMessageRequest request = new SendMessageRequest(content, adminId);
 
         apiMessage.sendMessageToAdmin("Bearer " + token, request).enqueue(new Callback<SendMessageResponse>() {
             @Override
@@ -92,10 +120,5 @@ public class MessagesViewModel extends AndroidViewModel {
     private String getToken() {
         SharedPreferences prefs = getApplication().getSharedPreferences("auth", 0);
         return prefs.getString("token", "");
-    }
-
-    private int getCurrentUserId() {
-        SharedPreferences prefs = getApplication().getSharedPreferences("auth", 0);
-        return prefs.getInt("id_login", 0);
     }
 }
