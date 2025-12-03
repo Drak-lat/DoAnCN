@@ -4,7 +4,7 @@ const { Order, OrderDetail, Product, Cart, CartDetail, Login, Information, seque
 // Tạo đơn hàng trực tiếp (mua ngay)
 exports.createDirectOrder = async (req, res) => {
   const transaction = await sequelize.transaction();
-  
+
   try {
     const { id_login } = req.user;
     const {
@@ -63,9 +63,9 @@ exports.createDirectOrder = async (req, res) => {
       total,
       payment_method,
       payment_status: 'Chưa thanh toán',
-      order_status: 'Chờ xác nhận', 
+      order_status: 'Chờ xác nhận',
       date_order: new Date(),
-      note
+      note: note // Đảm bảo trường note được lưu
     }, { transaction });
 
     // Tạo chi tiết đơn hàng và trừ tồn kho
@@ -89,7 +89,7 @@ exports.createDirectOrder = async (req, res) => {
 
     return res.json({
       success: true,
-      message: 'Đặt hàng thành công', 
+      message: 'Đặt hàng thành công',
       data: {
         id_order: order.id_order,
         order_status: order.order_status, // ✅ Trả về "Chờ xác nhận"
@@ -100,7 +100,10 @@ exports.createDirectOrder = async (req, res) => {
 
   } catch (error) {
     await transaction.rollback();
-    console.error('Create direct order error:', error);
+    // ✅ IN LỖI RA TERMINAL ĐỂ XEM
+    console.log("---------------- LỖI ĐẶT HÀNG ----------------");
+    console.error(error);
+    console.log("----------------------------------------------");
     return res.status(500).json({
       success: false,
       message: 'Lỗi máy chủ: ' + error.message
@@ -111,7 +114,7 @@ exports.createDirectOrder = async (req, res) => {
 // Tạo đơn hàng từ giỏ hàng
 exports.createOrderFromCart = async (req, res) => {
   const transaction = await sequelize.transaction();
-  
+
   try {
     const { id_login } = req.user;
     const {
@@ -137,7 +140,7 @@ exports.createOrderFromCart = async (req, res) => {
       where: { id_login },
       include: [{
         model: CartDetail,
-        where: cart_item_ids.length > 0 ? 
+        where: cart_item_ids.length > 0 ?
           { id_cartdetail: cart_item_ids } : {},
         include: [{
           model: Product,
@@ -178,15 +181,15 @@ exports.createOrderFromCart = async (req, res) => {
       total,
       payment_method,
       payment_status: 'Chưa thanh toán',
-      order_status: 'Chờ xác nhận', 
+      order_status: 'Chờ xác nhận',
       date_order: new Date(),
-      note
+      note: note // Đảm bảo trường note được lưu
     }, { transaction });
 
     // Tạo chi tiết đơn hàng và trừ tồn kho
     for (const cartItem of cart.CartDetails) {
       const product = cartItem.Product;
-      
+
       await OrderDetail.create({
         id_order: order.id_order,
         id_product: product.id_product,
@@ -220,7 +223,10 @@ exports.createOrderFromCart = async (req, res) => {
 
   } catch (error) {
     await transaction.rollback();
-    console.error('Create order from cart error:', error);
+    // ✅ IN LỖI RA TERMINAL ĐỂ XEM
+    console.log("---------------- LỖI ĐẶT HÀNG ----------------");
+    console.error(error);
+    console.log("----------------------------------------------");
     return res.status(500).json({
       success: false,
       message: 'Lỗi máy chủ: ' + error.message
@@ -409,9 +415,9 @@ exports.confirmReceived = async (req, res) => {
     const { orderId } = req.params;
 
     const order = await Order.findOne({
-      where: { 
+      where: {
         id_order: orderId,
-        id_login 
+        id_login
       }
     });
 
