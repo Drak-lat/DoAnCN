@@ -108,7 +108,7 @@ function Dashboard() {
                           alt={item.Product?.name_product}
                           className="product-image"
                           onError={(e) => e.target.src = '/placeholder.jpg'}
-                        />
+                        /> 
                       </td>
                       <td>{item.Product?.name_product}</td>
                       <td>{item.Product?.price?.toLocaleString('vi-VN')}đ</td>
