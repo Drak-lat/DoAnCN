@@ -5,11 +5,8 @@ const { Op } = require('sequelize');
 exports.getProductDetail = async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = req.user.id_login; // Từ authMiddleware
-    const userLevel = req.user.id_level; // Từ authMiddleware
-    
-    console.log('🔍 Getting product detail for ID:', id);
-    console.log('👤 User info:', { userId, userLevel });
+    const userId = req.user.id_login;
+    const userLevel = req.user.id_level;
 
     // Kiểm tra quyền user (chỉ cho phép level 2 - customer)
     if (userLevel !== 2) {
