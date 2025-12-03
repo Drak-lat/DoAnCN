@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    
     <uses-permission android:name="android.permission.INTERNET" />
+    
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +14,7 @@
         android:theme="@style/Theme.DACNapp"
         tools:targetApi="31"
         android:networkSecurityConfig="@xml/network_security_config">
+        
         <activity
             android:name=".ui.auth.LoginActivity"
             android:exported="true" />
@@ -34,6 +37,7 @@
         <activity
             android:name=".ui.profile.ChangePasswordActivity"
             android:exported="false"/>
+            
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -42,6 +46,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name=".ui.order.OrdersActivity"
             android:exported="false"/>
@@ -67,9 +72,27 @@
             android:name=".ui.checkout.CheckoutActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
+
+        <!-- ĐÃ CHỈNH SỬA PHẦN NÀY -->
         <activity
             android:name=".ui.checkout.OrderSuccessActivity"
-            android:exported="false"/>
+            android:exported="true"
+            android:launchMode="singleTop">
+            
+            <!-- Cấu hình Deep Link để nhận phản hồi từ PayPal -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Phải khớp với link backend trả về: dacnapp://payment/success -->
+                <data
+                    android:scheme="dacnapp"
+                    android:host="payment"
+                    android:path="/success" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

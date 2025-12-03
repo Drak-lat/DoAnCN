@@ -184,10 +184,10 @@
                         android:checked="true"/>
 
                     <RadioButton
-                        android:id="@+id/rbBankTransfer"
+                        android:id="@+id/rbPaypal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Chuyển khoản paypal"
+                        android:text="Thanh toán PayPal"
                         android:fontFamily="@font/quicksand_regular"
                         android:paddingVertical="12dp"/>
                 </RadioGroup>

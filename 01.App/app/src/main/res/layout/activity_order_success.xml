@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -39,12 +40,14 @@
         android:layout_marginBottom="32dp"/>
 
     <!-- Order Info Card -->
+    <!-- Sửa: Thêm app:cardCornerRadius và app:cardElevation -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:elevation="2dp"
-        android:radius="12dp">
+        app:cardElevation="2dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="#FFFFFF">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,7 +113,8 @@
         android:layout_marginBottom="32dp"/>
 
     <!-- Action Buttons -->
-    <Button
+    <!-- Lưu ý: Cần file drawable/button_bg và font/quicksand_regular trong resource -->
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnViewOrders"
         android:layout_width="match_parent"
         android:layout_height="52dp"
@@ -120,9 +124,10 @@
         android:textSize="15sp"
         android:fontFamily="@font/quicksand_regular"
         android:background="@drawable/button_bg"
+        android:textAllCaps="false"
         android:layout_marginBottom="12dp"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnContinueShopping"
         android:layout_width="match_parent"
         android:layout_height="52dp"
@@ -131,5 +136,6 @@
         android:textStyle="bold"
         android:textSize="15sp"
         android:fontFamily="@font/quicksand_regular"
-        android:background="@drawable/button_outline_bg"/>
+        android:background="@drawable/button_outline_bg"
+        android:textAllCaps="false"/>
 </LinearLayout>

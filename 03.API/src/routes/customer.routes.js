@@ -17,7 +17,7 @@ const paypalController = require('../controllers/customer/paypalController');
 router.post('/register', registerController.register);
 
 // Contact route - KHÔNG CẦN ĐĂNG NHẬP (khách hàng gửi liên hệ)
-router.post('/contact', contactController.createContact); // ⭐ THÊM
+// router.post('/contact', contactController.createContact); // ⭐ THÊM
 
 // Header routes - KHÔNG CẦN ĐĂNG NHẬP
 router.get('/categories', headerCustomerController.getCategories);
@@ -60,9 +60,7 @@ router.get('/my-feedbacks', authenticateToken, checkCustomerRole, feedbackContro
 router.get('/messages', authenticateToken, checkCustomerRole, messageController.getMyMessages);
 router.post('/messages', authenticateToken, checkCustomerRole, messageController.sendMessageToAdmin);
 
-// VNPAY payment route
-router.get('/create_payment', vnpayController.createPayment);
-router.get('/vnpay_return', vnpayController.vnpayReturn);
+
 
 router.get('/create_paypal', paypalController.createPayment);
 router.get('/paypal_success', paypalController.executePayment);

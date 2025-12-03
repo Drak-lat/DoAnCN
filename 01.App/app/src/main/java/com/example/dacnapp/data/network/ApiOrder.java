@@ -5,6 +5,7 @@ import com.example.dacnapp.data.model.order.CreateOrderResponse;
 import com.example.dacnapp.data.model.order.OrderResponse;
 import com.example.dacnapp.data.model.order.OrderDetailResponse;
 import com.example.dacnapp.data.model.order.ConfirmReceivedResponse;
+import com.example.dacnapp.data.model.paypal.PaypalResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -48,4 +49,12 @@ public interface ApiOrder {
             @Header("Authorization") String token,
             @Path("orderId") int orderId
     );
+
+
+    @GET("customer/create_paypal") 
+    Call<PaypalResponse> createPaypalPayment(
+            @Query("amount") double amount,
+            @Query("platform") String platform
+    );
+    
 }
