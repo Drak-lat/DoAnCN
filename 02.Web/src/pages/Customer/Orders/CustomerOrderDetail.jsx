@@ -1,3 +1,4 @@
+/* filepath: d:\DACN06\DoAnCN\02.Web\src\pages\Customer\Orders\CustomerOrderDetail.jsx */
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../../../components/Header/Header';
@@ -13,27 +14,69 @@ const CustomerOrderDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // ✅ SỬA 1: Khởi tạo là null (nghĩa là chưa biết thời gian)
+  const [timeLeft, setTimeLeft] = useState(null);
+
   useEffect(() => {
     fetchOrderDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
 
+  // ✅ SỬA 2: Logic đếm ngược
+  useEffect(() => {
+    // Nếu timeLeft là null (chưa load) hoặc 0 (hết giờ) thì không chạy timer
+    if (timeLeft === null || timeLeft <= 0) return;
+
+    const timerId = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1000) {
+          clearInterval(timerId);
+          return 0; // Đã về 0
+        }
+        return prev - 1000;
+      });
+    }, 1000);
+
+    return () => clearInterval(timerId);
+  }, [timeLeft]);
+
   const fetchOrderDetail = async () => {
     try {
       setLoading(true);
-      setError('');
-
       const response = await getOrderDetail(orderId);
 
       if (response.success) {
-        setOrder(response.data); // ✅ SỬA: Lấy trực tiếp response.data thay vì response.data.order
+        setOrder(response.data);
+        // ✅ SỬA 3: Cập nhật timeLeft từ API
+        if (response.data.remainingTimeMs !== undefined) {
+          setTimeLeft(response.data.remainingTimeMs);
+        } else {
+          // Trường hợp API không trả về (phòng hờ), set mặc định
+          setTimeLeft(0);
+        }
       }
     } catch (err) {
-      console.error('Fetch order detail error:', err);
-      setError(err.message || 'Không thể tải chi tiết đơn hàng');
+      console.error(err);
+      setError('Lỗi tải trang');
     } finally {
       setLoading(false);
     }
+  };
+
+  // ✅ 4. Hàm format mili-giây sang HH:mm:ss
+  const formatTimer = (ms) => {
+    if (!ms) return "00:00:00";
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  // ✅ 5. Hàm xử lý thanh toán lại (Chuyển hướng sang Backend PayPal Controller)
+  const handlePayment = () => {
+    // Lưu ý: Cập nhật URL này đúng với port server API của bạn (ví dụ 3000)
+    window.location.href = `http://localhost:3000/api/create-payment?orderId=${order.id_order}&amount=${order.total}&platform=web`;
   };
 
   const getStatusColor = (status) => {
@@ -113,6 +156,45 @@ const CustomerOrderDetail = () => {
                   {order.payment_status}
                 </span>
               </div>
+
+              {/* ✅ SỬA 4: Điều kiện hiển thị đếm ngược */}
+              {/* Chỉ hiện khi timeLeft khác null VÀ lớn hơn 0 */}
+              {order?.payment_status === 'Chưa thanh toán' &&
+                order?.order_status !== 'Đã hủy' &&
+                timeLeft !== null && timeLeft > 0 && (
+                  <div style={{
+                    marginTop: '15px',
+                    padding: '15px',
+                    backgroundColor: '#fff3cd',
+                    border: '1px solid #ffeeba',
+                    borderRadius: '5px',
+                    color: '#856404',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px'
+                  }}>
+                    <div style={{ fontSize: '24px' }}>⚠️</div>
+                    <div>
+                      <strong style={{ fontSize: '16px', display: 'block', marginBottom: '4px' }}>
+                        Đơn hàng sẽ tự động hủy sau: <span style={{ color: '#dc3545', fontWeight: 'bold' }}>{formatTimer(timeLeft)}</span>
+                      </strong>
+                      <span style={{ fontSize: '14px' }}>
+                        Vui lòng thanh toán ngay để tránh bị hủy đơn hàng.
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+              {/* ✅ SỬA 5: Điều kiện hiển thị thông báo hết hạn */}
+              {/* Chỉ hiện khi timeLeft chính xác là 0 (đã load xong và tính ra 0) */}
+              {order?.payment_status === 'Chưa thanh toán' &&
+                order?.order_status !== 'Đã hủy' &&
+                timeLeft === 0 && (
+                  <div style={{ marginTop: '15px', color: '#dc3545', fontWeight: 'bold' }}>
+                    Đơn hàng đã hết hạn thanh toán.
+                  </div>
+                )}
+
               <p className="order-date">
                 Ngày đặt: {new Date(order.date_order).toLocaleDateString('vi-VN', {
                   day: '2-digit',
@@ -196,13 +278,35 @@ const CustomerOrderDetail = () => {
             </div>
 
             {/* Actions */}
-            <div className="order-detail-actions">
+            <div className="order-detail-actions" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <button
                 onClick={() => navigate('/customer/orders')}
                 className="btn-back"
               >
                 ← Quay lại danh sách
               </button>
+
+              {/* ✅ NÚT THANH TOÁN NGAY */}
+              {order.payment_status === 'Chưa thanh toán' &&
+                order.order_status !== 'Đã hủy' &&
+                timeLeft > 0 &&
+                order.payment_method === 'PayPal' && ( // Chỉ hiện nếu chọn PayPal
+                  <button
+                    onClick={handlePayment}
+                    className="btn-primary" // Đảm bảo class này có style trong CSS của bạn (ví dụ màu xanh/cam)
+                    style={{
+                      padding: '10px 20px',
+                      fontSize: '16px',
+                      backgroundColor: '#0070ba',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Thanh toán PayPal Ngay
+                  </button>
+                )}
             </div>
           </div>
         </div>
