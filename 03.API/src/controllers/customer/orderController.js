@@ -306,10 +306,7 @@ exports.getOrderDetail = async (req, res) => {
     const { orderId } = req.params;
 
     const order = await Order.findOne({
-      where: {
-        id_order: orderId,
-        id_login // Chỉ cho phép xem đơn hàng của mình
-      },
+      where: { id_order: orderId, id_login },
       include: [{
         model: OrderDetail,
         include: [{
@@ -320,23 +317,43 @@ exports.getOrderDetail = async (req, res) => {
     });
 
     if (!order) {
-      return res.status(404).json({
-        success: false,
-        message: 'Không tìm thấy đơn hàng'
-      });
+      return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
+    }
+
+    // ✅ SỬA LOGIC TÍNH TOÁN AN TOÀN HƠN
+    // Ưu tiên dùng date_order, nếu lỗi thì dùng createdAt
+    const orderDateVal = order.date_order || order.createdAt;
+    const createdTime = new Date(orderDateVal).getTime();
+    const now = new Date().getTime();
+    const twentyFourHours = 24 * 60 * 60 * 1000;
+
+    let remainingTimeMs = (createdTime + twentyFourHours) - now;
+
+    // Log ra terminal để kiểm tra (Xem trong cửa sổ chạy server node)
+    console.log(`[DEBUG] Order #${orderId}`);
+    console.log(` - Ngày đặt: ${new Date(orderDateVal).toLocaleString()}`);
+    console.log(` - Hiện tại: ${new Date().toLocaleString()}`);
+    console.log(` - Còn lại (ms): ${remainingTimeMs}`);
+
+    // Nếu đã thanh toán, đã hủy, thì không đếm ngược nữa
+    if (order.payment_status === 'Đã thanh toán' || order.order_status === 'Đã hủy') {
+      remainingTimeMs = 0;
+    } else if (remainingTimeMs < 0) {
+      // Nếu tính ra âm (quá hạn) thì trả về 0
+      remainingTimeMs = 0;
     }
 
     return res.json({
       success: true,
-      data: order // ✅ Trả về trực tiếp từ DB
+      data: {
+        ...order.dataValues,
+        remainingTimeMs: remainingTimeMs // Gửi giá trị này xuống
+      }
     });
 
   } catch (error) {
     console.error('Get order detail error:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Lỗi máy chủ: ' + error.message
-    });
+    return res.status(500).json({ success: false, message: 'Lỗi máy chủ: ' + error.message });
   }
 };
 
@@ -408,6 +425,7 @@ exports.getOrderDetail = async (req, res) => {
   }
 }; */
 
+
 // Khách hàng xác nhận đã nhận hàng
 exports.confirmReceived = async (req, res) => {
   try {
@@ -451,4 +469,14 @@ exports.confirmReceived = async (req, res) => {
       message: 'Lỗi máy chủ: ' + error.message
     });
   }
+};
+
+// Export đầy đủ các hàm
+module.exports = {
+  createDirectOrder: exports.createDirectOrder,
+  createOrderFromCart: exports.createOrderFromCart,
+  getUserOrders: exports.getUserOrders,
+  getOrderDetail: exports.getOrderDetail,
+  // ... các hàm khác nếu có
+  confirmReceived: exports.confirmReceived
 };

@@ -1,7 +1,5 @@
 const app = require('./app');
 const sequelize = require('./config/database');
-const http = require('http');
-const { Server } = require('socket.io');
 const PORT = process.env.PORT || 3000;
 
 // Tạo HTTP server
@@ -47,13 +45,11 @@ app.set('io', io);
 
 (async () => {
   try {
-    await sequelize.authenticate();
-    console.log('✅ Database connected successfully');
-    await sequelize.sync();
-    
-    server.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`📡 WebSocket ready on ws://localhost:${PORT}`);
+    await sequelize.authenticate(); // Test kết nối DB
+    console.log('Kết nối database thành công!');
+    await sequelize.sync(); // Đồng bộ model (có thể bỏ qua nếu chỉ test connect)
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
     console.error('❌ Database connection error:', error);
